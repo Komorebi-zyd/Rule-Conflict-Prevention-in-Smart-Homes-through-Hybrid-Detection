@@ -1,1 +1,13 @@
 \section{Conclusion}
+
+% 本文针对智能家居自动化规则冲突带来的安全与可用性问题，提出了一种结合静态分析与动态检测及预防的综合性解决方案。
+This paper addresses the safety and usability challenges posed by automation rule conflicts in smart homes by proposing a comprehensive solution that integrates static analysis with **dynamic detection and prevention**.
+
+% 我们引入了TCAE规则模型以捕捉环境侧信道影响，并利用形式化分析全面识别了六种类型的规则交互。通过结合用户定义的实体安全配置，我们的方法能够有效区分有害的规则冲突与良性的规则交互，显著提高了冲突检测的准确性并减少了误报。
+We introduced the TCAE rule model to capture environmental side-channel effects and utilized formal analysis to comprehensively identify six types of rule interactions. By incorporating user-defined entity safety configurations, our approach effectively distinguishes harmful rule conflicts from benign interactions, significantly enhancing conflict detection accuracy and reducing false positives.
+
+% 此外，系统能基于安全优先级自动生成定制化的冲突处理策略，并通过动态断言验证触发实时的冲突拦截与预定义策略的强制执行，从而在冲突实际发生前进行有效干预。
+Furthermore, the system automatically generates customized conflict resolution strategies based on safety priorities and employs dynamic assertion verification **to trigger real-time interception and enforcement of these pre-defined strategies**, effectively intervening before conflicts actually occur.
+
+% 评估结果表明，本方案在检测复杂冲突（包括侧信道冲突）方面具有优越性，其自动化、个性化的冲突处理策略切实可行且易于理解，同时系统性能开销在可接受范围内，证明了该方法在提升智能家居系统安全性和可靠性方面的实用价值。
+Evaluation results demonstrate the superiority of our approach in detecting complex conflicts (including those involving side channels), the viability and user-friendliness of its automated and personalized resolution strategies, and the acceptable performance overhead. This confirms the practical value of our method in enhancing the safety and reliability of smart home systems.

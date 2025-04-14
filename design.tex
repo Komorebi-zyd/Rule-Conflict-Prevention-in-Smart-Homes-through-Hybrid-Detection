@@ -94,25 +94,26 @@ Based on this, multiple resolution strategies can be set for each rule. The spec
 	\begin{center}
 		\caption{Resolution Policy Decision (Need modification)}
 		\label{Resolution_Policy_Decision}
+		\begin{adjustbox}{width=0.95\textwidth}
 		\begin{tabular}{c|c|c}
 			\hline
 			\textbf{Classification} & \textbf{Decision} & \textbf{Options} \\
 			\hline
-			\multirow{3}{*}{\textbf{Trigger Conflict} and \textbf{Indirect Trigger Conflict}} 
+			\multirow{3}{*}{\makecell{\textbf{Trigger Conflict} \\ \textbf{Indirect Trigger Conflict}}} 
 			& $(sf_2 = 0)\vee(sf_2>0 \wedge sf_1\geq 0)$ & Not rule conflict \\
 			\cline{2-3}
 			& $sf_1 < 0 \land sf_2 \geq 0$ & Only execute $R_2$ \\
 			\cline{2-3}
 			& $sf_2 < 0$ & Cancel execution of $R_2$ \\
 			\hline
-			\multirow{3}{*}{\textbf{Condition Conflict} and \textbf{Indirect Condition Conflict}} 
+			\multirow{3}{*}{\makecell{\textbf{Condition Conflict} \\ \textbf{Indirect Condition Conflict}}} 
 			& $(A_{1}\rightarrow C_{2}\wedge sf_{2}>0)\vee(A_{1}\nrightarrow C_{2}\wedge sf_{2}<0)$ & Not rule conflict \\
 			\cline{2-3}
 			& $A_{1}\rightarrow C_{2}\wedge sf_{2}>0$ & Do not execute $R_2$\\
 			\cline{2-3}
 			& $A_{1}\nrightarrow C_{2}\wedge sf_{2}<0$ & Execute $R_2$ \\
 			\hline
-			\multirow{6}{*}{\textbf{Action Conflict} and \textbf{Indirect Action Conflict}} 
+			\multirow{6}{*}{\makecell{\textbf{Action Conflict} \\ \textbf{Indirect Action Conflict}}} 
 			& $sf_1 = 0 \land sf_2 = 0$ & Not rule conflict \\
 			\cline{2-3}
 			& $sf_1 > 0 \land sf_2 < 0$ & Only execute $R_1$ \\
@@ -126,6 +127,7 @@ Based on this, multiple resolution strategies can be set for each rule. The spec
 			& $sf_1 < 0 \land sf_2 < 0$ & Neither rule will be executed \\
 			\hline
 		\end{tabular}
+		\end{adjustbox}
 	\end{center}
 \end{table*}
 
