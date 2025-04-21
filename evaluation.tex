@@ -17,8 +17,8 @@ This paper implements a complete system and conducts a virtual test. For the vir
 %虚拟测试使用图 \ref{smarthome_floorplan} 中所示的智能家居平面图。模拟的智能家居环境由七个不同的区域组成：室外、门廊、客厅、厨房、浴室、卧室和温室（花园）。根据观察，特定区域中的某些通道会相互影响。例如，门廊和客厅的亮度属性是相互依赖的，而客厅和卧室的亮度属性是独立的。
 The virtual test uses the smart home floor plan illustrated in Figure \ref{smarthome_floorplan}. The simulated smart home environment consists of seven distinct zones: Outdoor, Porch, Living Room, Kitchen, Bathroom, Bedroom, and Greenhouse (Garden).  Based on observations, certain channels in specific zones can influence each other. For instance, the brightness attributes of the porch and living room are interdependent, while the brightness attributes of the living room and bedroom are independent.
 
-%表 \ref{Testbeds} 列出了在这七个区域配置的 17 个自动化规则，以及相应的区域和设备。（附录 \ref{apdx:iot_devices} 显示了设备及其对应于区域的索引。）表 \ref{side_channel} 详细说明了智能家居系统中配置的侧通道，其中每个侧通道由一个区域、一个通道和一个趋势定义。最后，附录 \ref{apdx:iot_devices} 概述了智能家居系统中的实体安全配置，特别关注三个安全敏感设备的状态设置：水阀（开启）、喷水灭火器（开启）和卧室窗户（关闭）。
-Table \ref{Testbeds} lists the 17 automation rules configured across these seven zones, along with the corresponding areas and devices. (Appendix \ref{apdx:iot_devices} shows the devices and their indices corresponding to the areas.) Table \ref{side_channel} details the side channels configured within the smart home system, where each side channel is defined by a zone, a channel, and a trend. Finally, Appendix \ref{apdx:iot_devices} outlines the entity security configurations in the smart home system, specifically focusing on the state settings for three security-sensitive devices: water valve (On), sprinkler (On), and bedroom window (Closed).
+%表 \ref{Testbeds} 列出了在这七个区域配置的 17 个自动化规则，以及相应的区域和设备。（附录 \ref{apdx:iot_devices} 显示了设备及其对应于区域的索引。）表 \ref{side_channel} 详细说明了智能家居系统中配置的侧通道，其中每个侧通道由一个区域、一个通道和一个趋势定义。最后，Figure.\ref{smarthome_floorplan} 概述了智能家居系统中的实体安全配置，特别关注三个安全敏感设备的状态设置：水阀（开启）、喷水灭火器（开启）和卧室窗户（关闭）。
+Table \ref{Testbeds} lists the 17 automation rules configured across these seven zones, along with the corresponding areas and devices. (Appendix \ref{apdx:iot_devices} shows the devices and their indices corresponding to the areas.) Table \ref{side_channel} details the side channels configured within the smart home system, where each side channel is defined by a zone, a channel, and a trend. Finally, Figure.\ref{smarthome_floorplan} outlines the entity security configurations in the smart home system, specifically focusing on the state settings for three security-sensitive devices: water valve (On), sprinkler (On), and bedroom window (Closed).
 
 \begin{table}[htbp]
 	\caption{Side Channel}
@@ -108,37 +108,37 @@ All rule interactions can be precisely captured by our system, and it is capable
 	\caption{Result of Rule Conflict Detection}
 	\label{conflict_detection_result}
 	\begin{adjustbox}{width=\textwidth}
-	\begin{tabular}{|c|l|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
-		\hline
-		& \textbf{Classification} & \textbf{R1-R2} & \textbf{R1-R3} & \textbf{R1-R4} & \textbf{R1-R9} & \textbf{R2-R3} & \textbf{R2-R4} & \textbf{R2-R12} & \textbf{R3-R4} & \textbf{R3-R9} & \textbf{R4-R3} & \textbf{R5-R6} & \textbf{R6-R5} & \textbf{R7-R8} & \textbf{R8-R7} & \textbf{R9-R3} & \textbf{R10-R11} & \textbf{R11-R10} & \textbf{R13-R14} & \textbf{R14-R13} & \textbf{R15-R12} & \textbf{R16-R17} \\ \hline
-		\multirow{6}{*}{\rotatebox{90}{Ours}} & Trigger Conflict &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\ 
-		\cline{2-23}
-		& Condition Conflict &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\ 
-		\cline{2-23}
-		& Action Conflict &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \checkmark & \checkmark &  &  \\ 
-		\cline{2-23}
-		& Indirect Trigger Conflict &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \checkmark & \checkmark &  &  &  \\ 
-		\cline{2-23}
-		& Indirect Condition Conflict &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\ 
-		\cline{2-23}
-		& Indirect Action Conflict &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \checkmark & \checkmark &  &  &  &  \\
-		 \cline{2-23}
-		\hline
-		\multirow{7}{*}{\rotatebox{90}{IoTMediator}} 
-		& Condition Enabling/Disabling &  & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark &  &  & \checkmark &  &  &  &  & \checkmark &  \\ 
-		\cline{2-23}
-		& Race Condition &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\ 
-		\cline{2-23}
-		& Potential Race Condition & \checkmark &  &  &  & \checkmark &  &  &  &  &  & \checkmark &  &  &  &  &  &  &  &  &  & \checkmark \\
-		\cline{2-23}
-		& Chained Execution &  &  &  &  &  &  &  &  &  &  & \checkmark & \checkmark & \checkmark & \checkmark &  &  & \checkmark & \checkmark &  &  & \checkmark \\ 
-		\cline{2-23}
-		& Action Revert &  &  &  &  &  &  &  &  &  &  & \checkmark & \checkmark &  &  &  &  &  & \checkmark &  &  & \checkmark \\ 
-		\cline{2-23}
-		& Infinite Loop &  &  &  &  &  &  &  &  &  &  & \checkmark & \checkmark & \checkmark & \checkmark &  &  &  &  &  &  &  \\ 
-		\cline{2-23}
-		& Condition Bypass &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
-	\end{tabular}
+		\begin{tabular}{|c|l|c|c|c|c|c|c|c|c|c|c|c|c|c|} 
+			\hline
+			& \textbf{Classification} & \textbf{R1-R2} & \textbf{R2-R1} & \textbf{R2-R3} & \textbf{R3-R2} & \textbf{R5-R6} & \textbf{R6-R5} & \textbf{R9-R3} & \textbf{R10-R11} & \textbf{R11-R10} & \textbf{R13-R14} & \textbf{R14-R13} & \textbf{R15-R12} & \textbf{R16-R17} \\ \hline
+			\multirow{6}{*}{\rotatebox{90}{Ours}} & Rule Trigger Conflict &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+			\cline{2-15}
+			& Rule Condition Conflict &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+			\cline{2-15}
+			& Rule Action Conflict &  &  &  &  &  &  &  &  &  & \checkmark & \checkmark &  &  \\
+			\cline{2-15}
+			& Indirect Rule Trigger Conflict &  &  &  &  &  &  &  &  & \checkmark & \checkmark &  &  &  \\
+			\cline{2-15}
+			& Indirect Rule Condition Conflict &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+			\cline{2-15}
+			& Indirect Rule Action Conflict &  &  &  &  &  &  &  & \checkmark & \checkmark &  &  &  &  \\
+			\hline
+			
+			\multirow{7}{*}{\rotatebox{90}{IoTMediator}}
+			& Condition Enabling/Disabling &  &  &  &  & \checkmark & \checkmark & \checkmark &  &  &  &  & \checkmark &  \\
+			\cline{2-15}
+			& Race Condition &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+			\cline{2-15}
+			& Potential Race Condition & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark &  &  &  & \checkmark &  &  & \checkmark \\
+			\cline{2-15}
+			& Chained Execution &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+			\cline{2-15}
+			& Action Revert &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+			\cline{2-15}
+			& Infinite Loop &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+			\cline{2-15}
+			& Condition Bypass &  &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
+		\end{tabular}
 	\end{adjustbox}
 \end{table*}
 
@@ -177,32 +177,8 @@ Through AI's understanding of rule conflict descriptions, the recommended result
 %为了测试系统性能，本论文根据系统架构将测试分为静态分析的性能评估与动态检测与冲突处理的性能评估。
 In order to test the system performance, this paper divides the testing into performance evaluation of static analysis and performance evaluation of dynamic detection and conflict based on the system architecture.
 
-%其中静态检测的性能评估中,静态检测会遍历所有的自动化规则（包含Formal Analysis Module和Rule Conflict Detection Module），并对每两种规则进行比较，还将进行自比较，因此对于n条规则来说，静态检测的时间复杂度为$O\left(n^2\right)$。对于测试使用Testbeds规则集（17条），AI生成的100条规则集（100条）与1000条规则集（1000条）作为输入评估多次检测耗时，单位为秒，为便于展示选择其中三次检测结果并记录平均值，Table.\ref{performance_static_detection}展示了测试的结果。可以观察到Testbeds中的17条规则，静态检测耗时仅需要$3.5ms$，即使存在1000条规则，静态检测也只需要约$12s$，不同数据量的静态检测耗时符合预期的复杂度。
-In the performance evaluation of static analysis(Contains Formal Analysis Module and Rule Conflict Detection Module), the static analysis traverses all the automation rules and compares each pair of rules, including self-comparison. Therefore, for n rules, the time complexity of static detection is $O\left(n^2\right)$. For testing, the Testbeds rule set (17 rules), an AI-generated 100-rule set (100 rules), and a 1000-rule set (1000 rules) were used as inputs to evaluate the detection time multiple times, in seconds. To facilitate the display, three analysis results were selected and the average value was recorded. Figure.\ref{performance_static_analysis} shows the test results. It can be observed that the static detection of the 17 rules in Testbeds only takes $3.5ms$. Even with 1000 rules, static analysis only takes about $12s$, and the static analysis time of different data volumes meets the expected complexity.
-
-%\begin{table}[htbp]
-%	\caption{Performance of Static Detection}
-%	\label{performance_static_detection}
-%	\centering
-%	\begin{tabular}[width=1\textwidth]{|c|c|c|c|c|}
-%		\hline
-%		Number of Rules & 1st  & 2nd & 3rd  & Average Time \\
-%		\hline
-%		10 & $ 1.509 \times 10^{-3}$ & $0.997 \times 10^{-3}$ & $1.505 \times 10^{-3}$ & $1.337 \times 10^{-3}$ \\
-%		\hline
-%		17 & $4.002 \times 10^{-3}$ & $2.998 \times 10^{-3}$ & $3.508 \times 10^{-3}$ & $3.503 \times 10^{-3}$ \\
-%		\hline
-%		50 & $2.817 \times 10^{-2}$ & $2.952 \times 10^{-2}$ & $2.952 \times 10^{-2}$ & $2.907 \times 10^{-2}$ \\
-%		\hline
-%		100 & $1.193 \times 10^{-1}$ & $1.162 \times 10^{-1}$ & $1.188 \times 10^{-1}$ & $1.181 \times 10^{-1}$ \\
-%		\hline
-%		500 & $3.003 $ & $2.997$ & $2.974$ & $2.991$ \\
-%		\hline
-%		1000 & $1.190 \times 10^{1}$ & $1.191 \times 10^{1}$ & $1.205 \times 10^{1}$ & $1.195 \times 10^{1}$ \\
-%		\hline
-%	\end{tabular}
-%	
-%\end{table}
+%其中静态检测的性能评估中,静态检测会遍历所有的自动化规则（包含Formal Analysis Module和Rule Conflict Detection Module），并对每两种规则进行比较，还将进行自比较，因此对于n条规则来说，静态检测的时间复杂度为$O\left(n^2\right)$。对于测试使用AI生成的100条规则集（100条）与1000条规则集（1000条）作为输入评估多次检测耗时，单位为秒，为便于展示选择其中三次检测结果并记录平均值，Table.\ref{performance_static_detection}展示了测试的结果。可以观察到即使存在1000条规则，静态检测也只需要约$12s$，不同数据量的静态检测耗时符合预期的复杂度。
+In the performance evaluation of static detection, static detection traverses all automation rules (including the Formal Analysis Module and Rule Conflict Detection Module) and compares every two rules, as well as performing self-comparison. Therefore, for n rules, the time complexity of static detection is $O\left(n^2\right)$. For testing, an AI-generated set of 100 rules (100 rules) and a set of 1000 rules (1000 rules) were used as inputs to evaluate the detection time multiple times, in seconds. To facilitate the display, three detection results were selected and the average value was recorded. Table.\ref{performance_static_detection} shows the test results. It can be observed that even with 1000 rules, static detection only takes about $12s$, and the static detection time for different data volumes meets the expected complexity.
 
 \begin{figure}[htbp]
 	\caption{Performance of Static Analysis}
@@ -221,18 +197,20 @@ It can be observed that the average and maximum time consumption of the communic
 	\caption{Performance of Communication Functions}
 	\label{performance_communication_function}
 	\centering
-	\begin{tabular}{c|c|c|c}
-		\hline
-		\textbf{Function Name} & \textbf{Description} & \textbf{Average Time Consumption} & \textbf{Maximum Time Consumption}\\
-		\hline
-		get\_entity\_state & Get entity state & $1.193 \times 10^{-3}$s & $1.953 \times 10^{-3}$s \\
-		\hline
-		time\_now & Get HomeAssistant system time & $9.765 \times 10^{-4}$s & $9.825 \times 10^{-4}$s \\
-		\hline
-		command\_send & Send conflict handling command & $9.643 \times 10^{-4}$s & $9.787 \times 10^{-4}$s \\
-		\hline
-		communicate\_finish & End communication phase & $9.778 \times 10^{-4}$s & $9.832 \times 10^{-4}$s \\
-		\hline
-		\multicolumn{4}{l}{Note: Each function is tested 10 times.} \\
-	\end{tabular}
+	\begin{adjustbox}{width=0.95\textwidth}
+		\begin{tabular}{c|c|c|c}
+			\hline
+			\textbf{Function Name} & \textbf{Description} & \textbf{Average Time Consumption} & \textbf{Maximum Time Consumption}\\
+			\hline
+			get\_entity\_state & Get entity state & $1.193 \times 10^{-3}$s & $1.953 \times 10^{-3}$s \\
+			\hline
+			time\_now & Get HomeAssistant system time & $9.765 \times 10^{-4}$s & $9.825 \times 10^{-4}$s \\
+			\hline
+			command\_send & Send conflict handling command & $9.643 \times 10^{-4}$s & $9.787 \times 10^{-4}$s \\
+			\hline
+			communicate\_finish & End communication phase & $9.778 \times 10^{-4}$s & $9.832 \times 10^{-4}$s \\
+			\hline
+			\multicolumn{4}{l}{Note: Each function is tested 10 times.} \\
+		\end{tabular}
+	\end{adjustbox}
 \end{table*}

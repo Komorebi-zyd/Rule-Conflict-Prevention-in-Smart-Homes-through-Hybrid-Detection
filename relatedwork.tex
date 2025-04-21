@@ -1,1 +1,53 @@
 \section{Related Work}
+
+%在本节中，我们将根据我们的研究对相关的工作进行讨论。Table.\ref{Relate_Work}展示，过去的工作针对智能家居系统中自动化功能执行（规则执行）导致的规则冲突有了广泛的研究，但是很少有工作能够将规则交互与规则冲突进行区分。一份调研\ref{huang2023survey}也表示当前对规则冲突检测的独特性，包括问题、数据、检测方法和冲突类型的讨论比较缺乏，缺少统一的定义。
+In this section, we review existing work related to smart home automation rules and conflicts. As shown in Table \ref{Relate_Work}, prior research has extensively investigated rule conflicts arising from the execution of automation functions (rule execution) in smart home systems. However, few studies have clearly distinguished between rule interaction and rule conflicts. A survey by Huang et al. \cite{huang2023survey} further points out the lack of detailed discussion on the unique characteristics of current rule conflict detection research, including issues, data, detection methods, and conflict types, highlighting the absence of a unified definition.
+
+Several approaches focus on defining security policies or attributes to detect conflicts. Soteria \cite{celik2018soteria}, for instance, defines general attributes related to rule interaction patterns and application-specific attributes for defining security policies. Abnormal behavior is detected when these attributes are violated. Similarly, IoTguard \cite{celik2019iotguard} utilizes both rule interaction patterns and specific security policies, defining 30 application-specific policies, 2 platform-specific trigger execution policies, and 4 general policies for detection. IoTSan \cite{nguyen2018iotsan} and IoTSafe \cite{ding2021iotsafe} also follow a policy-based approach. IoTSan provides 45 predefined security attributes that users can select from. When a new smart application is installed, it checks for potential conflicts by verifying if the selected security attributes hold within the application's configuration. IoTSafe defines a syntax for security policies to enable the detection and prevention of rule conflicts, supporting enforcement or user notification before conflicts occur.
+
+Another line of work focuses on detecting rule conflicts by identifying problematic rule interaction patterns. IoTCom \cite{alhanahnah2022iotcom}, HomeGuard \cite{inproceedings}, and IoTMediator \cite{chi2023detecting} fall into this category. IoTCom defines seven types of coordination threats and employs static analysis to detect potential rule interactions, including those related to side channels. HomeGuard and its subsequent work IoTMediator identify and enumerate rule interaction threats based on empirical observation. They combine static and dynamic detection methods to find these interaction threats and offer customized mitigation strategies for each type.
+
+
+%%Soteria\ref{celik2018soteria}定义了常规的属性，与应用特殊属性，前者属于对规则交互模式的讨论，后者属于定义特定的安全策略，如果检测到以上属性被违反则判定为异常。IoTguard\cite{celik2019iotguard}与其类似，从规则交互模式与特定的安全策略两个角度分别定义了30条应用特殊策略，2条触发执行的平台特殊策略与4条一般策略进行检测。
+%Soteria\cite{celik2018soteria} defines general attributes and application-specific attributes. The former belongs to the discussion of rule interaction patterns, and the latter belongs to the definition of specific security policies. If the above attributes are violated, it is judged as abnormal. IoTguard\cite{celik2019iotguard} is similar to it, defining 30 application-specific policies, 2 platform-specific policies for triggering execution, and 4 general policies for detection from the perspectives of rule interaction patterns and specific security policies.
+%
+%%IoTSan\cite{nguyen2018iotsan}与IoTSafe\cite{ding2021iotsafe}采用指定安全策略的思路。IoTSan设定了45条安全属性，并且提供页面供用户选择，当用户安装一个新的智能应用程序（自动化规则）时，通过检查用户定义的安全属性是否在应用程序的配置中成立来检测可能存在的规则冲突。IoTSafe定义了安全策略的相关语法，用于检测与预防规则冲突，并且支持在规则冲突发生之前进行安全策略的强制执行或者通知用户。
+%IoTSan\cite{nguyen2018iotsan} and IoTSafe\cite{ding2021iotsafe} adopt the approach of specifying security policies. IoTSan sets 45 security attributes and provides a page for users to select. When a user installs a new smart application (automation rule), it detects potential rule conflicts by checking whether the user-defined security attributes hold in the application's configuration. IoTSafe defines the syntax for security policies to detect and prevent rule conflicts, and supports enforcing security policies or notifying users before rule conflicts occur.
+%
+%%IoTCom\cite{alhanahnah2022iotcom}、HomeGuard\cite{inproceedings}和IoTMediator\cite{chi2023detecting}都采用检测规则交互模式的方法对规则冲突进行检测。IoTCom定义了七类协调威胁采用静态分析的方法对潜在的规则交互进行检测，并且能够提取side channel相关的规则交互。HomeGuard及其后续工作和IoTMediator定义了规则交互威胁，以经验为基础列举出被认为是具有威胁的规则交互，并且采用静态检测与动态检测结合的方法进行交互威胁检测，并对每类规则交互威胁提供定制化的处理方案。
+%IoTCom\cite{alhanahnah2022iotcom}, HomeGuard\cite{inproceedings}, and IoTMediator\cite{chi2023detecting} all use the method of detecting rule interaction patterns to detect rule conflicts. IoTCom defines seven types of coordination threats and uses static analysis to detect potential rule interactions, and it can extract side channel related rule interactions. HomeGuard and its subsequent work and IoTMediator define rule interaction threats, enumerate rule interactions that are considered threatening based on experience, and use a combination of static detection and dynamic detection to detect interaction threats, and provide customized processing solutions for each type of rule interaction threat.
+
+\begin{table*}[htbp]
+	\begin{center}
+		\caption{Comparison of Different IoT Conflict Handling Approaches}
+		\label{Relate_Work}
+		\begin{adjustbox}{width=0.95\textwidth}
+			\begin{tabular}{|l|c|c|c|c|c|c|}
+				\hline
+				& \textbf{DIC} & \textbf{Physical Channel} & \textbf{Detection Method} & \textbf{Auto Resolution} & \textbf{Customized Resolution} & \textbf{Timing of Handling} \\
+				\hline
+				\textbf{Soteria\cite{celik2018soteria}} & $\times$ & $\checkmark$ & Static & $\times$ & $\times$ & $\times$ \\
+				\hline
+				\textbf{SafeChain\cite{hsu2019safechain}} & $\times$ & $\checkmark$ & Hybrid & $\times$ & $\times$ & $\times$ \\
+				\hline
+				\textbf{IoTIE\cite{chen2019multi}} & $\times$ & $\checkmark$ & Static & $\times$ & $\times$ & $\times$ \\
+				\hline
+				\textbf{iRuler\cite{wang2019charting}} & $\times$ & $\checkmark$ & Static & $\times$ & $\times$ & $\times$ \\
+				\hline
+				\textbf{IoTCom\cite{alhanahnah2022iotcom}} & $\times$ & $\checkmark$ & Static & $\times$ & $\times$ & $\times$ \\
+				\hline
+				\textbf{IoTSafe\cite{ding2021iotsafe}} & $\times$ & $\checkmark$ & Hybrid & $\checkmark$ & $\times$ & Before the conflict occurs without block \\
+				\hline
+				\textbf{IoTGuard\cite{celik2019iotguard}} & $\times$ & $\times$ & Dynamic & $\checkmark$ & $\times$ & Before the conflict occurs(may block) \\
+				\hline
+				\textbf{IoTMediator\cite{chi2023detecting}} & $\times$ & $\times$ & Hybrid & $\checkmark$ & $\checkmark$ & Before the conflict occurs(may block) \\
+				\hline
+				\textbf{Ours} & $\checkmark$ & $\checkmark$ & \textbf{Hybrid} & $\checkmark$ & $\checkmark$ & \textbf{Before the conflict occurs without block} \\
+				\hline
+			\end{tabular}
+		\end{adjustbox}
+		\vspace{5pt}
+		\raggedright
+		Note: “DIC” means Distinguish between Interaction and Conflict.
+	\end{center}
+\end{table*}
