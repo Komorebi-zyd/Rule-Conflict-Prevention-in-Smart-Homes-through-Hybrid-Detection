@@ -11,21 +11,21 @@ In this chapter, we mainly evaluate from the following perspectives: 1) The effe
 
 \subsection{Smart Home Testbeds}
 
-%本文实现了一个完整的系统并进行了虚拟测试。对于虚拟测试，选择了基于 Python 的开源智能家居平台 Home Assistant。Home Assistant 支持来自各种制造商的设备，并提供虚拟设备以实现自动化功能。在此平台上，用户可以通过可视化 Web 界面或直接编辑配置文件来定义自定义自动化规则。Home Assistant 使用 YAML 配置文件来描述自动化规则，采用触发-条件-动作 (TCA) 模型。
-This paper implements a complete system and conducts a virtual test. For the virtual test, Home Assistant, an open-source smart home platform based on Python, was selected.Home Assistant supports devices from various manufacturers and provides virtual devices to enable automation functionalities. On this platform, users can define custom automation rules either through a visual web interface or by directly editing configuration files. Home Assistant uses YAML configuration files to describe automation rules, employing a trigger-condition-action (TCA) model.
+%我们实现了一个完整的系统并进行了虚拟测试。对于虚拟测试，选择了基于 Python 的开源智能家居平台 Home Assistant。Home Assistant 支持来自各种制造商的设备，并提供虚拟设备以实现自动化功能。在此平台上，用户可以通过可视化 Web 界面或直接编辑配置文件来定义自定义自动化规则。Home Assistant 使用 YAML 配置文件来描述自动化规则，采用触发-条件-动作 (TCA) 模型。
+We implements a complete system and conducts a virtual test. For the virtual test, Home Assistant, an open-source smart home platform based on Python, was selected.Home Assistant supports devices from various manufacturers and provides virtual devices to enable automation functionalities. On this platform, users can define custom automation rules either through a visual web interface or by directly editing configuration files. Home Assistant uses YAML configuration files to describe automation rules, employing a trigger-condition-action (TCA) model.
 
 %虚拟测试使用图 \ref{smarthome_floorplan} 中所示的智能家居平面图。模拟的智能家居环境由七个不同的区域组成：室外、门廊、客厅、厨房、浴室、卧室和温室（花园）。根据观察，特定区域中的某些通道会相互影响。例如，门廊和客厅的亮度属性是相互依赖的，而客厅和卧室的亮度属性是独立的。
 The virtual test uses the smart home floor plan illustrated in Figure \ref{smarthome_floorplan}. The simulated smart home environment consists of seven distinct zones: Outdoor, Porch, Living Room, Kitchen, Bathroom, Bedroom, and Greenhouse (Garden).  Based on observations, certain channels in specific zones can influence each other. For instance, the brightness attributes of the porch and living room are interdependent, while the brightness attributes of the living room and bedroom are independent.
 
-%表 \ref{Testbeds} 列出了在这七个区域配置的 17 个自动化规则，以及相应的区域和设备。（附录 \ref{apdx:iot_devices} 显示了设备及其对应于区域的索引。）表 \ref{side_channel} 详细说明了智能家居系统中配置的侧通道，其中每个侧通道由一个区域、一个通道和一个趋势定义。最后，Figure.\ref{smarthome_floorplan} 概述了智能家居系统中的实体安全配置，特别关注三个安全敏感设备的状态设置：水阀（开启）、喷水灭火器（开启）和卧室窗户（关闭）。
-Table \ref{Testbeds} lists the 17 automation rules configured across these seven zones, along with the corresponding areas and devices. (Appendix \ref{apdx:iot_devices} shows the devices and their indices corresponding to the areas.) Table \ref{side_channel} details the side channels configured within the smart home system, where each side channel is defined by a zone, a channel, and a trend. Finally, Figure.\ref{smarthome_floorplan} outlines the entity security configurations in the smart home system, specifically focusing on the state settings for three security-sensitive devices: water valve (On), sprinkler (On), and bedroom window (Closed).
+%表 \ref{Testbeds} 列出了在这七个区域配置的 17 个自动化规则，以及相应的区域和设备。表 \ref{side_channel} 详细说明了智能家居系统中配置的侧通道，其中每个侧通道由一个区域、一个通道和一个趋势定义。最后，Figure.\ref{smarthome_floorplan} 概述了智能家居系统中的实体安全配置，特别关注三个安全敏感设备的状态设置：水阀（开启）、喷水灭火器（开启）和卧室窗户（关闭）。
+Table \ref{Testbeds} lists the 17 automation rules configured across these seven zones, along with the corresponding zones and devices. Table \ref{side_channel} details the side channels configured within the smart home system, where each side channel is defined by a zone, a channel, and a trend. Finally, Figure.\ref{smarthome_floorplan} outlines the entity security configurations in the smart home system, specifically focusing on the state settings for three security-sensitive devices: water valve (On), sprinkler (On), and bedroom window (Closed).
 
 \begin{table}[htbp]
-	\caption{Side Channel}
+	\caption{Classification of Side Channel Attributes Across Different Home Zones}
 	\label{side_channel}
 	\begin{tabular}[width=0.45\textwidth]{l|l|l}
 		\hline
-		\textbf{Area} & \textbf{Channel} & \textbf{Trend} \\
+		\textbf{Zone} & \textbf{Channel} & \textbf{Trend} \\
 		\hline
 		outdoor& brightness, & increase/decrease \\
 		\hline
@@ -44,7 +44,7 @@ Table \ref{Testbeds} lists the 17 automation rules configured across these seven
 
 
 \begin{table*}[htbp]
-	\caption{Testbeds}
+	\caption{Testbed: Details of Experimental Smart Home Rules (R1-R17)}
 	\label{Testbeds}
 	\centering
 	\begin{adjustbox}{width=\textwidth}
@@ -103,46 +103,52 @@ The test results indicate that IoTMEDIATOR is able to detect the rule conflicts 
 %所有规则交互都能被我们的系统精确捕捉，同时能够自动将任何威胁性规则交互是为规则冲突，从而检测到所有的四条规则冲突，并检测出六种可能的冲突发生方式。除此之外，我们的系统能够有效避免规则冲突的误报，极大程度上避免了将正常的规则交互错误分类到规则冲突的可能性，与此同时用户可以将其他规则交互根据个人偏好选择是否列入规则冲突列表中。
 All rule interactions can be precisely captured by our system, and it is capable of automatically converting any threatening rule interactions into rule conflicts, thereby detecting all four types of rule conflicts and identifying six possible ways in which conflicts might occur. In addition, our system effectively avoids false positives in identifying rule conflicts, greatly minimizing the chance that normal rule interactions are mistakenly classified as conflicts, while also allowing users to optionally include other rule interactions in the rule conflict list according to their personal preference.
 
-\begin{table*}[htbp]
+%\begin{table*}[htbp]
+%	\centering
+%	\caption{Result of Rule Conflict Detection}
+%	\label{conflict_detection_result}
+%	\begin{adjustbox}{width=\textwidth}
+%		\begin{tabular}{|c|l|c|c|c|c|c|c|c|c|c|c|c|c|c|} 
+%			\hline
+%			& \textbf{Classification} & \textbf{R1-R2} & \textbf{R2-R1} & \textbf{R2-R3} & \textbf{R3-R2} & \textbf{R5-R6} & \textbf{R6-R5} & \textbf{R9-R3} & \textbf{R10-R11} & \textbf{R11-R10} & \textbf{R13-R14} & \textbf{R14-R13} & \textbf{R15-R12} & \textbf{R16-R17} \\ \hline
+%			\multirow{6}{*}{\rotatebox{90}{Ours}} & Rule Trigger Conflict &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+%			\cline{2-15}
+%			& Rule Condition Conflict &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+%			\cline{2-15}
+%			& Rule Action Conflict &  &  &  &  &  &  &  &  &  & \checkmark & \checkmark &  &  \\
+%			\cline{2-15}
+%			& Indirect Rule Trigger Conflict &  &  &  &  &  &  &  &  & \checkmark & \checkmark &  &  &  \\
+%			\cline{2-15}
+%			& Indirect Rule Condition Conflict &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+%			\cline{2-15}
+%			& Indirect Rule Action Conflict &  &  &  &  &  &  &  & \checkmark & \checkmark &  &  &  &  \\
+%			\hline
+%			
+%			\multirow{7}{*}{\rotatebox{90}{IoTMediator}}
+%			& Condition Enabling/Disabling &  &  &  &  & \checkmark & \checkmark & \checkmark &  &  &  &  & \checkmark &  \\
+%			\cline{2-15}
+%			& Race Condition &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+%			\cline{2-15}
+%			& Potential Race Condition & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark &  &  &  & \checkmark &  &  & \checkmark \\
+%			\cline{2-15}
+%			& Chained Execution &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+%			\cline{2-15}
+%			& Action Revert &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+%			\cline{2-15}
+%			& Infinite Loop &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+%			\cline{2-15}
+%			& Condition Bypass &  &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
+%		\end{tabular}
+%	\end{adjustbox}
+%\end{table*}
+\begin{figure*}[htbp]
 	\centering
+	\includegraphics[width=\textwidth]{figure/conflict_detection_result.png}
 	\caption{Result of Rule Conflict Detection}
 	\label{conflict_detection_result}
-	\begin{adjustbox}{width=\textwidth}
-		\begin{tabular}{|c|l|c|c|c|c|c|c|c|c|c|c|c|c|c|} 
-			\hline
-			& \textbf{Classification} & \textbf{R1-R2} & \textbf{R2-R1} & \textbf{R2-R3} & \textbf{R3-R2} & \textbf{R5-R6} & \textbf{R6-R5} & \textbf{R9-R3} & \textbf{R10-R11} & \textbf{R11-R10} & \textbf{R13-R14} & \textbf{R14-R13} & \textbf{R15-R12} & \textbf{R16-R17} \\ \hline
-			\multirow{6}{*}{\rotatebox{90}{Ours}} & Rule Trigger Conflict &  &  &  &  &  &  &  &  &  &  &  &  &  \\
-			\cline{2-15}
-			& Rule Condition Conflict &  &  &  &  &  &  &  &  &  &  &  &  &  \\
-			\cline{2-15}
-			& Rule Action Conflict &  &  &  &  &  &  &  &  &  & \checkmark & \checkmark &  &  \\
-			\cline{2-15}
-			& Indirect Rule Trigger Conflict &  &  &  &  &  &  &  &  & \checkmark & \checkmark &  &  &  \\
-			\cline{2-15}
-			& Indirect Rule Condition Conflict &  &  &  &  &  &  &  &  &  &  &  &  &  \\
-			\cline{2-15}
-			& Indirect Rule Action Conflict &  &  &  &  &  &  &  & \checkmark & \checkmark &  &  &  &  \\
-			\hline
-			
-			\multirow{7}{*}{\rotatebox{90}{IoTMediator}}
-			& Condition Enabling/Disabling &  &  &  &  & \checkmark & \checkmark & \checkmark &  &  &  &  & \checkmark &  \\
-			\cline{2-15}
-			& Race Condition &  &  &  &  &  &  &  &  &  &  &  &  &  \\
-			\cline{2-15}
-			& Potential Race Condition & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark &  &  &  & \checkmark &  &  & \checkmark \\
-			\cline{2-15}
-			& Chained Execution &  &  &  &  &  &  &  &  &  &  &  &  &  \\
-			\cline{2-15}
-			& Action Revert &  &  &  &  &  &  &  &  &  &  &  &  &  \\
-			\cline{2-15}
-			& Infinite Loop &  &  &  &  &  &  &  &  &  &  &  &  &  \\
-			\cline{2-15}
-			& Condition Bypass &  &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
-		\end{tabular}
-	\end{adjustbox}
-\end{table*}
+\end{figure*}
 
-\subsection{Availability of Automated Rule Conflict Resolution}
+\subsection{Effectiveness of Conflict Resolution}
 
 \begin{figure}[htbp]
 	\centering
@@ -152,7 +158,7 @@ All rule interactions can be precisely captured by our system, and it is capable
 \end{figure}
 
 %为了评估自动化的规则冲突处理的可用性，本章节将结合具体的示例展示对于一个具体的规则冲突，系统如何进行自动化处理，以及AI对于系统提供的规则冲突信息的推测处理方式。
-In order to assess the applicability of automated rule conflict resolution, this chapter will use specific examples to demonstrate how the system automatically processes a particular rule conflict and how AI speculatively handles the rule conflict information provided by the system.
+In order to assess the effectiveness of automated rule conflict resolution, this chapter will use specific examples to demonstrate how the system automatically processes a particular rule conflict and how AI speculatively handles the rule conflict information provided by the system.
 
 %Fig.\ref{example_resolution}展示了规则R10与规则R11对应的Indirect Action Conflict。图片中展示了规则的描述（自动化规则配置文件中提取得到），规则冲突描述（Rule Conflict Detection Module中根据上下文信息生成）为：R10-Water Shutoff's execution result impacts channel ['KitchenHumidity-down'],R11-Fire Suppression's execution result impacts channel ['KitchenHumidity-up'],The execution results of R10-Water Shutoff and R11-Fire Suppression affect each other.最下面是处理策略，包含一个默认执行动作和五个规则冲突缓解动作。
 Fig.\ref{example_resolution} displays the Indirect Action Conflict corresponding to rules R10 and R. The image shows the description of the rules (extracted from the automated rule configuration file) and the rule conflict description (generated by the Rule Conflict Detection Module based on contextual information) as: R10-Water Shutoff's execution result impacts channel ['KitchenHumidity-down'], R11-Fire Suppression's execution result impacts channel ['KitchenHumidity-up'], and the execution results of R10-Water Shutoff and R11-Fire Suppression affect each other. At the bottom is the resolution strategy, which consists of a default execution action and five rule conflict mitigation actions.
@@ -164,7 +170,7 @@ According to the entity security configuration, the execution action of rule R10
 %		"policy": "2", // Only execute R11
 %		"reason": "In this case of Indirect Rule Action Conflict, the sprinkler system activated by R11 is crucial for safety during a fire, and its priority should supersede the water cutoff triggered by R10 to ensure effective fire suppression. Therefore, only R11 should execute."
 %	\}}
-To test the user-friendliness of the rule conflict description generated according to the rule model by the Rule Conflict Detection Module, this paper uses AI to test its strategy selection for conflict resolution. Still taking Fig.\ref{example_resolution} as an example, the model used is \texttt{gpt-4o-2024-11-20}, called via the OPENAI API, with other parameters remaining unchanged by default, and the system prompt will be shown in Appendix.\ref{apdx:system_prompt}. For the above example, we obtained the following response: 
+To test the user-friendliness of the rule conflict description generated according to the rule model by the Rule Conflict Detection Module, we uses AI to test its strategy selection for conflict resolution. Still taking Fig.\ref{example_resolution} as an example, the model used is \texttt{gpt-4o-2024-11-20}, called via the OPENAI API, with other parameters remaining unchanged by default, and the system prompt will be shown in Appendix.\ref{apdx:system_prompt}. For the above example, we obtained the following response: 
 \texttt{\{\\
 	"policy": "2", // Only execute R11 \\
 	"reason": "In this case of Indirect Rule Action Conflict, the sprinkler system activated by R11 is crucial for safety during a fire, and its priority should supersede the water cutoff triggered by R10 to ensure effective fire suppression. Therefore, only R11 should execute."\\
@@ -175,10 +181,10 @@ Through AI's understanding of rule conflict descriptions, the recommended result
 
 \subsection{Performance} 
 %为了测试系统性能，本论文根据系统架构将测试分为静态分析的性能评估与动态检测与冲突处理的性能评估。
-In order to test the system performance, this paper divides the testing into performance evaluation of static analysis and performance evaluation of dynamic detection and conflict based on the system architecture.
+In order to test the system performance, we divides the testing into performance evaluation of static analysis and performance evaluation of dynamic detection and conflict based on the system architecture.
 
-%其中静态检测的性能评估中,静态检测会遍历所有的自动化规则（包含Formal Analysis Module和Rule Conflict Detection Module），并对每两种规则进行比较，还将进行自比较，因此对于n条规则来说，静态检测的时间复杂度为$O\left(n^2\right)$。对于测试使用AI生成的100条规则集（100条）与1000条规则集（1000条）作为输入评估多次检测耗时，单位为秒，为便于展示选择其中三次检测结果并记录平均值，Table.\ref{performance_static_detection}展示了测试的结果。可以观察到即使存在1000条规则，静态检测也只需要约$12s$，不同数据量的静态检测耗时符合预期的复杂度。
-In the performance evaluation of static detection, static detection traverses all automation rules (including the Formal Analysis Module and Rule Conflict Detection Module) and compares every two rules, as well as performing self-comparison. Therefore, for n rules, the time complexity of static detection is $O\left(n^2\right)$. For testing, an AI-generated set of 100 rules (100 rules) and a set of 1000 rules (1000 rules) were used as inputs to evaluate the detection time multiple times, in seconds. To facilitate the display, three detection results were selected and the average value was recorded. Table.\ref{performance_static_detection} shows the test results. It can be observed that even with 1000 rules, static detection only takes about $12s$, and the static detection time for different data volumes meets the expected complexity.
+%其中静态检测的性能评估中,静态检测会遍历所有的自动化规则（包含Formal Analysis Module和Rule Conflict Detection Module），并对每两种规则进行比较，还将进行自比较，因此对于n条规则来说，静态检测的时间复杂度为$O\left(n^2\right)$。对于测试使用AI生成的100条规则集（100条）与1000条规则集（1000条）作为输入评估多次检测耗时，单位为秒，为便于展示选择其中三次检测结果并记录平均值，Table.\ref{performance_static_analysis}展示了测试的结果。可以观察到即使存在1000条规则，静态检测也只需要约$12s$，不同数据量的静态检测耗时符合预期的复杂度。
+In the performance evaluation of static detection, static detection traverses all automation rules (including the Formal Analysis Module and Rule Conflict Detection Module) and compares every two rules, as well as performing self-comparison. Therefore, for n rules, the time complexity of static detection is $O\left(n^2\right)$. For testing, an AI-generated set of 100 rules (100 rules) and a set of 1000 rules (1000 rules) were used as inputs to evaluate the detection time multiple times, in seconds. To facilitate the display, three detection results were selected and the average value was recorded. Table.\ref{performance_static_analysis} shows the test results. It can be observed that even with 1000 rules, static detection only takes about $12s$, and the static detection time for different data volumes meets the expected complexity.
 
 \begin{figure}[htbp]
 	\caption{Performance of Static Analysis}
