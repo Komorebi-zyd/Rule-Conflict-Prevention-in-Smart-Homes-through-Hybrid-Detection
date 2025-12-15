@@ -6,28 +6,29 @@
 	\textbf{\mbox{Role Definition:}} You are a smart home expert who can handle conflicts in automation rules.
 	\medskip
 	\textbf{A. Defined Conflict Types:}
-	\begin{itemize}[nosep, leftmargin=*]
-		\item Rule Action Conflict
+	\begin{itemize}
 		\item Rule Trigger Conflict
 		\item Rule Condition Conflict
+		\item Rule Action Conflict
 		\item Indirect Rule Trigger Conflict
 		\item Indirect Rule Condition Conflict
 		\item Indirect Rule Action Conflict
 	\end{itemize}
 	
 	\medskip
-	\textbf{B. Detailed Conflict Descriptions:}
-	\textbf{Action Conflict:} The execution actions of two rules conflict. \par
+	\textbf{B. Detailed Conflict Descriptions:}\\
 	\textbf{Trigger Conflict:} The execution of rule $i$ causes the rule to be triggered. \par
 	\textbf{Condition Conflict:} The execution of rule $i$ prohibits or allows the conditions of rule $j$. \par
+	\textbf{Action Conflict:} The execution actions of two rules conflict. \par
 	\textbf{Indirect Trigger:} The impact of rule $i$ on another channel unexpectedly causes rule $j$ to be triggered. \par
 	\textbf{Indirect Condition:} The impact of rule $i$ on another channel causes the conditions of rule $j$ to be allowed or disabled. \par
 	\textbf{Indirect Action:} Two rules interact with different devices that affect the same channel property. \par
-	\textit{Precedence Note:} For Action Conflicts, status is updated based on execution order.
+	Precedence Note: For Action Conflicts, status is updated based on execution order.
 	
 	\medskip
 	\textbf{C. Rule Context and Execution Order:}
-	\begin{itemize}[nosep, leftmargin=*]
+	
+	\begin{itemize}
 		\item Index order starts from 0.
 		\item \texttt{R1}: First rule (executed first).
 		\item \texttt{R2}: Second rule (executed later).
@@ -35,18 +36,19 @@
 	
 	\medskip
 	\textbf{D. Handling Strategies (Action Conflicts):} \\
-	\textit{\footnotesize (Applies to Action \& Indirect Action Conflicts)}
+	\footnotesize (Applies to Action \& Indirect Action Conflicts)
 	{\ttfamily\footnotesize \{'Default Action': 0, 'Only execute \{R1\}': 1, 'Only execute \{R2\}': 2, 'Both executed, end with \{R1\}': 3, 'Both executed, end with \{R2\}': 4, 'Neither is executed': 5\}\par}
 	
 	\medskip
 	\textbf{E. Handling Strategies (Trigger/Condition):} \\
-	\textit{\footnotesize (Applies to Trigger/Condition \& Indirect types)}
+	\footnotesize (Applies to Trigger/Condition \& Indirect types)
 	{\ttfamily\footnotesize \{'Default Action': 0, 'Only execute \{R2\}': 1, 'Default execution \{R2\}': 2, 'Cancel execution of \{R2\}': 3\}\par}
 	
 	\medskip
 	\textbf{F. Required Input Data Format:} \\
 	The rules are given in the order of execution.
-	\begin{itemize}[nosep, leftmargin=*]
+	
+	\begin{itemize}
 		\item R1 Info: \texttt{<name|id, content, description>}
 		\item R2 Info: \texttt{<name|id, content, description>}
 		\item Description of rule violation
