@@ -1,53 +1,57 @@
 \section{Related Work}
 
-%在本节中，我们将根据我们的研究对相关的工作进行讨论。Table.\ref{Relate_Work}展示，过去的工作针对智能家居系统中自动化功能执行（规则执行）导致的规则冲突有了广泛的研究，但是很少有工作能够将规则交互与规则冲突进行区分。一份调研\ref{huang2023survey}也表示当前对规则冲突检测的独特性，包括问题、数据、检测方法和冲突类型的讨论比较缺乏，缺少统一的定义。
-In this section, we review existing work related to smart home automation rules and conflicts. As shown in Table \ref{Relate_Work}, prior research has extensively investigated rule conflicts arising from the execution of automation functions (rule execution) in smart home systems. However, few studies have clearly distinguished between rule interaction and rule conflicts. A survey by Huang et al. \cite{huang2023survey} further points out the lack of detailed discussion on the unique characteristics of current rule conflict detection research, including issues, data, detection methods, and conflict types, highlighting the absence of a unified definition.
-
-Several approaches focus on defining security policies or attributes to detect conflicts. Soteria \cite{celik2018soteria}, for instance, defines general attributes related to rule interaction patterns and application-specific attributes for defining security policies. Abnormal behavior is detected when these attributes are violated. Similarly, IoTguard \cite{celik2019iotguard} utilizes both rule interaction patterns and specific security policies, defining 30 application-specific policies, 2 platform-specific trigger execution policies, and 4 general policies for detection. IoTSan \cite{nguyen2018iotsan} and IoTSafe \cite{ding2021iotsafe} also follow a policy-based approach. IoTSan provides 45 predefined security attributes that users can select from. When a new smart application is installed, it checks for potential conflicts by verifying if the selected security attributes hold within the application's configuration. IoTSafe defines a syntax for security policies to enable the detection and prevention of rule conflicts, supporting enforcement or user notification before conflicts occur.
-
-Another line of work focuses on detecting rule conflicts by identifying problematic rule interaction patterns. IoTCom \cite{alhanahnah2022iotcom}, HomeGuard \cite{inproceedings}, and IoTMediator \cite{chi2023detecting} fall into this category. IoTCom defines seven types of coordination threats and employs static analysis to detect potential rule interactions, including those related to side channels. HomeGuard and its subsequent work IoTMediator identify and enumerate rule interaction threats based on empirical observation. They combine static and dynamic detection methods to find these interaction threats and offer customized mitigation strategies for each type.
-
-
-%%Soteria\ref{celik2018soteria}定义了常规的属性，与应用特殊属性，前者属于对规则交互模式的讨论，后者属于定义特定的安全策略，如果检测到以上属性被违反则判定为异常。IoTguard\cite{celik2019iotguard}与其类似，从规则交互模式与特定的安全策略两个角度分别定义了30条应用特殊策略，2条触发执行的平台特殊策略与4条一般策略进行检测。
-%Soteria\cite{celik2018soteria} defines general attributes and application-specific attributes. The former belongs to the discussion of rule interaction patterns, and the latter belongs to the definition of specific security policies. If the above attributes are violated, it is judged as abnormal. IoTguard\cite{celik2019iotguard} is similar to it, defining 30 application-specific policies, 2 platform-specific policies for triggering execution, and 4 general policies for detection from the perspectives of rule interaction patterns and specific security policies.
-%
-%%IoTSan\cite{nguyen2018iotsan}与IoTSafe\cite{ding2021iotsafe}采用指定安全策略的思路。IoTSan设定了45条安全属性，并且提供页面供用户选择，当用户安装一个新的智能应用程序（自动化规则）时，通过检查用户定义的安全属性是否在应用程序的配置中成立来检测可能存在的规则冲突。IoTSafe定义了安全策略的相关语法，用于检测与预防规则冲突，并且支持在规则冲突发生之前进行安全策略的强制执行或者通知用户。
-%IoTSan\cite{nguyen2018iotsan} and IoTSafe\cite{ding2021iotsafe} adopt the approach of specifying security policies. IoTSan sets 45 security attributes and provides a page for users to select. When a user installs a new smart application (automation rule), it detects potential rule conflicts by checking whether the user-defined security attributes hold in the application's configuration. IoTSafe defines the syntax for security policies to detect and prevent rule conflicts, and supports enforcing security policies or notifying users before rule conflicts occur.
-%
-%%IoTCom\cite{alhanahnah2022iotcom}、HomeGuard\cite{inproceedings}和IoTMediator\cite{chi2023detecting}都采用检测规则交互模式的方法对规则冲突进行检测。IoTCom定义了七类协调威胁采用静态分析的方法对潜在的规则交互进行检测，并且能够提取side channel相关的规则交互。HomeGuard及其后续工作和IoTMediator定义了规则交互威胁，以经验为基础列举出被认为是具有威胁的规则交互，并且采用静态检测与动态检测结合的方法进行交互威胁检测，并对每类规则交互威胁提供定制化的处理方案。
-%IoTCom\cite{alhanahnah2022iotcom}, HomeGuard\cite{inproceedings}, and IoTMediator\cite{chi2023detecting} all use the method of detecting rule interaction patterns to detect rule conflicts. IoTCom defines seven types of coordination threats and uses static analysis to detect potential rule interactions, and it can extract side channel related rule interactions. HomeGuard and its subsequent work and IoTMediator define rule interaction threats, enumerate rule interactions that are considered threatening based on experience, and use a combination of static detection and dynamic detection to detect interaction threats, and provide customized processing solutions for each type of rule interaction threat.
+%在本节中，我们将根据我们的研究对相关的工作进行讨论。Table~\ref{Relate_Work}展示，过去的工作针对智能家居系统中自动化功能执行（规则执行）导致的规则冲突有了广泛的研究，但是很少有工作能够将规则交互与规则冲突进行区分。一份调研\ref{huang2023survey}也表示当前对规则冲突检测的独特性，包括问题、数据、检测方法和冲突类型的讨论比较缺乏，缺少统一的定义。
+In this section, we review existing work related to smart home automation rules and conflicts. As shown in Table~\ref{Relate_Work}, prior research has extensively investigated rule conflicts arising from the execution of automation functions (rule execution) in smart home systems. However, few studies have clearly distinguished between rule interaction and rule conflicts. A survey by Huang et al. \cite{huang2023survey} further points out the lack of detailed discussion on the unique characteristics of rule conflict detection---including problem definition, datasets, detection methods, and conflict types---remains limited, lacking a unified definition.
 
 \begin{table*}[htbp]
 	\begin{center}
 		\caption{Comparison of Different IoT Conflict Handling Approaches}
 		\label{Relate_Work}
-		\begin{adjustbox}{width=0.95\textwidth}
-			\begin{tabular}{|l|c|c|c|c|c|c|}
+		\begin{adjustbox}{width=0.98\textwidth} % 略微增大宽度以适应更多列
+			\begin{tabular}{|l|c|c|c|l|c|c|l|c|c|c|l|}
 				\hline
-				& \textbf{DIC} & \textbf{Physical Channel} & \textbf{Detection Method} & \textbf{Auto Resolution} & \textbf{Customized Resolution} & \textbf{Timing of Handling} \\
+				\textbf{Name} & \textbf{DIC} & \textbf{Physical Channel} & \textbf{Zone Awareness} & \textbf{Detection Method} & \textbf{Auto Handling} & \textbf{Customized Handling} & \textbf{Timing of Handling} & \textbf{User Preference} & \textbf{User Effort} & \textbf{Manual Control} & \textbf{Generalization} \\
 				\hline
-				\textbf{Soteria\cite{celik2018soteria}} & $\times$ & $\checkmark$ & Static & $\times$ & $\times$ & $\times$ \\
+				\textbf{Soteria\cite{celik2018soteria}} & T & F & F & Static & F & F & F & F & High & F & Low \\
 				\hline
-				\textbf{SafeChain\cite{hsu2019safechain}} & $\times$ & $\checkmark$ & Hybrid & $\times$ & $\times$ & $\times$ \\
+				\textbf{IoTGuard\cite{celik2019iotguard}} & T & F & F & Dynamic & T & F & Pre-event & F & Med & F & Low \\
 				\hline
-				\textbf{IoTIE\cite{chen2019multi}} & $\times$ & $\checkmark$ & Static & $\times$ & $\times$ & $\times$ \\
+				\textbf{SafeChain\cite{hsu2019safechain}} & T & F & F & Static & F & F & F & F & Med & F & Med \\
 				\hline
-				\textbf{iRuler\cite{wang2019charting}} & $\times$ & $\checkmark$ & Static & $\times$ & $\times$ & $\times$ \\
+				\textbf{iRuler\cite{wang2019charting}} & T & T* & T* & Static & F & F & F & F & Low & F & Low \\
 				\hline
-				\textbf{IoTCom\cite{alhanahnah2022iotcom}} & $\times$ & $\checkmark$ & Static & $\times$ & $\times$ & $\times$ \\
+				\textbf{IoTIE\cite{chen2019multi}} & T & T & T* & Static & F & F & F & F & Low & F & Med \\
 				\hline
-				\textbf{IoTSafe\cite{ding2021iotsafe}} & $\times$ & $\checkmark$ & Hybrid & $\checkmark$ & $\times$ & Before the conflict occurs without block \\
+				\textbf{IoTSafe\cite{ding2021iotsafe}} & T & T & T & Hybrid & T & F & Pre-event & F & Very High & F & High \\
 				\hline
-				\textbf{IoTGuard\cite{celik2019iotguard}} & $\times$ & $\times$ & Dynamic & $\checkmark$ & $\times$ & Before the conflict occurs(may block) \\
+				\textbf{IoTCom\cite{alhanahnah2022iotcom}} & F & T & F & Static & F & F & F & F & High & F & Med \\
 				\hline
-				\textbf{IoTMediator\cite{chi2023detecting}} & $\times$ & $\times$ & Hybrid & $\checkmark$ & $\checkmark$ & Before the conflict occurs(may block) \\
+				\textbf{IoTMediator\cite{chi2023detecting}} & F & F & F & Hybrid & T & T & Pre-event & T & High & T & High \\
 				\hline
-				\textbf{Ours} & $\checkmark$ & $\checkmark$ & \textbf{Hybrid} & $\checkmark$ & $\checkmark$ & \textbf{Before the conflict occurs without block} \\
+				\textbf{Ours} & T & T & T & \textbf{Hybrid} & T & T & \textbf{Pre-event} & T & \textbf{Low} & T & \textbf{High} \\
 				\hline
 			\end{tabular}
 		\end{adjustbox}
 		\vspace{5pt}
 		\raggedright
-		Note: “DIC” means Distinguish between Interaction and Conflict.
+		Note: “DIC” means Distinguish between Interaction and Conflict. “Pre-event” means handling the conflict before it occurs.
 	\end{center}
 \end{table*}
+
+% 一些工作侧重于定义安全策略或属性以检测冲突。例如，Soteria \cite{celik2018soteria} 定义了与规则交互模式相关的通用属性，以及用于定义安全策略的应用特定属性。当这些属性被违反时，异常行为就会被检测到。类似地，IoTguard \cite{celik2019iotguard} 利用规则交互模式和特定安全策略，定义了30个应用特定策略、2个平台特定触发执行策略和4个通用策略进行检测。IoTSan \cite{nguyen2018iotsan} 和 IoTSafe \cite{ding2021iotsafe} 也采用了基于策略的方法。IoTSan 提供了45个预定义的安全属性供用户选择。当安装一个新的智能应用程序时，它会通过验证所选安全属性在应用程序配置中是否成立来检查潜在冲突。IoTSafe 定义了一种安全策略语法，以实现规则冲突的检测和预防，支持在冲突发生前进行强制执行或用户通知。
+Several approaches focus on defining security policies or attributes to detect conflicts. Soteria \cite{celik2018soteria}, for instance, defines general attributes related to rule interaction patterns and application-specific attributes for defining security policies. Abnormal behavior is detected when these attributes are violated. Similarly, IoTGuard \cite{celik2019iotguard} utilizes both rule interaction patterns and specific security policies, defining 30 application-specific policies, 2 platform-specific trigger execution policies, and 4 general policies for detection. IoTSan \cite{nguyen2018iotsan} and IoTSafe \cite{ding2021iotsafe} also follow a policy-based approach. IoTSan provides 45 predefined security attributes that users can select from. When a new smart application is installed, it checks for potential conflicts by verifying if the selected security attributes hold within the application's configuration. IoTSafe defines a syntax for security policies to enable the detection and prevention of rule conflicts, supporting enforcement or user notification before conflicts occur.
+
+% 另一些工作则侧重于通过识别有问题的规则交互模式来检测规则冲突。IoTCom \cite{alhanahnah2022iotcom}、HomeGuard \cite{inproceedings} 和 IoTMediator \cite{chi2023detecting} 都属于这一范畴。IoTCom 定义了七种协调威胁，并采用静态分析来检测潜在的规则交互，其中包括与侧信道相关的交互。HomeGuard 及其后续工作 IoTMediator 则基于经验观察识别并列举了规则交互威胁。它们结合了静态和动态检测方法来发现这些交互威胁，并为每种类型提供了定制化的缓解策略。
+Another line of work focuses on detecting rule conflicts by identifying problematic rule interaction patterns. IoTCom \cite{alhanahnah2022iotcom}, HomeGuard \cite{inproceedings}, and IoTMediator \cite{chi2023detecting} fall into this category. IoTCom defines seven types of coordination threats and employs static analysis to detect potential rule interactions, including those related to side channels. HomeGuard and its subsequent work IoTMediator identify and enumerate rule interaction threats based on empirical observation. They combine static and dynamic detection methods to find these interaction threats and offer customized mitigation strategies for each type.
+
+% 当前的一些工作涉及到了对物理通道的讨论，即一条自动化规则可能通过对物理通道的影响从而与另一条自动化规则产生交互。如iRuler \cite{wang2019charting}、IoTIE \cite{chen2019multi}、IoTSafe\cite{ding2021iotsafe}和IoTCom\cite{alhanahnah2022iotcom}都支持检测物理通道，但是仅仅有iRuler和IoTSafe支持区域感知，避免类似如下误报情况：一条规则控制打开加热器，加热器在卧室，我是温度会升高，另一条规则控制如果温度很高则打开窗户，窗户在客厅，不会冲突却被错误警报。
+Some current studies discuss physical channels, where an automation rule may interact with another by influencing a physical channel. Works such as iRuler \cite{wang2019charting}, IoTIE \cite{chen2019multi}, IoTSafe \cite{ding2021iotsafe}, and IoTCom \cite{alhanahnah2022iotcom} support the detection of physical channels. However, only iRuler and IoTSafe support Zone awareness, which helps avoid false positives like the following scenario: one rule turns on a heater (increasing temperature in the bedroom), while another rule opens a window if the temperature is high (but the window is in the living room). Without Zone awareness, this non-conflicting situation might be incorrectly flagged.
+
+% 相较于规则冲突检测，对如何缓解规则冲突的讨论则少了很多，大部分工作都仅仅在检测到规则冲突后进行警报，如IoTIE \cite{chen2019multi}建议初次安装应用（即自动化规则）后立即运行相关工作进行检查，从而在正式使用前就避免规则冲突，但这种武断的处理方法在自动化规则种类繁多的情况下无法很好进行平衡。IoTGuard \cite{celik2019iotguard}和IoTSafe \cite{ding2021iotsafe}都通过强制执行安全策略，从而避免规则冲突种导致系统风险状态的操作，但是这些安全策略的源现有研究或者自用户自定义，其不能很好地推广到各式各样的家庭中，对普通用户而非安全方向的专家来说负担较重，而且随着设备发展，用户可能会加入新型的设备，这些设备将会存在“无安全策略可用”的真空期，从而让攻击者有机可乘。IoTMediator \cite{chi2023detecting}提出了针对不同规则的定制化冲突处理策略，本质上是针对不同规则交互模式生成对应的处理选项，用户只需要选择正确的处理方案即可，但是文章中没有提及与用户的交互方式与交互时机（如是在静态检测结束还是在动态检测发现规则冲突时），且完全依赖用户自行选择，无法进行很好地自动化，如果出现误报则会给用户带来很多不必要的选择，而根据我们的测试结果确实会产生一定程度的误报。
+Compared to rule conflict detection, discussions on conflict mitigation are significantly scarcer. Most existing works merely issue alerts after detecting a rule conflict. For instance, IoTIE \cite{chen2019multi} suggests running checks immediately after installing a new application (i.e., automation rules) to prevent rule conflicts before formal usage. However, this arbitrary approach struggles to balance the wide variety of automation rules. IoTGuard \cite{celik2019iotguard} and IoTSafe \cite{ding2021iotsafe} enforce security policies to prevent operations that lead the system into risky states. However, these policies originate from existing research or user definitions, making them difficult to generalize across diverse households. This places a heavy burden on ordinary users who are not security experts. Moreover, as devices evolve, users may add new devices that creating a "security vacuum" or vulnerability window where no policies are available, leaving openings for attackers. IoTMediator \cite{chi2023detecting} proposes customized handling strategies for different rules, essentially generating corresponding options based on rule interaction patterns. Users simply need to select the correct solution. However, the paper does not mention the method or timing of user interaction (e.g., whether it occurs after static detection or when a conflict is found during dynamic monitoring). It relies entirely on user selection, preventing effective automation. Furthermore, if false positives occur---which our test results indicate is likely---it presents users with many unnecessary choices.
+
+% 一部分工作对于用户偏好也有所关注。例如一些工作支持设置用户自定义策略，或者通过给出冲突处理信息提示用户对自动化规则进行性修改，从而一定程度上允许用户表达他们的偏好。但是用户偏好的表达与系统对普通用户的友好交互是密不可分的，普通用户并不了解自定义安全策略的设置，也很难通过修改自动化规则来保证正确处理规则冲突的同时表达用户偏好。IoTMediator\cite{chi2023detecting}通过提供冲突处理策略模板供用户选择，一定程度上接受了用户偏好，但是在冲突检测方面却忽略了用户偏好，会偏激地将用户配置正常循环执行的规则当作交互威胁。
+Some works also pay attention to user preferences. For example, some support setting user-defined policies or prompting users to modify automation rules based on conflict handling information, thereby allowing users to express their preferences to some extent. However, the expression of user preferences is inextricably linked to user-friendly interaction for ordinary users. Ordinary users typically do not understand the setting of custom security policies and find it difficult to modify automation rules to correctly handle rule conflicts while maintaining their preferences. IoTMediator \cite{chi2023detecting} accepts user preferences to a certain degree by providing conflict handling strategy templates for users to select. However, it neglects user preferences during conflict detection, aggressively classifying rules configured by users for normal cyclic execution as interaction threats.
+
+% 本文通过系统对多样化智能家居系统家庭的包容程度来对各种方案的泛化能力进行简单分类，泛化能力越强表示他们对不同家庭户型，多种不同设备的接受能力越强，对于通用预定义安全策略的依赖也越小。同时本文也根据系统部署的难易程度对用户努力进行分类，用户努力越高，表明系统部署、启用越复杂，反之则越容易部署并应用到智能家居系统中。这两个指标是除了对规则冲突检测与缓解的有效性，之外用户更加关注的内容。
+In this paper, we categorize the generalization ability of various solutions based on the system's tolerance for diverse smart home environments. Stronger generalization indicates a higher capacity to accept different home layouts and a variety of devices, as well as less reliance on general predefined security policies. We also categorize user effort based on the difficulty of system deployment. Higher user effort indicates that the system is more complex to deploy and enable, while lower effort implies it is easier to deploy and apply to smart home systems. These two metrics, in addition to the effectiveness of rule conflict detection and mitigation, are of significant concern to users.

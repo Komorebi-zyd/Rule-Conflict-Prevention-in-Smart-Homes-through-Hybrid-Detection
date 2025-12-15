@@ -7,46 +7,59 @@
 	\caption{Overall Architecture of Our Approach}
 	\label{overall_design}
 \end{figure*}
-% 我们设计了一个完整的系统，旨在通过静态与动态分析相结合的方式检测规则交互中存在的潜在规则冲突，并在冲突发生前自动执行定制化的冲突处理策略，避免实际冲突的发生。如图 Fig.\ref{overall_design} 所示，我们的方法主要包括两个阶段：1) 静态分析；2) 动态检测与冲突处理。
-We presents a complete system designed to detect potential rule conflicts within rule interactions through a combination of static and dynamic analysis. The system automatically executes customized conflict resolution strategies before conflicts occur, preventing their actual manifestation. As illustrated in Fig.\ref{overall_design}, our approach primarily comprises two phases: 1) Static Analysis; 2) Dynamic Detection and Conflict Resolution.
 
-% 静态分析阶段包含规则建模模块、形式化分析模块、静态规则冲突检测模块以及冲突处理策略生成模块。首先，对智能家居系统中的规则进行重新建模，以区分家庭环境中的不同区域。然后，形式化分析模块基于新的规则模型提取所有类型的规则交互，并生成相应的交互分析数据。用户的实体安全配置将应用于静态规则冲突检测模块，用于从规则交互集合中识别出真正的规则冲突。考虑到规则交互是否构成冲突具有主观性，系统提供用户配置界面，以自然语言的形式展示形式化分析模块提取的规则交互分析数据，辅助用户进行冲突判定。最后，冲突处理策略生成模块为每个已识别的规则冲突生成定制化的处理策略。
-The static analysis phase includes a rule modeling module, a formal analysis module, a static rule conflict detection module, and a conflict resolution strategy generation module. Initially, the rules in the smart home system are remodeled to differentiate between zones within the environment. Subsequently, the formal analysis module extracts all types of rule interactions based on the new rule model and generates corresponding interaction analysis data. The user's entity safety configuration is then applied to the static rule conflict detection module, which identifies actual rule conflicts from the set of rule interactions. Recognizing the subjectivity inherent in defining a rule interaction as a conflict, the system presents the rule interaction data extracted by the formal analysis module to the user through a user configuration interface in natural language in order to facilitate the user determining rule conflicts. Finally, the conflict resolution strategy generation module generates customized resolution strategies for each identified rule conflict.
+% 我们提出了一种新颖的混合框架，旨在通过静态分析与动态监测相结合的方式来处理智能家居中的规则冲突，并在冲突发生前自动执行定制化的冲突处理策略。如图 \ref{overall_design} 所示，系统分为两个主要阶段。1) 静态分析阶段：系统首先解析自动化配置与物理通道配置以构建规则模型。随后，通过形式化验证构建“规则交互依赖图”（Rule Interaction Dependency Graph, RIDG）。接着，结合实体安全配置，系统从 RIDG 中提取出潜在的风险交互，形成“规则冲突依赖图”（Rule Conflict Dependency Graph, RCDG），并为每个冲突节点生成定制化的处理策略。2) 动态监测与冲突缓解阶段：系统实时监听规则事件并将其映射到 RCDG 的节点上。利用断言验证机制，系统检测当前触发的规则是否激活了依赖图中的冲突边。一旦确认冲突即将发生，运行时控制器将立即拦截默认操作并执行预设的缓解策略。\\
 
-% 动态检测与冲突处理阶段包含规则事件监听模块、断言验证模块和命令生成模块。此外，智能家居系统（例如 Home Assistant）中的运行控制器模块将辅助完成动态规则冲突检测与预防。规则事件监听模块实时监听规则执行信息。当一条规则被触发，并在条件检查前后，该模块会将相关信息发送给断言验证模块。断言验证模块将基于历史规则执行事件、当前执行规则信息以及相关设备状态信息进行断言验证，判断规则冲突是否实际发生。若确认冲突即将发生，命令生成模块将根据静态分析阶段生成的冲突处理策略，生成相应的执行命令，并由运行控制器模块强制执行。
-The dynamic detection and conflict resolution phase includes a rule event listener module, an assertion verification module, and a command generation module. Additionally, the runtime controller module within the smart home system (e.g., Home Assistant) assists in dynamic rule conflict detection and prevention. The rule event listener module monitors the rule execution information in real time. When a rule is triggered, the listener module sends related information to the assertion verification module both before and after condition checking. Based on historical rule execution events, current rule information, and relevant device state information, the assertion verification module then performs assertion verification to determine whether a rule conflict has indeed occurred. If so, the command generation module will generate execution commands with the current rule conflict information about to occur and the rule conflict resolution strategy from static detection, which will be enforced by the runtime controller module.
+We propose a novel hybrid framework designed to handle rule conflicts in the smart home through a combination of static analysis and dynamic monitoring, automatically executing customized handling strategies before the conflict manifests. As shown in Figure~\ref{overall_design}, the system is divided into two main phases. 1) Static Analysis Phase: The system first parses the automation configuration and physical channel configuration to construct the rule model. Subsequently, it builds the Rule Interaction Dependency Graph (RIDG) through formal verification. Next, by incorporating the entity security configuration, the system extracts potentially risky interactions from the RIDG, forming the Rule Conflict Dependency Graph (RCDG), and generates a customized handling strategy for each conflict node. 2) Dynamic Monitoring and Conflict Mitigation Phase: The system monitors rule events in real-time and maps them to the nodes of the RCDG. Utilizing the assertion verification mechanism, the system detects whether the currently triggered rule has activated a conflict edge in the dependency graph. Once the impending conflict is confirmed, the runtime controller immediately intercepts the default operation and executes the pre-defined conflict mitigation strategy.
 
 \subsection{Static Analysis}
 
-\subsubsection{Rule Modeling}
+% 在介绍静态阶段之前，首先阐述本方案对规则交互与规则冲突的分类方法。基于之前的观察，我们采用Figure~\ref{classification_observation}的方式将规则之间的交互类型归纳为以下：一条规则的执行结果对另一条规则的触发器、条件或动作产生直接或间接的影响。由此，我们将规则交互分为以下几类：触发器交互 (Trigger Interaction)、条件交互 (Condition Interaction)、动作交互 (Action Interaction)、间接触发器交互 (Indirect Trigger Interaction)、间接条件交互 (Indirect Condition Interaction) 和间接动作交互 (Indirect Action Interaction)。相应地，我们定义了六种规则冲突类型：触发器冲突 (Trigger Conflict)、条件冲突 (Condition Conflict)、动作冲突 (Action Conflict)、间接触发器冲突 (Indirect Trigger Conflict)、间接条件冲突 (Indirect Condition Conflict) 和间接动作冲突 (Indirect Action Conflict)。
 
+Before formally introducing the static phase, it is first necessary to clarify our approach to classifying rule interactions and rule conflicts. Based on previous core observations, we summarize the types of interactions between rules as shown in Figure~\ref{classification_observation}: the execution result of one rule can have direct or indirect impacts on the trigger, condition, or action attributes of another rule. Accordingly, we classify rule interactions into the following categories: Trigger Interaction, Condition Interaction, Action Interaction, Indirect Trigger Interaction, Indirect Condition Interaction, and Indirect Action Interaction. Correspondingly, we define six types of rule conflicts: Trigger Conflict, Condition Conflict, Action Conflict, Indirect Trigger Conflict, Indirect Condition Conflict, and Indirect Action Conflict.
+
+\subsubsection{Rule Modeling}
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=0.4\textwidth]{figure/classification_observation.png}
 	\caption{Rule Interaction Pattern}
 	\label{classification_observation}
 \end{figure}
+\textbf{}
+% 智能家居规则通常以静态文件形式存储，从中可以提取规则的触发器 (T)、条件 (C) 和动作 (A) 属性，并建模为触发器-条件-动作（TCA）模型。然而，标准的 TCA 模型无法捕捉通过物理环境（即“侧信道”）产生的间接交互，例如不同规则对卧室温度的影响所引发的交互。为了解决这一问题，我们引入了物理通道配置（Physical Channel Configuration）并提出了增强的 TCAE 模型。我们定义物理通道属性 $E=[e^1, e^2,\dots]$，其中 $e^i=(zone, channel, trend)$。$zone$ 表示受影响的区域，如厨房、客厅或整个家庭等；$channel$ 表示物理量，如温度、湿度、光照强度等；$trend$ 表示影响方向如升高、降低。例如，若一条规则开启卧室加热器，其动作属性 $E_A$ 将包含 $\langle bedroom, temperature, increase \rangle$。通过这种建模，系统能够识别出跨区域或基于环境变化的隐式关联。对于规则的触发器或条件，如果 $e$ 为 $\langle kitchen, temperature, increases\rangle$，则表示其他规则的执行结果可能导致厨房温度升高，从而使当前规则的触发器更易触发或条件更易满足。对于规则的动作，如果 $e$ 为 $\langle kitchen, temperature, increases\rangle$，则表示当前规则的执行可能导致厨房温度升高。属性 $E$ 基于用户真实的家庭情况和相关规则确定。例如，如果一个家庭中没有任何与 "湿度" 相关的规则，则无需将 $channel$ 设置为 "湿度"。由此，规则可以被重新建模为 $R=\langle T,C,A,E\rangle $ 或 $R=\langle T,C,A,E_T,E_C,E_A \rangle$ 形式。
 
-% 在介绍静态阶段之前，首先阐述本方案对规则交互与规则冲突的分类方法。基于之前的观察，我们采用Fig.\ref{classification_observation}的方式将规则之间的交互类型归纳为以下：一条规则的执行结果对另一条规则的触发器、条件或动作产生直接或间接的影响。由此，我们将规则交互分为以下几类：触发器交互 (Trigger Interaction)、条件交互 (Condition Interaction)、动作交互 (Action Interaction)、间接触发器交互 (Indirect Trigger Interaction)、间接条件交互 (Indirect Condition Interaction) 和间接动作交互 (Indirect Action Interaction)。相应地，我们定义了六种规则冲突类型：触发器冲突 (Trigger Conflict)、条件冲突 (Condition Conflict)、动作冲突 (Action Conflict)、间接触发器冲突 (Indirect Trigger Conflict)、间接条件冲突 (Indirect Condition Conflict) 和间接动作冲突 (Indirect Action Conflict)。
-Before formally introducing the static phase, it is first necessary to clarify our approach to classifying rule interactions and rule conflicts. Based on previous observations, we summarize the types of interactions between rules as shown in Fig.\ref{classification_observation}: the execution result of one rule can have direct or indirect impacts on the triggers, conditions, or actions of another rule. Accordingly, we classify rule interactions into the following categories: Trigger Interaction, Condition Interaction, Action Interaction, Indirect Trigger Interaction, Indirect Condition Interaction, and Indirect Action Interaction. Correspondingly, we define six types of rule conflicts: Trigger Conflict, Condition Conflict, Action Conflict, Indirect Trigger Conflict, Indirect Condition Conflict, and Indirect Action Conflict.
+Smart home rules are typically stored in static files, from which the Trigger (T), Condition (C), and Action (A) attributes of the rule can be extracted and modeled as the Trigger-Condition-Action (TCA) model. However, the standard TCA model fails to capture indirect interactions generated through the physical environment (i.e., "side channels"), such as interactions arising from the effect of different rules on the bedroom temperature. To address this issue, we introduce the Physical Channel Configuration and propose the enhanced TCAE model. We define the physical channel attribute $E=[e^1, e^2,\dots]$, where $e^i=(zone, channel, trend)$. The $zone$ represents the affected zone, such as the kitchen, living room, or the entire home; the $channel$ represents the physical quantity, such as temperature, humidity, or light intensity; and the $trend$ represents the direction of influence, such as increase or decrease. For example, if a rule turns on the bedroom heater, its action attribute $E_A$ will contain $\langle bedroom, temperature, increase \rangle$. Through this modeling, the system can identify implicit associations across zones or those based on environmental changes. For the trigger or condition of a rule, if $e$ is $\langle kitchen, temperature, increases\rangle$, it means the execution result of other rules may cause the kitchen temperature to rise, thereby making the current rule's trigger easier to fire or its condition easier to satisfy. For a rule's trigger or condition, if $e$ is $\langle kitchen, temperature, increases\rangle$, it implies that the execution results of other rules causing the kitchen temperature to rise may facilitate the triggering of the current rule or satisfy its condition. For the action of a rule, if $e$ is $\langle kitchen, temperature, increases\rangle$, it means the execution of the current rule may cause the kitchen temperature to rise. The attribute $E$ is determined based on the user's real home setup and relevant rules. For example, if a home does not have any humidity-related rules, the $channel$ does not need to be set to "humidity." Thus, a rule can be re-modeled in the form of $R=\langle T,C,A,E\rangle $ or $R=\langle T,C,A,E_T,E_C,E_A \rangle$.
 
-% 智能家居系统中的规则通常以静态文件形式存储，从中可以提取规则的触发器 (T)、条件 (C) 和动作 (A) 属性，并快速建模为 $\langle T,C,A \rangle$ 模型。然而，仅凭这些数据不足以检测不同家庭区域中侧面通道的影响，例如不同规则对卧室温度的影响所引发的交互，或者不同规则开启高功耗设备导致家庭用电功率升高，从而触发节电规则等。因此，需要引入新的属性 $E$。定义 $E=[e^1, e^2,\dots]$，$e^i=(area, channel, trend)$。其中，$area$ 表示间接通道的区域特征，如厨房、客厅或整个家庭等；$channel$ 表示侧面通道名称，如温度、湿度、光照强度等；$trend$ 表示该侧面影响的影响趋势，如升高、降低等。对于规则的触发器或条件，如果 $e$ 为 $\langle kitchen, temperature, increases\rangle$，则表示其他规则的执行结果可能导致厨房温度升高，从而使当前规则的触发器更易触发或条件更易满足。对于规则的动作，如果 $e$ 为 $\langle kitchen, temperature, increases\rangle$，则表示当前规则的执行可能导致厨房温度升高。属性 $E$ 基于用户真实的家庭情况和相关规则确定。例如，如果一个家庭中没有任何与 "湿度" 相关的规则，则无需将 $channel$ 设置为 "湿度"。由此，规则可以被重新建模为 $R=\langle T,C,A,E\rangle $ 或 $R=\langle T,C,A,E_T,E_C,E_A \rangle$ 形式，称为 TCAE 模型。
-In smart home systems, rule configuration is usually stored as static files, from which the triggers, conditions, and action attributes of a rule can be extracted, and quickly modeled as a $\langle T,C,A \rangle$ model. However, the above data is insufficient to support the detection of the effects of side channels in different home areas within smart home systems. For example, rule interactions may be caused by different rules affecting the bedroom temperature, or by different rules turning on high-power devices, leading to an increase in the household's power consumption and subsequently triggering related rules to conserve electricity. Therefore, a new attribute $E$ needs to be introduced. $E$ is defined as$E=[e^1, e^2,\dots]$ and $e^i=(area, channel, trend)$, where $area$ indicates the spatial characteristics of the channel, such as the kitchen, living room, or the whole home; $channel$ indicates the name of the other channel which rules may impact each other, such as temperature, humidity, illuminance and so on; and $trend$ indicates the direction of the influence of the other channel, such as an increase and decrease. For the trigger/condition of a rule, if $e$ is $\langle kitchen, temperature, increases\rangle$, it means that if the execution results of other rules may lead to an increase in kitchen temperature, then the trigger/condition of the current rule is more likely to be met. For the action execution of a rule, if $e$ is $\langle kitchen, temperature, increases\rangle$, it means that the execution of the current rule may promote an increase in kitchen temperature. The attribute $E$ will be determined based on the user's actual home situation and the related rules. For example, if there are no rules concerning "humidity" in a home, then there is no need to set the $channel$ attribute of $e$ as "humidity". Thus, a rule can be re-modeled in the following form: $R=\langle T,C,A,E\rangle $ or $R=\langle T,C,A,E_T,E_C,E_A \rangle$ which called TCAE model.
+% 通过以上建模方式，我们可以清楚地获取每一条自动化规则的触发器、条件、动作及其对应的物理通道属性，为自动化规则设置翻译模板，以Motivating Example and Problem Analysis章节中设置在greenhouse的两个规则为例，R1配置内容为 \texttt{Rule:R1}$\langle$ \texttt{T=\{platform:input datetime, entity id:system time, event:sunset\}}, \texttt{C=\{null\}}, \texttt{A=\{platform:input boolean, entity id: heater, action:turn on\}}, \texttt{TE=\{null\}}, \texttt{CE=\{null\}}, \texttt{AE=\{greenhouse-temperature-up\}} $\rangle$，可以基于模板转化为“规则 R1 ：如果日落，打开加热器，会使得卧室温度升高”，R2的配置内容为：\texttt{Rule:R2} $\langle$ \texttt{T=\{platform: numeric state, entity id:temperature sensor, above:30}\},C=\{\texttt{null}\},A=\{\texttt{platform:input boolean, entity id: heater, action:turn off | platform:input boolean, entity id: skylight, action:turn on\}}, \texttt{TE=\{greenhouse-temperature-up\}}, \texttt{CE=\{null\}}, \texttt{AE=\{greenhouse-temperature-up | greenhouse-temperature-down\}} $\rangle$，可以基于模板转化为“规则 R2：如果温度传感器高于30摄氏度，关闭加热器，打开窗户，温度可能升高也可能降低”。\\
 
-\subsubsection{Formal Analysis}
+Through the above modeling method, we can clearly obtain the trigger, condition, action, and corresponding physical channel attributes for each automation rule. By setting translation templates for automation rules, and taking the two rules set in the greenhouse from the Motivating Example and Problem Analysis section as examples, the configuration content for R1 is \texttt{Rule:R1}$\langle$ \texttt{T=\{platform:input datetime, entity id:system time, event:sunset\}}, \texttt{C=\{null\}}, \texttt{A=\{platform:input boolean, entity id: heater, action:turn on\}}, \texttt{TE=\{null\}}, \texttt{CE=\{null\}}, \texttt{AE=\{greenhouse-temperature-up\}} $\rangle$. Based on the template, this can be translated into: “Rule R1: If sunset, turn on the heater, which will cause the greenhouse temperature to rise.” The configuration content for R2 is: \texttt{Rule:R2} $\langle$ \texttt{T=\{platform: numeric state, entity id:temperature sensor, above:30}\},C=\{\texttt{null}\},A=\{\texttt{platform:input boolean, entity id: heater, action:turn off | platform:input boolean, entity id: skylight, action:turn on\}}, \texttt{TE=\{greenhouse-temperature-up\}}, \texttt{CE=\{null\}}, \texttt{AE=\{greenhouse-temperature-up | greenhouse-temperature-down\}} $\rangle$. Based on the template, this can be translated into: “Rule R2: If the temperature sensor is above 30 degrees Celsius, turn off the heater and turn on the skylight. The temperature may rise or fall.”
+
+\subsubsection{Construction of Rule Interaction Dependency Graph}
+
+% 在完成规则建模后，我们利用形式化验证方法来识别所有可能的规则交互模式，并使用有向图的形式进行表示。首先在本方案中对于规则冲突、潜在规则冲突、规则交互三者的关系为规则冲突关系$\in$潜在规则冲突$\in$规则交互。我们定义“规则交互依赖图”（RIDG）为 $G_I = (V, E_I)$，其中顶点集 $V$ 代表所有的自动化规则，边集 $E_I$ 代表规则间的交互关系。
+
+% 基于图 \ref{classification_observation}，如果在规则 $R_i$ 和 $R_j$ 之间存在满足表 \ref{Formal_Analysis_Expression} 中定义的逻辑关系（例如，$R_i$ 的动作 $A_i$ 触发了 $R_j$ 的触发器 $T_j$），则在图中建立一条有向边 $R_i \rightarrow R_j$。形式化验证模块遍历所有规则对，验证其是否满足六种交互类型（触发器交互、条件交互、动作交互及其对应的间接类型）。最终生成的 RIDG 包含了系统内所有逻辑上和物理上可能的关联，为后续的冲突检测提供了完整的搜索空间。
+
+% 形式化验证方法如表\ref{Formal_Analysis_Expression}所示，假设规则 $R_1=\langle T_1,C_1,A_1,E_{T_1},E_{C_1},E_{A_1} \rangle$ 和 𝑅₂=(𝑇₂, 𝐶₂, 𝐴₂, 𝐸(𝑇₂), 𝐸(𝐶₂), 𝐸(𝐴₂)) 表示在同一系统中设置的两条规则。其中，T、C、A 和 E 分别表示对应的属性。使用 $\rightarrow$ 表示促使触发器触发或条件满足，$\nrightarrow$ 表示禁止条件满足。对于 channel 属性，$\bot$ 表示两个 channel 属性具有相同的 $zone$ 和 $channel$，但 $trend$ 相反（例如，厨房温度升高与厨房温度降低）。此外，$\bot$ 也表示两个动作相互冲突（例如，开启空调与关闭空调）。"=" 表示两个 channel 属性具有相同的 $zone$、$channel$ 和 $trend$，或者两个触发器或条件相同。
+
+After completing rule modeling, we utilize the formal verification method to identify all possible rule interaction patterns and represent them in the form of a directed graph. We define the Rule Interaction Dependency Graph (RIDG) as $G_I = (V, E_I)$, where the vertex set $V$ represents all automation rules, and the edge set $E_I$ represents the rule interaction relationships.
+
+Based on Figure~\ref{classification_observation}, if a logical relationship defined in Table~\ref{Formal_Analysis_Expression} exists between rule $R_i$ and $R_j$ (e.g., the action $A_i$ of $R_i$ triggers the trigger $T_j$ of $R_j$), a directed edge $R_i \rightarrow R_j$ is established in the graph. The formal verification module iterates through all rule pairs, verifying whether they satisfy the six interaction types (Trigger Interaction, Condition Interaction, Action Interaction, and their corresponding indirect types). The resulting RIDG encompasses all logically and physically possible associations within the system, providing a complete search space for subsequent conflict detection.
+
+The formal verification method is shown in Table~\ref{Formal_Analysis_Expression}. Assume rules $R_1=\langle T_1,C_1,A_1,E_{T_1},E_{C_1},E_{A_1} \rangle$ and $R_2=(T_2, C_2, A_2, E(T_2), E(C_2), E(A_2))$ represent two rules configured in the same system. T, C, A, and E denote the corresponding attributes. We use $\rightarrow$ to denote facilitating a trigger to fire or a condition to be met, and $\nrightarrow$ to denote prohibiting a condition from being met. For channel attributes, $\bot$ signifies that two channel attributes have the same $zone$ and $channel$ but opposite $trend$ (e.g., kitchen temperature increase versus kitchen temperature decrease). Additionally, $\bot$ also indicates that two actions conflict with each other (e.g., turning on the air conditioner versus turning off the air conditioner). "=" signifies that two channel attributes have the same $zone$, $channel$, and $trend$, or that two triggers or conditions are identical.
 
 \begin{table*}[htbp]
 	\begin{center}
 		\caption{Formal Analysis Expression}
 		\label{Formal_Analysis_Expression}
 		\begin{adjustbox}{width=0.95\textwidth}
-			\begin{tabular}[width=0.95\textwidth]{c|c} 
+			\begin{tabular}[width=0.95\textwidth]{c|c}
 				\hline
 				\textbf{Classification} & \textbf{Expression}\\
 				\hline
 				\text{Trigger Interaction} & $(\exists a_{1}\in A_{1})\wedge(a_{1}\rightarrow T_{2})$ \\
 				\hline
-				\text{Condition Interaction} & $\left((A_{1}\nrightarrow C_{2})\wedge\left((T_{1}\neq T_{2})\wedge(R_{1}\neq R_{2})\right)\right)\vee\left((A_{1}\to\mathcal{C}_{2})\wedge\left((T_{1}\neq T_{2})\wedge(R_{1}\neq R_{2})\right)\right)$ \\
+				\text{Condition Interaction} & $\left((A_{1}\nrightarrow C_{2})\wedge\left((T_{1}\neq T_{2})\wedge(R_{1}\neq R_{2})\right)\right)\vee\left((A_{1}\rightarrow C_{2})\wedge\left((T_{1}\neq T_{2})\wedge(R_{1}\neq R_{2})\right)\right)$ \\
 				\hline
 				\text{Action Interaction} & $(\exists a_{1}\in A_{1})\wedge(\exists a_{2}\in A_{2})\wedge(a_{1}\perp a_{2})$ \\
 				\hline
@@ -61,18 +74,60 @@ In smart home systems, rule configuration is usually stored as static files, fro
 	\end{center}
 \end{table*}
 
-% 基于 TCA 模型进行规则冲突分类，假设规则 $R_1=\langle T_1,C_1,A_1,E_{T_1},E_{C_1},E_{A_1} \rangle$ 和 𝑅₂=(𝑇₂, 𝐶₂, 𝐴₂, 𝐸(𝑇₂), 𝐸(𝐶₂), 𝐸(𝐴₂)) 表示在同一系统中设置的两条规则。其中，T、C、A 和 E 分别表示对应的属性。使用 $\rightarrow$ 表示促使触发器触发或条件满足，$\nrightarrow$ 表示禁止条件满足。对于 channel 属性，$\bot$ 表示两个 channel 属性具有相同的 $area$ 和 $channel$，但 $trend$ 相反（例如，厨房温度升高与厨房温度降低）。此外，$\bot$ 也表示两个动作相互冲突（例如，开启空调与关闭空调）。"=" 表示两个 channel 属性具有相同的 $area$、$channel$ 和 $trend$，或者两个触发器或条件相同。
-According to the TCA model for rule conflict classification, let rule $R_1=\langle T_1,C_1,A_1,E_{T_1},E_{C_1},E_{A_1} \rangle$ and rule  $R_2=\langle T_2,C_2,A_2,E_{T_2},E_{C_2},E_{A_2} \rangle$ be to represent two rules set in the same system, where T, C, A, and E respectively represent the corresponding attribute. Using $\rightarrow$ to indicate that a trigger is activated or a condition is met, and $\nrightarrow$ to indicate that a condition is prohibited.$\bot$ denotes that the two channel attributes have the same area and channel but opposite trends (for example, rising kitchen temperature versus falling kitchen temperature), or it indicates that two actions are in conflict (such as turning on the air conditioner versus turning it off), while "=" indicates that the two channel attributes have the same area, channel, and trend, or that there are two identical triggers or conditions.
+% 对规则交互模式的定义可以实现对规则交互描述的翻译模板，继续以Motivating Example and Problem Analysis章节中设置在greenhouse的两个规则为例，我们发现自动化规则 R1 的执行动作可能会导致自动化规则 R2 被触发，符合Trigger Interaction的交互模式，因此可以设置模板翻译为：“自动化规则 R1 的执行动作使得温度升高，导致自动化规则 R2 被触发”
 
-% 形式化分析模块遍历每个规则模型，并进行表达式验证。若表达式成立，则表示两条规则满足对应的规则交互类型。规则冲突是规则交互的特例，因此，该表达式仅用于筛选存在交互的规则，而要判断规则交互是否构成实际的规则冲突，还需要进一步的检测。具体的表达式如 Table.\ref{Formal_Analysis_Expression} 所示。由此，形式化分析模块能够分析得到具体的规则交互列表，其中包含了所有规则交互及其交互模式信息。
-The formal analysis module will traverse each rule model and then expression validation. If an expression is satisfied, it indicates that the two rules meet the corresponding rule interaction classification. Rule conflict is a special case of rule interaction, and that expression can only filter out interacting rules. further detection is required to determine whether a rule interaction constitutes a rule conflict.The formal analysis module can analyze and obtain a specific list of rule interactions, which includes all rule interactions and interaction pattern information.
+The definition of rule interaction patterns allows for the creation of translation templates for describing rule interactions. Continuing with the example of the two rules set in the greenhouse from the Motivating Example and Problem Analysis section, we find that the execution action of automation rule R1 may cause automation rule R2 to be triggered, which conforms to the Trigger Interaction pattern. Thus, a template translation can be set as: “The execution action of automation rule R1 raises the temperature, leading to the triggering of automation rule R2.”
 
-\subsubsection{Rule Conflict Detection and Resolution Strategy Generation}
-% 实体安全配置是安全敏感设备实体的安全状态集合，用于表示智能家居系统中发生冲突时应优先保持的状态。例如，门应保持 "关闭" 状态，消防喷淋头应保持 "开启" 状态。规则冲突检测模块对规则交互列表中的每个元素进行实体安全检查，以确定规则交互是否违反实体安全状态，从而引发潜在的规则冲突。
-Entity safety configuration is a set of safety states for a security-sensitive device entity, used to indicate the preferred state to maintain when a conflict occurs in a smart home system—for example, a door should be "closed" and a fire sprinkler should be "on." The rule conflict detection module performs an entity safety on all elements in the rule interaction list to determine whether a rule interaction violates the entity safety state, potentially causing a rule conflict.
+\subsubsection{Extraction of Rule Conflict Dependency Graph}
 
-% 具体的检查方法如下：对于包含两条规则的规则交互，需要关注交互完成后是否违反实体安全配置的要求。为此，为每条规则设定一个安全值参数 $sf$。若规则的执行结果更符合实体安全状态配置，则 $sf$ 值越高，反之越低。$sf$ 值通过遍历所有实体安全配置，采用线性函数计算。例如，若规则的执行结果是关闭门，这符合实体 "门" 的安全状态 "关闭"，则该规则的 $sf$ 值在原有基础上加一，反之则减一。默认值为零。
-The specific inspection method is as follows: a rule interaction includes two rules, and attention should be paid to whether the entity safety configuration requirements are violated after this rule interaction is completed. Therefore, each rule sets a safety value parameter, $sf$. If the execution result of a rule is more inclined to meet the entity safety configuration, the $sf$ value is higher; otherwise, it is lower. The specific $sf$ value can be calculated using a linear function by traversing all the entity safety configurations. For example, if the execution result of a rule is closing a door, which is more in line with the entity safety state "closed" for the entity "door", then the rule's $sf$ is increased by one from the original value, Otherwise, it is decreased by one, with the default value being zero.
+% 并非所有的规则交互都是有害的。为了减少误报并识别真正的“规则冲突”，我们引入了实体安全配置（Entity Safety Configuration）来过滤 RIDG。我们将“规则冲突依赖图”（RCDG）定义为 RIDG 的子图 $G_C = (V_C, E_C)$，其中 $E_C \subseteq E_I$ 仅包含违反安全配置的交互边。实体安全配置是安全敏感设备实体的安全状态与危险状态集合，用于表示智能家居系统中发生冲突时应优先保持的状态或者避免发生的状态，实体安全配置将结合IoT领域的现有安全属性研究数据进行自动配置，例如，门应保持 "关闭" 状态，消防喷淋头应保持 "启用" 状态，同时用户可以自行定义，例如对于具备闪烁变色功能的灯具，系统会自动读取设备可选择状态，光敏癫痫患者能够将“闪烁变色”的状态定义为威胁。
+
+% 我们采用基于“安全值”（safety value, $sf$）的启发式算法来构建 RCDG。对于 RIDG 中的每一条边（即规则交互对 $R_1, R_2$ 的交互关系），系统计算规则执行结果对实体安全状态的偏离程度。如果交互导致结果违背了首选安全状态（例如，$sf < 0$）或者倾向于危险状态，则该交互被标记为“潜在规则冲突”，并保留在 RCDG 中；否则，该边被剪除。这种基于图的提取方法有效地将关注点从所有交互缩小到仅具有潜在风险的交互路径上。。$sf$ 值通过遍历所有实体安全配置，采用线性函数计算。例如，若规则的执行结果是关闭门，这符合实体 "门" 的安全状态 "关闭"，则该规则的 $sf$ 值在原有基础上加一，反之则减一。默认值为零。
+
+Not all rule interactions are harmful. To reduce false positives and identify genuine rule conflicts, we introduce the Entity Safety Configuration to filter the RIDG. We define the Rule Conflict Dependency Graph (RCDG) as a subgraph of the RIDG, $G_C = (V_C, E_C)$, where $E_C \subseteq E_I$ only contains interaction edges that violate the safety configuration. The entity safety configuration is a set of safe and dangerous states for safety-sensitive device entities, used to represent the states that should be prioritized or avoided when a conflict occurs in the smart home system. The entity safety configuration will be automatically configured by combining existing safety property research data in the IoT domain. For example, a door should remain "closed," and a fire sprinkler head should remain "enabled." Additionally, users can define custom configurations; for instance, for lights with flashing and color-changing capabilities, the system automatically reads the available states, and a user with photosensitive epilepsy can define the "flashing and color-changing" state as a threat.
+
+We employ a heuristic algorithm based on safety value ($sf$) to construct the RCDG. For every edge in the RIDG (i.e., the interaction relationship of the rule pair $R_1, R_2$), the system calculates the degree of deviation of the rule execution result from the entity safe state. If the interaction leads to a result that violates the preferred safe state (e.g., $sf < 0$) or tends toward a dangerous state, the interaction is marked as a candidate rule conflict and retained in the RCDG; otherwise, the edge is pruned. This graph-based extraction method effectively narrows the focus from all interactions to only those interaction paths with potential risk. We employ a heuristic algorithm based on a ``safety score'' ($sf$) to construct the RCDG. The $sf$ value is calculated using a linear accumulation function based on the Entity Safety Configuration. For example, if the execution result of the rule is to close the door, which conforms to the safe state "closed" of the entity "door," the $sf$ value for this rule is incremented by one from its original value; conversely, it is decremented. The default value is zero.
+
+\begin{table*}[htbp]
+	\begin{center}
+		\caption{Handling Strategy Decision}
+		\label{Resolution_Policy_Decision}
+		\begin{adjustbox}{width=0.95\textwidth}
+			\begin{tabular}{c|c|c}
+				\hline
+				\textbf{Classification} & \textbf{Decision} & \textbf{Options} \\
+				\hline
+				\multirow{3}{*}{\makecell{\textbf{Trigger Conflict} \\ \textbf{Indirect Trigger Conflict}}}
+				& $sf_2\geq 0$ & Not rule conflict \\
+				\cline{2-3}
+				& $sf_1 \geq 0 \land sf_2 < 0$ & Only execute $R_1$ \\
+				\cline{2-3}
+				& $sf_1 < 0 \land sf_2 < 0$ & Neither rule will be executed \\
+				\hline
+				\multirow{3}{*}{\makecell{\textbf{Condition Conflict} \\ \textbf{Indirect Condition Conflict}}}
+				& $(A_{1}\rightarrow C_{2}\wedge sf_{2} \geq 0)\vee(A_{1}\nrightarrow C_{2}\wedge sf_{2} \leq 0)$ & Not rule conflict \\
+				\cline{2-3}
+				& $A_{1}\rightarrow C_{2}\wedge sf_{2}<0$ & Do not execute $R_2$\\
+				\cline{2-3}
+				& $(A_{1}\nrightarrow C_{2}) \wedge (sf_{2}>0) \wedge (sf_{1}<0) $ & Execute $R_2$ \\
+				\hline
+				\multirow{4}{*}{\makecell{\textbf{Action Conflict} \\ \textbf{Indirect Action Conflict}}}
+				& $sf_1 \geq 0 \land sf_2 \geq 0$ & Not rule conflict \\
+				\cline{2-3}
+				& $sf_1 \geq 0 \land sf_2 < 0$ & Only execute $R_1$ \\
+				\cline{2-3}
+				& $sf_1 < 0 \land sf_2 \geq 0$ & Only execute $R_2$ \\
+				\cline{2-3}
+				& $sf_1 < 0 \land sf_2 < 0$ & Neither rule will be executed \\
+				\hline
+			\end{tabular}
+		\end{adjustbox}
+	\end{center}
+\end{table*}
+	
+\subsubsection{Generation of Customized Handling Strategy}
+
+% 针对 RCDG 中的每一条冲突边，系统自动生成定制化的处理策略。不同于通用的“屏蔽”策略，我们的方法依据表 \ref{Resolution_Policy_Decision} 中的逻辑，结合 $sf$ 值的大小，智能地决定是取消某条规则、仅执行高优先级规则，还是按特定顺序执行。生成的策略将与 RCDG 一同传递给动态监测模块。
 
 % 针对不同类型的规则交互，规则冲突的判定方法有所不同：
 % \begin{itemize}
@@ -80,78 +135,58 @@ The specific inspection method is as follows: a rule interaction includes two ru
 	% 	\item 对于条件交互和间接条件交互，若第一个规则禁止了第二个规则的条件，且第二个规则的 $sf$ 大于零，则判定为规则冲突；反之，若第一个规则使得第二个规则的条件得以满足，且第二个规则的 $sf$ 小于零，也判定为规则冲突。这表明前一条规则的影响导致后一条更符合实体安全状态的规则未被执行，或导致后一条与实体安全状态相违背的规则被执行。
 	% 	\item 对于动作交互和间接动作交互，若其中包含的两条规则的安全值之一不为零，则判定为规则冲突。需要注意的是，即使两条规则的安全值都大于零，仍可能判定为规则冲突，因为此类交互中的两条规则的执行结果是相互矛盾的，通常只需执行其中一条规则。
 	% \end{itemize}
-For different rule interactions, the method for determining rule conflicts varies. 
+
+For every conflict edge in the RCDG, the system automatically generates a customized handling strategy. Unlike generic "blocking" policies, our method intelligently decides whether to cancel a rule, execute only the rule with higher priority, or execute them in a specific order, based on the logic in Table~\ref{Resolution_Policy_Decision} and the magnitude of the $sf$ value. The generated strategies are passed to the dynamic monitoring module along with the RCDG.
+
+The determination of a rule conflict differs for various types of rule interaction:
 \begin{itemize}
-	\item For Trigger Interaction and Indirect Trigger Interaction, the focus is on whether the safety value $sf$ of the second rule is greater than zero; if it is less than zero, then it is determined to be a rule conflict.
-	\item For Condition Interaction and Indirect Condition Interaction, if the first rule in a rule interaction prohibits the condition of the second rule while the second rule’s $sf$ is greater than zero, it is determined to be a rule conflict; or if the first rule satisfies the condition of the second rule while the second rule’s $sf$ is less than zero, it is determined to be a rule conflict. This indicates that due to the influence of the preceding rule, either the rule that is more inclined to the entity safety state was not executed for the latter rule, or the rule that contradicts the entity safety state was executed.
-	\item For Action Interaction and Indirect Action Interaction, if either of the two rules has a non-zero safety value, it is determined to be a rule conflict. In this case, it should be noted that if both rules have safety values greater than zero, it will also be deemed a rule conflict, because in the determination of this type of rule interaction, the execution results of the two rules are contradictory, and typically only one rule needs to be executed.
+	\item For Trigger Interaction and Indirect Trigger Interaction, the focus is on whether the safety value ($sf$) of the second rule is greater than zero. If it is less than zero, it is determined to be a rule conflict.
+	\item For Condition Interaction and Indirect Condition Interaction, if the first rule prohibits the condition of the second rule, and the $sf$ of the second rule is greater than zero, it is determined to be a rule conflict; conversely, if the first rule enables the condition of the second rule to be met, and the $sf$ of the second rule is less than zero, it is also determined to be a rule conflict. This indicates that the influence of the former rule either prevents a rule that conforms more closely to the entity safety state from being executed or causes a rule that contradicts the entity safety state to be executed.
+	\item For Action Interaction and Indirect Action Interaction, if the safety value of one of the two involved rules is not zero, it is determined to be a rule conflict. It should be noted that even if the safety values of both rules are greater than zero, it may still be determined to be a rule conflict, as the execution results of the two rules in this type of interaction are mutually contradictory, and typically only one of them should be executed.
 \end{itemize}
 
-% 由此，可以为每种规则冲突设定多种处理策略。具体的冲突处理策略可根据 Table.\ref{Resolution_Policy_Decision} 进行选择。
-Based on this, multiple resolution strategies can be set for each rule. The specific conflict resolution strategy can be selected according to Table.\ref{Resolution_Policy_Decision}.
 
-\begin{table*}[htbp]
-	\begin{center}
-		\caption{Resolution Policy Decision (Need modification)}
-		\label{Resolution_Policy_Decision}
-		\begin{adjustbox}{width=0.95\textwidth}
-		\begin{tabular}{c|c|c}
-			\hline
-			\textbf{Classification} & \textbf{Decision} & \textbf{Options} \\
-			\hline
-			\multirow{3}{*}{\makecell{\textbf{Trigger Conflict} \\ \textbf{Indirect Trigger Conflict}}} 
-			& $(sf_2 = 0)\vee(sf_2>0 \wedge sf_1\geq 0)$ & Not rule conflict \\
-			\cline{2-3}
-			& $sf_1 < 0 \land sf_2 \geq 0$ & Only execute $R_2$ \\
-			\cline{2-3}
-			& $sf_2 < 0$ & Cancel execution of $R_2$ \\
-			\hline
-			\multirow{3}{*}{\makecell{\textbf{Condition Conflict} \\ \textbf{Indirect Condition Conflict}}} 
-			& $(A_{1}\rightarrow C_{2}\wedge sf_{2}>0)\vee(A_{1}\nrightarrow C_{2}\wedge sf_{2}<0)$ & Not rule conflict \\
-			\cline{2-3}
-			& $A_{1}\rightarrow C_{2}\wedge sf_{2}>0$ & Do not execute $R_2$\\
-			\cline{2-3}
-			& $A_{1}\nrightarrow C_{2}\wedge sf_{2}<0$ & Execute $R_2$ \\
-			\hline
-			\multirow{6}{*}{\makecell{\textbf{Action Conflict} \\ \textbf{Indirect Action Conflict}}} 
-			& $sf_1 = 0 \land sf_2 = 0$ & Not rule conflict \\
-			\cline{2-3}
-			& $sf_1 > 0 \land sf_2 < 0$ & Only execute $R_1$ \\
-			\cline{2-3}
-			& $sf_1 < 0 \land sf_2 > 0$ & Only execute $R_2$ \\
-			\cline{2-3}
-			& $sf_1 > 0 \land sf_2 > 0 \land sf_1 > sf_2$ & Both rules are executed, but ended with $R_1$ \\
-			\cline{2-3}
-			& $sf_1 > 0 \land sf_2 > 0 \land sf_1 < sf_2$ & Both rules are executed, but ended with $R_2$ \\
-			\cline{2-3}
-			& $sf_1 < 0 \land sf_2 < 0$ & Neither rule will be executed \\
-			\hline
-		\end{tabular}
-		\end{adjustbox}
-	\end{center}
-\end{table*}
+% 由此，可以为每种规则冲突设定多种处理策略。具体的冲突处理策略可根据 Table~\ref{Resolution_Policy_Decision} 进行选择。
 
-\subsection{Dynamic Detection and Conflict Resolution}
-\subsubsection{Assertion Verification}
-%静态检测部分全部离线运行，Dynamic detection and Conflict resolution部分将会以静态检测的输出结果作为基础，例如Rule Conflict List和Rule Conflict Resolution Strategy，对规则冲突进行实时监测与预防。Dynamic detection and Conflict resolution的Rule Event Listener module和Command Generation module主要依赖运行控制器，实现对规则事件的监听与实现在冲突事件发生前对设备的默认操作拦截与冲突处理策略执行，因此以下部分重点介绍Assertion Verification module
-The static detection part runs entirely offline, while the dynamic detection and conflict resolution part will be based on the output of the static detection, such as the rule conflict list and rule conflict resolution strategy, to monitor and prevent rule conflicts in real-time. The rule event listener module and command generation module of dynamic detection and conflict resolution mainly rely on Runtime Controller to listen to rule events and implement the interception of the device's default operations and the execution of conflict resolution strategies before conflict events occur. Therefore, the following part focuses on the assertion verification module.
+% 除此之外，系统将结合通过翻译模板将所有的规则交互与潜在规则冲突、冲突处理策略转为用户易懂的自然语言，用户可以结合个人的偏好对规则交互与潜在规则冲突进行调整。
 
-%，在智能家居系统运行时，所有规则事件将被实时监听。当一条规则被触发后，在其条件检查阶段前后都会进行断言检测，以判断当前系统是否即将发生规则冲突。断言检测过程中的所有信息都将通过运行控制器模块获取，包括当前执行规则的信息、过去执行规则的信息，以及相关实体设备的实时状态与历史状态变化信息等。
-When the smart home system is running, rule events will be monitored in real-time. When a rule is triggered, assertion verification will be performed before and after the condition checking phase to determine whether a rule conflict is imminent. All information during the assertion verification process will be collected through the runtime controller module, including the information of the currently executing rule, the information of the previously executed rule, the real-time status of related entities, and past state change information.
+Thus, multiple handling strategies can be set for each type of rule conflict. Specific conflict handling strategies can be selected according to Table~\ref{Resolution_Policy_Decision}.
 
-% 断言检测主要包含以下函数：
-Assertion detection mainly includes the following functions:
+In addition, the system will use translation templates to convert all rule interactions, candidate rule conflicts, and conflict handling strategies into natural language that is easy for the user to understand. Users can then adjust the rule interactions and candidate rule conflicts based on personal preferences.
+\subsection{Dynamic Monitoring and Conflict Mitigation}
+
+\subsubsection{Rule Event Listening and Graph Mapping}
+
+% 动态监测的核心思想是实时关注系统中的规则事件，从而追踪 RCDG 中的节点状态。规则事件监听模块持续捕获系统中的触发事件。当规则 $R_i$ 被触发时，系统并不孤立地看待它，而是将其识别为 RCDG 中的一个已识别节点（Identified Node）。系统立即检查该节点在图中是否存在出边（Outgoing Edges），即是否存在邻接节点（Adjacent Nodes）。如果不存在邻接节点，说明该规则当前安全；如果存在，则表明存在潜在的级联冲突风险，需要对两个节点所在的边进行断言验证。
+
+% 同时设计了节点遗忘机制，如果一条规则的执行动作被打断，例如一条规则控制空调打开，则该规则成功触发并执行后会被视为已识别自动化节点，之后如果存在用户手动，或者其他规则的执行动作，更改了该规则控制的设备状态（如将空调关闭），则会将该自动化规则节点遗忘。
+
+% 通过动态识别节点与遗忘节点实现对长时间运行的智能家居系统进行动态跟踪，保持聚焦对当前正在运行的规则以及即将执行的规则
+
+The core idea of dynamic monitoring is to focus on rule events in real-time, thereby tracking the state of nodes in the RCDG. The Rule Event Listening module continuously captures trigger events in the system. When rule $R_i$ is triggered, the system does not view it in isolation but identifies it as an Identified Node in the RCDG. The system immediately checks whether this node has outgoing edges in the graph, i.e., whether adjacent nodes exist. If no adjacent nodes exist, the rule is currently safe; if they do exist, it indicates a potential cascade conflict risk, requiring assertion verification on the edge connecting the two nodes.
+
+A Node Forgetting Mechanism is also designed: if the execution action of a rule is interrupted (e.g., a rule controls the air conditioner to turn on), the rule, after being successfully triggered and executed, is considered an Identified Automation Node. Subsequently, if a user manually or another rule's execution action changes the state of the device controlled by this rule (e.g., turns off the air conditioner), the automation rule node will be forgotten.
+
+Through dynamic identification of nodes and forgetting nodes, we achieve dynamic tracking of a long-running smart home system, maintaining focus on currently running rules and those about to be executed.
+
+\subsubsection{Assertion Verification Mechanism}
+
+% 即使在 RCDG 中存在边 $R_i \rightarrow R_j$，冲突也不一定在当前时刻发生（例如两条规则孤立发生，而非通过规则交互发生）。因此，我们引入了断言验证机制（Assertion Verification Mechanism）来进行运行时确认。
+
+% 当监听到 RCDG 中的节点 $R_i$，如果其临边节点 $R_j$ 被识别但还未执行时，系统会对两节点的边进行断言检查。断言逻辑如表 \ref{Assertion_Verification} 所示。断言验证主要包含以下函数：
+
+Even if an edge $R_i \rightarrow R_j$ exists in the RCDG, a conflict does not necessarily occur at the current moment (e.g., if the two rules fire in isolation rather than through a rule interaction). Therefore, we introduce the Assertion Verification Mechanism for runtime confirmation.
+
+When node $R_i$ in the RCDG is monitored, if its adjacent node $R_j$ is identified but not yet executed, the system performs an assertion check on the edge between the two nodes. The assertion logic is shown in Table~\ref{Assertion_Verification}. The assertion verification primarily involves the following functions:
 
 \begin{itemize}
 	\item $obs()$: Observing the occurrence of an event (including the triggering of the trigger $obs(T)$,the passing of a condition check $obs(C)$, the failing of a condition check $obs(\neg C)$ and the execution of an action $obs(A)$
-	\item $intime(X,Y,\delta)$: the time interval between events $X$ and $Y$ is less than $\delta$, with $\delta$ defaulting to 0.1 seconds
+	\item $intime(X, Y, \delta)$: Returns true if the time interval between events $X$ and $Y$ is less than $\delta$ (default $\delta = 0.1s$).
 \end{itemize}
 
-% 由此，针对不同类型的规则冲突，存在对应的断言检测方法，如 Table.\ref{Assertion_Verification} 所示。
-Accordingly, for different types of rule conflicts, there are corresponding assertion verification methods, as shown in Table.\ref{Assertion_Verification}.
+% 由此，针对不同类型的规则冲突，存在对应的断言验证方法，如 Table~\ref{Assertion_Verification} 所示。 只有当断言条件全部满足时，系统才判定“潜在规则冲突”转化为“即将发生的冲突”（Impending Rule Conflict）。
 
-% 例如存在两条规则$R_1$和$R_2$在静态检测中属于Trigger Conoflict类型的规则冲突，断言检测过程如下：(1)第一步，分别观察到$T_1$，$C_1$和$A_1$的发生，表明表明规则$R_1$触发并通过条件检测后成功执行预期动作；(2)第二步，分别观察到$T_2$和$C_2$的发生，表明规则$R_2$触发并通过了条件检测，平台及将执行$R_2$的默认动作；(3)观察到$A_1$和$T_2$两个事件的发生的时间间隔很短，时间间隔小于阈值$delta$。三个步骤全部为真则可以认为是规则$R_1$的执行导致了规则$R_2$被触发并即将执行，为了防止真实世界中的巧合发生，即避免是因为其他现实原因规则$R_1$与规则$R_2$在符合用户预期条件下分别短时间内出发并执行而导致误判，这里的$delta$通常设置很小的值，如0.1秒甚至0.01秒。不必担心因为系统执行时的必然时间损耗导致阈值$delta$偏小而引起规则冲突没有被监测出，因为系统中的时间损耗极低，通常为毫秒级别。
-For example, if there are two rules, $R_1$ and $R_2$, that belong to the Trigger Conflict type of rule conflict in static detection, the assertion verification process is as follows: (1) First, observe the occurrence of $T_1$, $C_1$, and $A_1$, indicating that rule $R_1$ is triggered, passes the condition check, and successfully executes the expected action; (2) Second, observe the occurrence of $T_2$ and $C_2$, indicating that rule $R_2$ is triggered and passes the condition check, and the platform is about to execute the default action of $R_2$; (3) Observe that the time interval between the occurrence of events $A_1$ and $T_2$ is very short, less than the threshold $delta$. If all three steps are true, it can be considered that the execution of rule $R_1$ caused rule $R_2$ to be triggered and about to be executed. To prevent coincidences in the real world, i.e., to avoid misjudgments caused by other real-world reasons where rule $R_1$ and rule $R_2$ are triggered and executed in a short time under conditions that meet user expectations, the $delta$ here is usually set to a very small value, such as 0.1 seconds or even 0.01 seconds. There is no need to worry that the inevitable time loss during system execution will cause the threshold $delta$ to be too small and cause rule conflicts to not be detected, because the time loss in the system is extremely low, usually on the order of milliseconds.
+Thus, corresponding assertion verification methods exist for different types of rule conflicts, as shown in Table~\ref{Assertion_Verification}. Only when all assertion conditions are met does the system determine that the candidate rule conflict has transformed into an Impending Rule Conflict.
 
 \begin{table}[t]
 	\caption{Assertion Verification Expression}
@@ -166,25 +201,25 @@ For example, if there are two rules, $R_1$ and $R_2$, that belong to the Trigger
 			\makecell{
 				$obs(T_1), obs(C_1), obs(A_1)$ \\
 				$obs(T_2), obs(C_2)$ \\
-				$intime(A_1, T_2, delta)$}\\
+				$intime(A_1, T_2, \delta)$}\\
 			\hline
 			
 			\multirow{2}{*}{\textbf{Condition Conflict}} & Make Conditions Forbidden &
 			\makecell{$obs(C_2)$ \\
 				$obs(T_1), obs(C_1), obs(A_1)$ \\
 				$obs(\neg C_2)$ \\
-				$intime(A_1, \neg C_2, delta)$} \\
+				$intime(A_1, \neg C_2, \delta)$} \\
 			\cline{2-3}
 			& Make Conditions Satisfied &
 			\makecell{$obs(\neg C_2)$ \\
 				$obs(T_1), obs(C_1), obs(A_1)$ \\
 				$obs(C_2)$\\
-				$intime(A_1, C_2, delta)$ }\\
+				$intime(A_1, C_2, \delta)$ }\\
 			\hline
 			
 			\multicolumn{2}{c|}{\textbf{Action Conflict}} &
 			\makecell{
-				$obs(T_1), obs(C_1), obs(A_1)$ 
+				$obs(T_1), obs(C_1), obs(A_1)$
 				\\ $obs(T_2), obs(C_2)$}\\
 			\hline
 			
@@ -197,13 +232,13 @@ For example, if there are two rules, $R_1$ and $R_2$, that belong to the Trigger
 			\makecell{$obs(C_2)$ \\
 				$obs(T_1), obs(C_1), obs(A_1)$ \\
 				$obs(\neg C_2)$  \\
-				$intime(A_1, \neg C_2, delta)$ }\\
+				$intime(A_1, \neg C_2, \delta)$ }\\
 			\cline{2-3}
 			& Make Conditions Satisfied &
 			\makecell{$obs(\neg C_2)$ \\
 				$obs(T_1), obs(C_1), obs(A_1)$ \\
 				$obs(C_2)$ \\
-				$intime(A_1,  C_2, delta)$ }\\
+				$intime(A_1,  C_2, \delta)$ }\\
 			\hline
 			
 			\multicolumn{2}{c|}{\textbf{Indirect Action Conflict}}&
@@ -215,14 +250,16 @@ For example, if there are two rules, $R_1$ and $R_2$, that belong to the Trigger
 	\end{adjustbox}
 \end{table}
 
-% 当断言检测结果表明当前即将发生某一类型的规则冲突时，系统立即执行相应的冲突处理策略。具体执行方式为：基于静态检测中的Rule Conflict Resolution Strategy，系统检索规则冲突对应的冲突处理策略，生成具体的执行命令，通过Communication Proxy module交付给运行控制器模块。运行控制器模块拦截原有的规则触发执行逻辑（即触发、条件检测与动作执行），并强制执行对应的冲突处理策略对应的动作，从而实现在规则冲真实发生前，检测到规则冲突并进行冲突处理。
-When the assertion verification result indicates that a certain type of rule conflict is about to occur, the system immediately executes the corresponding conflict resolution strategy. The specific execution method is as follows: Based on the Rule Conflict Resolution Strategy in static detection, the system retrieves the conflict resolution strategy corresponding to the rule conflict, generates specific execution commands, and delivers them to the runtime controller module through the Communication Proxy module. The runtime controller module intercepts the original rule trigger execution logic (i.e., trigger, condition detection, and action execution) and forcibly executes the action corresponding to the corresponding conflict resolution strategy, thereby achieving the detection of rule conflicts and conflict resolution before the rule actually occurs.
-\subsubsection{Runtime Controller}
-%运行控制器模块在Dynamic Detection and Conflict Resolution中起到了至关重要的作用。
-Runtime controller module plays a crucial role in Dynamic Detection and Conflict Resolution.
+% 例如存在两条规则$R_1$和$R_2$在静态检测中属于Trigger Conoflict类型的规则冲突，断言验证过程如下：(1)第一步，分别观察到$T_1$，$C_1$和$A_1$的发生，表明表明规则$R_1$触发并通过条件检测后成功执行预期动作；(2)第二步，分别观察到$T_2$和$C_2$的发生，表明规则$R_2$触发并通过了条件检测，平台及将执行$R_2$的默认动作；(3)观察到$A_1$和$T_2$两个事件的发生的时间间隔很短，时间间隔小于阈值$\delta$。三个步骤全部为真则可以认为是规则$R_1$的执行导致了规则$R_2$被触发并即将执行，为了防止真实世界中的巧合发生，即避免是因为其他现实原因规则$R_1$与规则$R_2$在符合用户预期条件下分别短时间内出发并执行而导致误判，这里的$\delta$通常设置很小的值，如0.1秒甚至0.01秒。不必担心因为系统执行时的必然时间损耗导致阈值$\delta$偏小而引起规则冲突没有被监测出，因为系统中的时间损耗极低，通常为毫秒级别。\\
 
-%在规则冲突的动态检测过程中，运行控制器模块与规则事件监听模块交互，在规则的条件检查前后进行监听，保证了两种特殊情况：（1）一条原本条件不通过的规则，因为规则交互导致条件通过，并被成功触发；（2）原本条件检测通过的规则，因为规则交互导致条件不通过，并被成功触发。运行控制器模块与断言检测模块交互，其核心功能包含两条通信函数：（1）get_entity_state用于获取实体状态，从而读取设备与规则的当前状态与历史状态变化信息，从而帮助断言检测模块获取所有验证需要的信息。（2）time_now用户获取系统当前事件，避免因为系统时间与实际时间偏差导致检测与处理错误。
-In the dynamic detection of rule conflicts, the runtime controller module interacts with the rule event listening module to listen before and after the condition check of the rules, ensuring two special cases: (1) a rule that originally did not pass the condition can pass the condition due to rule interaction and be successfully triggered; (2) a rule that originally passed the condition check can fail the condition due to rule interaction and be successfully triggered. The runtime controller module interacts with the assertion verification module, and its core functions include two communication functions: (1) \texttt{get\_entity\_state} is used to obtain the entity state, so as to read the current state and historical state change information of the device and the rule, so as to help the assertion verification module obtain all the information needed for verification. (2) \texttt{time\_now} is used to obtain the current event of the system, so as to avoid detection and processing errors caused by the deviation between the system time and the actual time.
+For example, suppose two rules $R_1$ and $R_2$ are classified as a Trigger Conflict type of rule conflict during static analysis. The assertion verification process is as follows: (1) Step one: observe the occurrence of $T_1$, $C_1$, and $A_1$, indicating that rule $R_1$ has been triggered, passed the condition check, and successfully executed the expected action; (2) Step two: observe the occurrence of $T_2$ and $C_2$, indicating that rule $R_2$ has been triggered and passed the condition check, and the platform is about to execute the default action of $R_2$; (3) Step three: observe that the time interval between the occurrence of events $A_1$ and $T_2$ is very short, less than the threshold $\delta$. If all three steps are true, it can be concluded that the execution of rule $R_1$ led to the triggering and impending execution of rule $R_2$. To prevent coincidence in real-world scenarios (i.e., independent execution of $R_1$ and $R_2$ close in time), $\delta$ is set to a minimal threshold (e.g., 0.1s or 10ms). The system's low runtime overhead (millisecond level) ensures that valid conflicts are not missed due to processing delays. There is no need to worry that system processing time overhead will cause the threshold $\delta$ to be too small, leading to the failure to detect a rule conflict, as the time overhead in the system is extremely low, typically at the millisecond level.
 
-%在规则冲突的处理过程中，运行控制器模块与规则命令生成模块交互，在规则的条件检查前后进行插入，保证了两种特殊情况：（1）一条原本条件不通过的规则，因为规则交互导致条件通过，并被成功触发；（2）原本条件检测通过的规则，因为规则交互导致条件不通过，并被成功触发。其核心功能为拦截当前规则的执行动作并执行从命令生成模块生成的指令，如强制执行当前条件不通过的规则，强制执行某条规则的执行动作等等。
-In the process of handling rule conflicts, the runtime controller module interacts with the rule command generation module to insert code before and after the rule's condition check. This ensures two special cases: (1) a rule that originally failed the condition check can pass the condition and be successfully triggered due to rule interaction; (2) a rule that originally passed the condition check can fail the condition and still be successfully triggered due to rule interaction. Its core function is to intercept the execution action of the current rule and execute the instructions generated from the command generation module, such as forcibly executing the current rule with a failed condition, forcibly executing the execution action of a certain rule, and so on.
+\subsubsection{Runtime Controller and Strategy Execution}
+
+% 运行时控制器在日常状态下负责辅助状态读取。它监听在规则触发事件与规则条件检测事件，并将该事件发送给规则事件监听模块从而实现对节点的识别，他监听已识别节点控制的设备的状态，并在设备状态改变时将事件发送给事件监听模块，从而实现对已识别节点的遗忘。它也负责获取系统状态，包括系统中设备实体状态、系统时间、事件发生时间，以辅助断言验证的完成。
+
+% 除此之外，运行时控制器更核心的功能是执行冲突缓解。一旦断言验证确认了即将发生的冲突，运行时控制器将接管设备控制权，进行冲突缓解。根据静态分析阶段生成的定制化处理策略，控制器会拦截默认的规则执行流程并执行定制化的处理策略（例如，阻止 $R_j$ 的执行或强制 $R_i$ 执行），从而在规则真正发执行之前消除安全隐患。
+
+The Runtime Controller is responsible for assisting state reading during normal operations. It monitors rule trigger events and rule condition check events, and sends these events to the Rule Event Listening module to achieve node identification. It monitors the status of devices controlled by the identified nodes and sends an event to the event listening module when the device status changes, thus enabling the forgetting of the identified nodes. It is also responsible for obtaining the system state, including device entity statuses, system time, and event occurrence times, to assist with assertion verification.
+
+In addition, the core function of the Runtime Controller is to execute conflict mitigation. Once assertion verification confirms an Impending Rule Conflict, the Runtime Controller takes over device control and performs conflict mitigation. According to the customized handling strategy generated in the static analysis phase, the controller will intercept the default rule execution flow and execute the customized handling strategy (e.g., preventing the execution of $R_j$ or enforcing the execution of $R_i$), thereby eliminating security risks before the rule truly executes.

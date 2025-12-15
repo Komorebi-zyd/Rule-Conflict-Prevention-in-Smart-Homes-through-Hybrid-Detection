@@ -1,6 +1,9 @@
 \section{Evaluation}
-%在本章节中，我们主要从以下几个角度进行评估：1)规则冲突的检测的有效性；2)自动化规则冲突解决的可用性；3)系统的性能。
-In this chapter, we mainly evaluate from the following perspectives: 1) The effectiveness of static detection of rule conflicts; 2) The viability of automated conflict resolution; 3) The performance of the system.
+
+%在本章节中，我们主要从以下几个角度进行评估：1)规则冲突检测的有效性；2)自动化规则冲突处理的有效性；3)整体系统的性能。
+In this section, we primarily evaluate the system from the following perspectives: 1) the effectiveness of rule conflict detection; 2) the effectiveness of automated rule conflict handling; and 3) the overall system performance.
+
+\subsection{Smart Home Testbeds}
 
 \begin{figure}[htbp]
 	\centering
@@ -9,27 +12,23 @@ In this chapter, we mainly evaluate from the following perspectives: 1) The effe
 	\label{smarthome_floorplan}
 \end{figure}
 
-\subsection{Smart Home Testbeds}
 
-%我们实现了一个完整的系统并进行了虚拟测试。对于虚拟测试，选择了基于 Python 的开源智能家居平台 Home Assistant。Home Assistant 支持来自各种制造商的设备，并提供虚拟设备以实现自动化功能。在此平台上，用户可以通过可视化 Web 界面或直接编辑配置文件来定义自定义自动化规则。Home Assistant 使用 YAML 配置文件来描述自动化规则，采用触发-条件-动作 (TCA) 模型。
-We implements a complete system and conducts a virtual test. For the virtual test, Home Assistant, an open-source smart home platform based on Python, was selected.Home Assistant supports devices from various manufacturers and provides virtual devices to enable automation functionalities. On this platform, users can define custom automation rules either through a visual web interface or by directly editing configuration files. Home Assistant uses YAML configuration files to describe automation rules, employing a trigger-condition-action (TCA) model.
+%我们实现了一个完整的系统并进行了虚拟测试。对于虚拟测试，选择了基于 Python 的开源智能家居平台 Home Assistant。Home Assistant 支持来自各种制造商的设备，并提供虚拟设备以实现自动化功能。在此平台上，用户可以通过可视化 Web 界面或直接编辑配置文件来定义自定义自动化规则。Home Assistant 使用 YAML 配置文件来描述自动化规则，配置文件中包含了规则的触发器、条件与执行动作。
+We implemented a complete system and conducted virtual testing. For the virtual testing, we selected the Python-based open-source smart home platform, Home Assistant. Home Assistant supports devices from various manufacturers and provides virtual devices to enable automation functions. On this platform, users can define custom automation rules via a visual Web interface or by directly editing configuration files. Home Assistant uses YAML configuration files to describe automation rules, which include the triggers, conditions, and actions of the rules.
 
-%虚拟测试使用图 \ref{smarthome_floorplan} 中所示的智能家居平面图。模拟的智能家居环境由七个不同的区域组成：室外、门廊、客厅、厨房、浴室、卧室和温室（花园）。根据观察，特定区域中的某些通道会相互影响。例如，门廊和客厅的亮度属性是相互依赖的，而客厅和卧室的亮度属性是独立的。
-The virtual test uses the smart home floor plan illustrated in Figure \ref{smarthome_floorplan}. The simulated smart home environment consists of seven distinct zones: Outdoor, Porch, Living Room, Kitchen, Bathroom, Bedroom, and Greenhouse (Garden).  Based on observations, certain channels in specific zones can influence each other. For instance, the brightness attributes of the porch and living room are interdependent, while the brightness attributes of the living room and bedroom are independent.
-
-%表 \ref{Testbeds} 列出了在这七个区域配置的 17 个自动化规则，以及相应的区域和设备。表 \ref{side_channel} 详细说明了智能家居系统中配置的侧通道，其中每个侧通道由一个区域、一个通道和一个趋势定义。最后，Figure.\ref{smarthome_floorplan} 概述了智能家居系统中的实体安全配置，特别关注三个安全敏感设备的状态设置：水阀（开启）、喷水灭火器（开启）和卧室窗户（关闭）。
-Table \ref{Testbeds} lists the 17 automation rules configured across these seven zones, along with the corresponding zones and devices. Table \ref{side_channel} details the side channels configured within the smart home system, where each side channel is defined by a zone, a channel, and a trend. Finally, Figure.\ref{smarthome_floorplan} outlines the entity security configurations in the smart home system, specifically focusing on the state settings for three security-sensitive devices: water valve (On), sprinkler (On), and bedroom window (Closed).
+%虚拟测试使用图 \ref{smarthome_floorplan} 中所示的智能家居平面图。模拟的智能家居环境由七个不同的区域组成：室外、门廊、客厅、厨房、浴室、卧室和温室，并且在各个区域内布置了相关的智能家居设备，全屋布置共计32件智能家居设备。根据用户智能家居设备配置不同，系统对环境感知能力也不同，例如卧室配置了亮度传感器和温度传感器，则系统能够捕获到亮度与温度的变化，但是无法捕获到适度的变化，而客厅还布置了湿度传感器，因此除了亮度、温度，能够捕获客厅湿度的变化情况。表\ref{physical_channel}详细说明了测试环境下智能家居系统中配置的物理通道配置，其中每个物理通道包含三个参数：区域、物理量和影响方向在该家庭户型下，特定区域中的某些通道会相互影响：如门廊和客厅的亮度、温度属性是相互依赖的，而客厅和卧室的亮度、温度属性是独立的。
+The virtual test employs the smart home floor plan shown in Figure~\ref{smarthome_floorplan}. The simulated smart home environment consists of seven different Zones: Outdoor, Porch, Living Room, Kitchen, Bathroom, Bedroom, and Greenhouse. Relevant smart home devices are deployed in each Zone, with relevant smart home devices deployed in each zone, totaling 32 devices. Depending on the user's smart home device configuration, the system's environmental perception capabilities vary. For instance, if the Bedroom is equipped with brightness and temperature sensors, the system can capture changes in brightness and temperature but cannot detect humidity changes. Since the Living Room is equipped with a humidity sensor, it can capture changes in the Living Room's humidity in addition to brightness and temperature. Table~\ref{physical_channel} details the Physical Channel Configuration within the smart home system in the test environment. Each physical channel includes three parameters: Zone, Physical Quantity, and Trend. In this home layout, certain channels in specific Zones influence each other; for example, brightness and temperature attributes in the Porch and Living Room are interdependent, whereas those in the Living Room and Bedroom are independent.
 
 \begin{table}[htbp]
 	\caption{Classification of Side Channel Attributes Across Different Home Zones}
-	\label{side_channel}
+	\label{physical_channel}
 	\begin{tabular}[width=0.45\textwidth]{l|l|l}
 		\hline
 		\textbf{Zone} & \textbf{Channel} & \textbf{Trend} \\
 		\hline
-		outdoor& brightness, & increase/decrease \\
+		outdoor& brightness & increase/decrease \\
 		\hline
-		porch& brightness, & increase/decrease \\
+		porch& brightness & increase/decrease \\
 		\hline
 		kitchen& brightness,temperature & increase/decrease \\
 		\hline
@@ -43,6 +42,9 @@ Table \ref{Testbeds} lists the 17 automation rules configured across these seven
 \end{table}
 
 
+%表 \ref{Testbeds} 列出了在这七个区域配置的 17 个自动化规则，以及相应的区域和设备。系统通过读取所有规则执行动作中控制的设备及设备状态选项，提供选择模板与解释“以下是规则所控制的所有设备，请对安全敏感设备选择更让你安心的选项，避免因为规则交互使得在您不知情的情况下改变这些设备的状态。例如，选择诸如门窗选择始终保持关闭、摄像机始终开启，以及为空调和风扇设置默认参数等配置。”，系统会默认对门锁、烟雾警报器、窗户进行选项推荐。这里假设智能家居系统中的实体安全配置如Figure.\ref{smarthome_floorplan}所示，特别关注四个安全敏感设备的状态设置：水阀\circled{18}偏向于开启、喷水灭火器\circled{20}偏向于启用、卧室窗户\circled{26}偏向于关闭，智能门锁\circled{3}偏向于关闭。
+Table~\ref{Testbeds} lists the 17 automation rules configured across these seven Zones, along with the corresponding Zones and devices. By analyzing the devices controlled by the actions of all rules and their state options, the system provides selection templates and explanations: "The following are all devices controlled by the rules. Please select the options for safety-sensitive devices that make you feel more secure, to avoid unintended state changes caused by rule interactions. For example, choose configurations such as keeping doors and windows always closed, cameras always on, and setting default parameters for air conditioners and fans." The system provides default recommendations for door locks, smoke detectors, and windows. Here, we assume the physical security configuration in the smart home system is as shown in Figure~\ref{smarthome_floorplan}, with special attention to the state settings of four safety-sensitive devices: the Water Valve \circled{18} is preferred to be Open, the Sprinkler \circled{20} is preferred to be Enabled, the Bedroom Window \circled{26} is preferred to be Closed, and the Smart Door Lock \circled{3} is preferred to be Locked.
+
 \begin{table*}[htbp]
 	\caption{Testbed: Details of Experimental Smart Home Rules (R1-R17)}
 	\label{Testbeds}
@@ -50,11 +52,11 @@ Table \ref{Testbeds} lists the 17 automation rules configured across these seven
 	\begin{adjustbox}{width=\textwidth}
 	\begin{tabular}{c|l|c|l}
 		\hline
-		\textbf{Rule ID} & \textbf{Content} & \textbf{Area} & \textbf{Devices} \\
+		\textbf{Rule ID} & \textbf{Content} & \textbf{Zone} & \textbf{Devices} \\
 		\hline
 		R1 & When the door lock is opened, if the brightness sensor is below 50lux, turn on the outdoor light and porch light. & Outdoor & \circled{1} \circled{2} \circled{3} \circled{4} \\
 		\hline
-		R2 & When the door lock is closed, turn off the porch light. & Outdoor & \circled{3} \circled{4} \\
+		R2 & When the greenhouse light is turned off, unlock the door. & Porch & \circled{3} \\
 		\hline
 		R3 & When motion is detected in the porch, if the brightness sensor is below 50lux, turn on the porch light. & Porch & \circled{4} \circled{5} \circled{6} \\
 		\hline
@@ -80,75 +82,88 @@ Table \ref{Testbeds} lists the 17 automation rules configured across these seven
 		\hline
 		R14 & When the bedroom temperature reaches 30°C, open the window and close the heating. & Bedroom & \circled{23} \circled{25} \circled{26} \\
 		\hline
-		R15 & When motion is detected in the green house, if the brightness sensor is below 50lux, turn on the green house light. & Green house & \circled{27} \circled{28} \circled{30}\\
+		R15 & When the door lock is locked, turn off the porch light and greenhouse light. & Outdoor & \circled{3} \circled{4} \circled{32} \\
 		\hline
-		R16 & At 7 PM, turn on the green house heating. & Green house & \circled{31} \\
+		R16 & At 7 PM, turn on the greenhouse heating. & Greenhouse & \circled{31} \\
 		\hline
-		R17 & When the green house temperature reaches 32°C, open the window and close the heating. & Green house & \circled{29} \circled{31} \circled{32} \\
+		R17 & When the greenhouse temperature reaches 32°C, open the window and close the heating. & Greenhouse & \circled{29} \circled{31} \circled{32} \\
 		\hline
 	\end{tabular}
 	\end{adjustbox}
 \end{table*}
 
 \subsection{Effectiveness of Conflict Detection}
-%为了评估规则冲突的检测有效性，采用手动触发的方式测试所有可能的规则交互，并手动检测出其中存在的四条规则冲突，每条规则冲突可能对应多种规则冲突类型，然后使用本论文实现的系统进行静态检测与动态检测（同样采用手动触发的方式），同时对比了IoTMEDIATOR的检测结果。
-In order to evaluate the effectiveness of rule conflict detection, all possible rule interactions were tested using manual triggering, and four rule conflicts were identified(Each rule conflict can correspond to multiple rule conflict types). Subsequently, the system implemented in this paper was used for both static and dynamic detection (also through manual triggering), while also comparing the detection results with those of IoTMEDIATOR.
+%为了评估规则冲突的检测有效性，首先通过人工检查方式找到所有规则交互与规则冲突，然后开始对系统进行测试评估。系统首先对自动化规则自动建模并进行规则交互检测，从而构建规则交互依赖图，然后结合交互界面生成的实体安全配置生成潜在规则冲突依赖图，并针对没一条潜在规则冲突生成响应冲突处理策略。然后手动触发规则冲突，检测系统对规则冲突的检测与环节情况，同时使用类似方法对比了IoTMEDIATOR的检测结果。
+To evaluate the effectiveness of rule conflict detection, we first identified all rule interactions and rule conflicts through manual inspection, and then proceeded to test and evaluate the system. The system first automatically models the automation rules and performs rule interaction detection to construct the Rule Interaction Dependency Graph. Then, combining the entity security configuration generated via the interaction interface, it generates the Rule Conflict Dependency Graph (comprising candidate rule conflicts) and generates corresponding customized conflict resolution strategies for each candidate rule conflict. We then manually triggered rule conflicts to assess the system's detection and mitigation capabilities, while using a similar method to compare the detection results with IoTMEDIATOR.
 
-%所有七个区域的17条规则的冲突测试结果如Table.\ref{conflict_detection_result}所示，其中R10-R11存在规则冲突：R10会控制水阀关闭，导致在R11被触发时，R11无法正常执行。R11-R10存在规则冲突：R11执行时，会触发R10的执行，且R11的执行动作与R10的执行动作互斥。R13-R14存在规则冲突：R13的执行会触发R14的执行，且两条规则的执行动作互斥。R14-R13存在规则冲突：R14的执行结果与R13的执行结果互斥。
-The conflict results of 17 rules in all seven regions are shown in Table.\ref{conflict_detection_result}. Among them, there is a conflict between R10 and R11: R10 controls the water valve to close, causing R11 to fail execution when triggered. There is also a conflict between R11 and R10: when R11 is executed, it triggers the execution of R10, and the execution actions of R11 and R10 are mutually exclusive. Additionally, there is a conflict between R13 and R14: the execution of R13 triggers the execution of R14, and the execution actions of both rules are mutually exclusive. There is also a conflict between R14 and R13: the execution result of R14 is mutually exclusive with that of R13.
+% 在静态分析阶段，系统通过与用户的交互确定了家庭的物理通道配置与实体安全属性，所有七个区域的规则交互组成的有向图如Figure~\ref{interaction_detection_result}所示，本系统检测出总共72对规则交互，其中Rule Trigger Interaction模式的规则交互2对，Rule Condition Interaction模式的规则交互2对，Rule Action Interaction模式的规则交互10对，Indirect Rule Trigger Interaction模式的规则交互7对，Indirect Rule Condition Interaction模式的规则交互15对，Indirect Rule Action Interaction模式的规则交互22对。两条规则之间可能存在多种规则交互，规则交互依赖图中使用有向边表示一条自动化规则对另一条自动化规则的触发器、条件或执行动作产生影响，即一条边可能包含多种交互关系。同时我们使用红色的有向边标记一条自动化规则对另一条自动化规则的交互关系属于潜在规则冲突关系（规则冲突关系$\in$潜在规则冲突$\in$规则交互）。
+In the static analysis phase, the system determined the home's Physical Channel Configuration and entity security attributes through user interaction. The directed graph composed of rule interactions across all seven Zones is shown in Figure~\ref{interaction_detection_result}. Our system detected a total of 72 pairs of rule interactions, including 2 pairs of Rule Trigger Interaction pattern, 2 pairs of Rule Condition Interaction pattern, 10 pairs of Rule Action Interaction pattern, 7 pairs of Indirect Rule Trigger Interaction pattern, 15 pairs of Indirect Rule Condition Interaction pattern, and 22 pairs of Indirect Rule Action Interaction pattern. Multiple rule interactions may exist between two rules. In the Rule Interaction Dependency Graph, directed edges indicate that one automation rule exerts an influence on the trigger, condition, or action of another automation rule; thus, a single edge may encapsulate multiple interaction relationships. Furthermore, we use red directed edges to mark interaction relationships where one automation rule constitutes a candidate rule conflict with another (Rule Conflict Relationship $\in$ Candidate Rule Conflicts $\in$ Rule Interactions).
 
-%测试结果表示IoTMEDIATOR能够检测到其中的R11-R10、R13与R14与R14-R13的规则冲突，而无法检测到R10与R11通过humidity的side channel互相影响导致的规则冲突，即智能家居系统检测到漏水后关闭水阀，此后如果用户没有及时处理，如果引发火灾，水阀仍旧没有开启，R11无法正常执行。同时IoTMEDIATOR坚持到了许多其他的规则交互，但是他们是否属于规则冲突需要用户进行根据主观偏好进行选择。例如：规则 R5 控制客厅加湿器以增加湿度，而规则 R6 控制加湿器以关闭以防止湿度过高。这两条规则之间的交互能够便捷地维持客厅湿度，不应被视为规则冲突。（IoTMEDIATOR对于Race Condition、 Potential Race Condition和Condition Bypass时对称的，即两条规则对应两次规则冲突，在表格中可能只展示一次，后续需要修改——zyd）
-The test results indicate that IoTMEDIATOR is able to detect the rule conflicts of R11-R10, R13 with R14, and R14-R13, but it fails to detect the rule conflict caused by the mutual influence through humidity between R10 and R11. Specifically, after the smart home system shuts off the water valve upon detecting a water leak, if the user does not respond in time and a fire is triggered, the water valve will not open, resulting in R11 not executing normally. Meanwhile, IoTMEDIATOR persists with many other rule interactions; however, whether they constitute rule conflicts is subject to the user's subjective preference. For example, R5 controls the living room humidifier to increase humidity, while R6 controls the humidifier to shut off in order to prevent excessive humidity. The interaction between these two rules conveniently maintains the living room’s humidity and should not be regarded as a conflict.
+% 规则交互列表清楚地展示了规则之间的交互情况。这里有一个正常交互示例。自动化规则R5的动作是打开客厅加湿器，会增加客厅湿度、使得规则R6的触发条件“适度高于60%”更容易被满足，也会使得自动化规则R6的条件从原本的不被满足状态变成被满足状态，规则R5与规则R6的执行动作共同操作“加湿器”，两条规则的执行动作会相互“冲突”。但是他们的执行结果不会对安全敏感设备带来消极影响，因此不被视为规则冲突，且在接下来的手动触发测试的动态监测中，这两条规则的执行动作也并不会同时发生导致不确定的状态，因为根据真实世界的规则，两条规则的触发时间不会被同时发生。
+The rule interaction list clearly displays the interactions between rules. Here is an example of a normal interaction. The action of automation rule R5 is to turn on the Living Room humidifier, which increases the humidity in the Living Room, making the trigger condition of rule R6 ("humidity above 60\%") easier to satisfy. This also transitions rule R6's condition from an unsatisfied state to a satisfied state. Both rule R5 and rule R6 operate the "humidifier," so their actions technically "conflict." However, since their execution results do not have negative impacts on safety-sensitive devices, they are not considered rule conflicts. Furthermore, during the subsequent dynamic monitoring in manual trigger tests, the actions of these two rules do not occur simultaneously to cause indeterminate states, as the trigger times of the two rules do not coincide in real-world scenarios.
 
-%所有规则交互都能被我们的系统精确捕捉，同时能够自动将任何威胁性规则交互是为规则冲突，从而检测到所有的四条规则冲突，并检测出六种可能的冲突发生方式。除此之外，我们的系统能够有效避免规则冲突的误报，极大程度上避免了将正常的规则交互错误分类到规则冲突的可能性，与此同时用户可以将其他规则交互根据个人偏好选择是否列入规则冲突列表中。
-All rule interactions can be precisely captured by our system, and it is capable of automatically converting any threatening rule interactions into rule conflicts, thereby detecting all four types of rule conflicts and identifying six possible ways in which conflicts might occur. In addition, our system effectively avoids false positives in identifying rule conflicts, greatly minimizing the chance that normal rule interactions are mistakenly classified as conflicts, while also allowing users to optionally include other rule interactions in the rule conflict list according to their personal preference.
+% 这里还有一个规则冲突示例：规则R10与规则R11。规则R10设立的目的是检测到漏水后及时关闭水阀从而避免持续的影响，规则R11的设立目的是如果烟雾警报器检测到烟雾，打开消防喷淋头，避免火灾的发生。规则R10的执行动作可能导致水阀关闭，在烟雾警报器检测到烟雾时无法及时灭火。系统能够检测到两条规则的交互可能为安全敏感设备“消防喷淋头”带来消极影响，从而导致安全问题，因此规则R10对规则R11的规则交互被列为潜在的规则冲突。同时规则R11执行时说明肯能检测到了火灾，此时消防喷淋头的正常工作可能会触发漏水传感器，从而规则R10被触发，从而尝试关闭中央水阀，因此规则R11对规则R10的规则交互被列为潜在规则冲突。
+Here is another example of a rule conflict: Rule R10 and Rule R11. Rule R10 is designed to close the water valve promptly upon detecting a water leak to avoid continuous damage. Rule R11 is designed to open the fire sprinkler if the smoke detector detects smoke, to prevent a fire. The action of Rule R10 may cause the water valve to close, rendering the system unable to extinguish a fire when smoke is detected. The system detects that the interaction between these two rules may have a negative impact on the safety-sensitive device "fire sprinkler," leading to safety issues; thus, the interaction of Rule R10 on Rule R11 is listed as a candidate rule conflict. Conversely, the execution of Rule R11 implies a fire detection. At this time, the normal operation of the fire sprinkler may trigger the water leak sensor, thereby triggering Rule R10, which attempts to close the main water valve. Therefore, the interaction of Rule R11 on Rule R10 is also listed as a candidate rule conflict.
 
-%\begin{table*}[htbp]
-%	\centering
-%	\caption{Result of Rule Conflict Detection}
-%	\label{conflict_detection_result}
-%	\begin{adjustbox}{width=\textwidth}
-%		\begin{tabular}{|c|l|c|c|c|c|c|c|c|c|c|c|c|c|c|} 
-%			\hline
-%			& \textbf{Classification} & \textbf{R1-R2} & \textbf{R2-R1} & \textbf{R2-R3} & \textbf{R3-R2} & \textbf{R5-R6} & \textbf{R6-R5} & \textbf{R9-R3} & \textbf{R10-R11} & \textbf{R11-R10} & \textbf{R13-R14} & \textbf{R14-R13} & \textbf{R15-R12} & \textbf{R16-R17} \\ \hline
-%			\multirow{6}{*}{\rotatebox{90}{Ours}} & Rule Trigger Conflict &  &  &  &  &  &  &  &  &  &  &  &  &  \\
-%			\cline{2-15}
-%			& Rule Condition Conflict &  &  &  &  &  &  &  &  &  &  &  &  &  \\
-%			\cline{2-15}
-%			& Rule Action Conflict &  &  &  &  &  &  &  &  &  & \checkmark & \checkmark &  &  \\
-%			\cline{2-15}
-%			& Indirect Rule Trigger Conflict &  &  &  &  &  &  &  &  & \checkmark & \checkmark &  &  &  \\
-%			\cline{2-15}
-%			& Indirect Rule Condition Conflict &  &  &  &  &  &  &  &  &  &  &  &  &  \\
-%			\cline{2-15}
-%			& Indirect Rule Action Conflict &  &  &  &  &  &  &  & \checkmark & \checkmark &  &  &  &  \\
-%			\hline
-%			
-%			\multirow{7}{*}{\rotatebox{90}{IoTMediator}}
-%			& Condition Enabling/Disabling &  &  &  &  & \checkmark & \checkmark & \checkmark &  &  &  &  & \checkmark &  \\
-%			\cline{2-15}
-%			& Race Condition &  &  &  &  &  &  &  &  &  &  &  &  &  \\
-%			\cline{2-15}
-%			& Potential Race Condition & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark &  &  &  & \checkmark &  &  & \checkmark \\
-%			\cline{2-15}
-%			& Chained Execution &  &  &  &  &  &  &  &  &  &  &  &  &  \\
-%			\cline{2-15}
-%			& Action Revert &  &  &  &  &  &  &  &  &  &  &  &  &  \\
-%			\cline{2-15}
-%			& Infinite Loop &  &  &  &  &  &  &  &  &  &  &  &  &  \\
-%			\cline{2-15}
-%			& Condition Bypass &  &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
-%		\end{tabular}
-%	\end{adjustbox}
-%\end{table*}
-\begin{figure*}[htbp]
+% 由于本系统目标在于检测并缓解隐藏在规则交互中的规则冲突，因此不会对单条规则检测是否存在恶意，但是能够检测是否在规则交互过程中恶意规则是否导致敏感设备受到消极影响。规则R2与规则R15是一个恶意规则注入的示例，这里假设规则R2和R15是攻击者在用户不知情的情况下注入的恶意规则（可能是市场中的多条自动化规则中包含了这两条自动化规则，并被用户一键应用），当门锁上锁时，会关闭门廊灯与温室灯。然而温室灯被关闭正是规则R2的出发时间，R2被触发后会打开门锁，从而让攻击者有机可乘。
+Since the goal of this system is to detect and mitigate rule conflicts hidden within rule interactions, it does not inspect individual rules for malicious intent. However, it can detect whether malicious rules negatively impact sensitive devices during rule interactions. Rule R2 and Rule R15 serve as an example of malicious rule injection. Assume R2 and R15 are malicious rules injected by an attacker without the user's knowledge (for instance, contained within a bundle of automation rules from a marketplace and applied by the user with a one-click installation). When the door lock is locked, the porch light and greenhouse light are turned off. However, the turning off of the greenhouse light serves as the trigger for Rule R2. Once R2 is triggered, it unlocks the door, providing an opportunity for the attacker.
+
+% 这里还有一个因为区域不同导致结果不同的案例。规则R13与规则R14和规则R16与规则R17的交互的交互模式完全相同，但是前者发生在卧室，设备是卧室窗户与暖气，后者发生在温室，设备时温室天窗与暖气，两者的交互都被成功检出，但是因为卧室窗户被视为安全敏感设备，被视为不应该在用户不知情的情况下被触发，因此需要避免因为规则交互使得设备状态变更到危险的状态。因此前者被视为规则冲突，后者则被认为是安全的。
+There is also a case where results differ due to different Zones. The interaction patterns between Rule R13 and Rule R14, and between Rule R16 and Rule R17, are identical. However, the former occurs in the Bedroom involving the Bedroom Window and Heating, while the latter occurs in the Greenhouse involving the Greenhouse Skylight and Heating. Both interactions were successfully detected. Yet, because the Bedroom Window is classified as a safety-sensitive device that should not be triggered without user knowledge, it is necessary to prevent rule interactions from shifting the device state to a dangerous one. Consequently, the former is considered a rule conflict, whereas the latter is deemed safe.
+
+\begin{figure}[htbp]
 	\centering
-	\includegraphics[width=\textwidth]{figure/conflict_detection_result.png}
+	\includegraphics[width=0.5\textwidth]{figure/DG_interactions.png}
+	\caption{Rule Interaction Dependency Graph}
+	\label{interaction_detection_result}
+\end{figure}
+
+
+% 加下来根据规则设置目的手动触发所有规则交互，所有七个区域的13条规则的冲突测试结果如Table~\ref{conflict_detection_result}所示，其中R10-R11存在规则冲突：R10会控制水阀关闭，导致在R11被触发时，R11无法正常执行。R11-R10存在规则冲突：R11执行时，会触发R10的执行，且R11的执行动作与R10的执行动作互斥，且R10的执行结果会导致中央水阀关闭，从而影响R11的执行动作。R13-R14存在规则冲突：R13的执行会触发R14的执行，且两条规则的执行动作互斥，且R14的执行动作会导致窗户打开，可能给用户带来意料之外的不安全的状态。并且正确检测到了规则R15与规则R2的规则冲突：规则R15的触发看似是关闭灯光以节约资源，实际上是为了使得恶意规则R2被触发从而打开门锁。
+Next, we manually triggered all rule interactions based on the intended purpose of the rules. The conflict test results for 13 rules across all seven Zones are presented in Table~\ref{conflict_detection_result}.Specifically, the interaction $R10 \to R11$ constitutes a rule conflict: R10 closes the water valve, rendering R11's action (turning on the sprinkler) ineffective for fire suppression.  R11-R10 constitutes a rule conflict: When R11 executes, it triggers R10, and their actions are mutually exclusive; furthermore, R10's execution closes the main water valve, impacting R11's action. R13-R14 constitutes a rule conflict: The execution of R13 triggers R14, their actions are mutually exclusive, and R14's action opens the window, potentially creating an unexpected unsafe state for the user. Additionally, the rule conflict between Rule R15 and Rule R2 was correctly detected: While R15's trigger appears to turn off lights to conserve resources, it actually serves to trigger the malicious Rule R2 to unlock the door.
+
+% 测试结果表示IoTMEDIATOR因为无法捕捉环境因素的影响，因此无法检测到其中的R11-R10的规则冲突，但是根据规则模式匹配，识别了R13与R14与R16-R17的规则冲突。同时IoTMEDIATOR检测到了许多其他的规则交互，但是他们是否属于规则冲突需要用户进行根据主观偏好进行选择。例如：IoTMediator根据R5与R6的规则执行动作对识别到规则 R5 控制客厅加湿器开启以增加湿度，从而使得规则R6的条件从不满足变为满足，而规则 R6 控制加湿器以关闭以防止湿度过高，使得规则R5的条件从不满足变成了满足。除此之外还有一些特殊情况，恶意规则R2意外与谷子额R1产生了交互，但是带来影响的仅仅是恶意规则R2的执行动作，他们的交互并没有恶意影响，对于规则R3与规则R15也类似，他们的交互并不会带来恶意的影响，但是符合潜在竞争条件这种交互模式，因此被错误地上报给用户，从而产生误报。
+The test results indicate that IoTMEDIATOR failed to detect the R11-R10 rule conflict because it cannot capture the influence of environmental factors. However, based on rule pattern matching, it identified the rule conflicts in R13-R14 and R16-R17. Meanwhile, IoTMEDIATOR detected many other rule interactions, but determining whether they constitute rule conflicts requires users to select based on subjective preferences. For example, regarding the actions of R5 and R6, IoTMediator identified that Rule R5 turns on the Living Room humidifier to increase humidity, enabling Rule R6's condition, while Rule R6 turns off the humidifier, enabling Rule R5's condition. Additionally, there are special cases. The malicious Rule R2 accidentally interacted with Rule R1, but the impact was limited to the action of the malicious Rule R2 itself; their interaction did not produce a malicious combined effect. Similarly, for Rule R3 and Rule R15, their interaction does not bring malicious impacts but fits the "Potential Race Condition" pattern, causing it to be incorrectly reported to the user, thereby generating false positives.
+
+\begin{table*}[htbp]
+	\centering
 	\caption{Result of Rule Conflict Detection}
 	\label{conflict_detection_result}
-\end{figure*}
+	\resizebox{\textwidth}{!}{
+		\begin{tabular}{|c|l|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			% 表头：第一列留空 (15 columns total)
+			& \multicolumn{1}{c|}{\textbf{Classification}} & \textbf{R2-R1} & \textbf{R3-R15} & \textbf{R5-R6} & \textbf{R6-R5} & \textbf{R10-R11} & \textbf{R11-R10} & \textbf{R13-R14} & \textbf{R14-R13} & \textbf{R15-R2} & \textbf{R15-R3} & \textbf{R16-R17} & \textbf{R17-R16} \\ \hline
+			
+			% Ours 部分 (6 rows)
+			\multirow{6}{*}{\textbf{Ours}}
+			& Rule Trigger Conflict             &          &          &          &          &          &          &          &          &$\checkmark$&          &          &          \\ \cline{2-14}
+			& Rule Condition Conflict           &          &          &          &          &          &          &          &          &              &          &          &          \\ \cline{2-14}
+			& Rule Action Conflict              &          &          &          &          &          &          &$\checkmark$&$\checkmark$&              &          &          &          \\ \cline{2-14}
+			& Indirect Rule Trigger Conflict    &          &          &          &          &          &$\checkmark$&$\checkmark$&          &              &          &          &          \\ \cline{2-14}
+			& Indirect Rule Condition Conflict  &          &          &          &          &          &          &          &          &              &          &          &          \\ \cline{2-14}
+			& Indirect Rule Action Conflict     &          &          &          &        &$\checkmark$&$\checkmark$& $\checkmark$ &$\checkmark$&              &          &          &          \\ \hline
+			
+			% IoTMediator 部分 (7 rows)
+			\multirow{7}{*}{\textbf{IoTMediator}}
+			& Condition Enabling/Disabling      &          &          & $\times$ & $\times$ &          &          &          &          &              &          &          &          \\ \cline{2-14}
+			& Race Condition                    &          &          &          &          &          &          &          &          &              &          &          &          \\ \cline{2-14}
+			& Potential Race Condition          &          & $\times$ & $\times$ & $\times$ &          &          &$\checkmark$&$\checkmark$&          & $\times$ & $\times$ & $\times$ \\ \cline{2-14}
+			& Chained Execution                 &$\times^*$&          &          &          &          &          &          &          & $\checkmark$ &          &          &          \\ \cline{2-14}
+			& Action Revert                     &          &          &          &          &          &          &          &          &              &          &          &          \\ \cline{2-14}
+			& Infinite Loop                     &          &          &          &          &          &          &          &          &              &          &          &          \\ \cline{2-14}
+			& Condition Bypass                  &          &          &          &          &          &          &          &          &              &          &          &          \\ \hline
+		\end{tabular}%
+	}
+\end{table*}
+	
+% 综合以上结果，我们的方案通过对规则交互模式进行细致划分和将恶意操作视为规则冲突终点的方式，检测所有规则交互并根据交互终点带来的行为，精确捕捉所有规则交互并有效区分规则冲突，并检测出所有可能的冲突发生方式，不论两条规则是通过影响相同物理设备活影响相同物理环境并对智能家居环境产生恶意影响，还是通过一条规则执行动作直接或间接触发另一条规则的执行，还是一条规则的动作直接或间截使得原本条件检查通过的规则条件不通过，或者使得原本条件检查不通过的模型成功触发并执行。并且能够有效避免规则冲突的误报，极大程度上避免了将正常的规则交互错误分类到规则冲突的可能性。与此同时使用简单易懂的交互方式，帮助用户可以将其他规则交互根据个人偏好选择是否视为潜在规则冲突。
+In summary, our approach precisely captures all rule interactions and effectively distinguishes rule conflicts by meticulously classifying rule interaction patterns and assessing whether the endpoint of the interaction leads to malicious behavior. It detects all possible conflict mechanisms, whether two rules impact the same physical device or the same physical environment to produce a negative effect on the smart home; whether one rule's action directly or indirectly triggers another rule; or whether one rule's action directly or indirectly invalidates a satisfied condition or enables an unsatisfied one. Furthermore, it effectively minimizes false positives, largely preventing normal rule interactions from being misclassified as conflicts. Simultaneously, by employing a simple and intuitive interaction method, it assists users in deciding whether to classify other rule interactions as candidate rule conflicts based on personal preferences.
 
-\subsection{Effectiveness of Conflict Resolution}
+\subsection{Effectiveness of Conflict Mitigation}
+
+% 我们的方案通过使用与用户交互生成的实体安全配置，为每一种规则冲突根据规则交互模式选择指定的规则冲突处理策略，用户也可以查阅并更换处理策略。在系统运行时，如果检测到规则冲突即将发生，我们的方案能够在规则冲突发生之前进行拦截并执行对应的冲突处理策略，从而缓解规则冲突，本章节我们评估冲突处理策略选择的有效性。
+Our approach selects a designated conflict resolution strategy for each rule conflict based on the rule interaction pattern, utilizing the entity security configuration generated via user interaction. Users can also review and modify the resolution strategies. During system runtime, if a rule conflict is detected to be imminent, our solution intercepts it before it occurs and executes the corresponding conflict resolution strategy, thereby mitigating the rule conflict. In this section, we evaluate the effectiveness of the conflict resolution strategy selection.
 
 \begin{figure}[htbp]
 	\centering
@@ -157,34 +172,50 @@ All rule interactions can be precisely captured by our system, and it is capable
 	\label{example_resolution}
 \end{figure}
 
-%为了评估自动化的规则冲突处理的可用性，本章节将结合具体的示例展示对于一个具体的规则冲突，系统如何进行自动化处理，以及AI对于系统提供的规则冲突信息的推测处理方式。
-In order to assess the effectiveness of automated rule conflict resolution, this chapter will use specific examples to demonstrate how the system automatically processes a particular rule conflict and how AI speculatively handles the rule conflict information provided by the system.
+%为了评估自动化的规则冲突处理的可用性，本章节将结合具体的示例展示对于一个具体的规则冲突，系统如何进行自动化处理，以及对比LLM对于系统提供的规则冲突信息的生成的有效处理方式。
+To evaluate the usability of automated rule conflict handling, this section presents specific examples to demonstrate how the system automatically handles a specific rule conflict, and compares it with the effective handling solutions generated by an LLM based on the rule conflict information provided by the system.
 
-%Fig.\ref{example_resolution}展示了规则R10与规则R11对应的Indirect Action Conflict。图片中展示了规则的描述（自动化规则配置文件中提取得到），规则冲突描述（Rule Conflict Detection Module中根据上下文信息生成）为：R10-Water Shutoff's execution result impacts channel ['KitchenHumidity-down'],R11-Fire Suppression's execution result impacts channel ['KitchenHumidity-up'],The execution results of R10-Water Shutoff and R11-Fire Suppression affect each other.最下面是处理策略，包含一个默认执行动作和五个规则冲突缓解动作。
-Fig.\ref{example_resolution} displays the Indirect Action Conflict corresponding to rules R10 and R. The image shows the description of the rules (extracted from the automated rule configuration file) and the rule conflict description (generated by the Rule Conflict Detection Module based on contextual information) as: R10-Water Shutoff's execution result impacts channel ['KitchenHumidity-down'], R11-Fire Suppression's execution result impacts channel ['KitchenHumidity-up'], and the execution results of R10-Water Shutoff and R11-Fire Suppression affect each other. At the bottom is the resolution strategy, which consists of a default execution action and five rule conflict mitigation actions.
+%Figure~\ref{example_resolution}展示了规则R10与规则R11对应的间接规则执行冲突。该冲突的场景如下：规则R10先执行（检测到漏水，关闭中央水阀），然后规则R11被触发（烟雾报警器被激活，消防喷淋头被启用），此时规则R10的执行动作会导致规则R11无法的执行动作无效。图片中展示了规则的描述如下：R10-Water Shutoff's execution result impacts channel ['KitchenHumidity-down'],R11-Fire Suppression's execution result impacts channel ['KitchenHumidity-up'],The execution results of R10-Water Shutoff and R11-Fire Suppression affect each other.下方展示了多种冲突处理策略选项，包括执行规则默认动作（不视为规则冲突），只执行规则R10的动作，只执行规则R11的动作，先后分别执行规则R10、R11的动作，先后分别执行规则R11、R10的动作，两条规则动作都不执行。
+Figure~\ref{example_resolution} illustrates the Indirect Rule Action Conflict corresponding to Rule R10 and Rule R11. The conflict scenario is as follows: Rule R10 executes first (detects water leak, closes main water valve), and then Rule R11 is triggered (smoke alarm activated, fire sprinkler enabled). At this point, R10's action renders R11's action ineffective. The figure displays the rule descriptions: "R10-Water Shutoff's execution result impacts channel ['KitchenHumidity-down'], R11-Fire Suppression's execution result impacts channel ['KitchenHumidity-up'], The execution results of R10-Water Shutoff and R11-Fire Suppression affect each other." Below this, multiple conflict resolution strategy options are displayed, including executing default actions (not considered a conflict), executing only R10's action, executing only R11's action, executing R10's then R11's actions sequentially, executing R11's then R10's actions sequentially, or executing neither.
 
-%根据实体安全配置，规则R10的执行动作将水阀关闭，使用线性函数进行评估，其对应的安全值参数$sf_{R10}=-1$，而R11的执行动作将开启消防喷淋头，其对应的安全值参数$sf_{R11}=1$，因此Generation of Resolution Strategy Module将会自动化推荐“Only excute R11”策略用于预防规则冲突的真实发生。除此之外页面的对处理策略提供选项，用户可以对规则冲突处理策略进行选择，以选择更符合偏好的处理方案。
-According to the entity security configuration, the execution action of rule R10 will close the water valve, and its evaluation is conducted using a linear function with the corresponding safety parameter $sf_{R10}=-1$, while the execution action of rule R11 will activate the fire sprinkler head, with its corresponding safety parameter $sf_{R11}=1$. Therefore, the Generation of Resolution Strategy Module will automatically recommend the "Only execute R11" strategy to prevent real conflicts between rules. In addition, the page provides options for resolution strategies, allowing users to choose a rule conflict resolution strategy that better fits their preferences.
+%根据实体安全配置，规则R10的执行动作将水阀关闭，使用线性函数进行评估，其对应的安全值参数$sf_{R10}=-1$，而R11的执行动作将开启消防喷淋头，其对应的安全值参数$sf_{R11}=1$，因此Generation of Resolution Strategy Module将会自动化推荐“Only execute R11”策略用于预防规则冲突的真实发生。除此之外页面的对处理策略提供选项，用户可以对规则冲突处理策略进行选择，以选择更符合偏好的处理方案。
+According to the entity security configuration, Rule R10's action closes the water valve; using a linear evaluation function, its corresponding safety value parameter is $sf_{R10}=-1$. Rule R11's action enables the fire sprinkler; its corresponding safety value parameter is $sf_{R11}=1$. Consequently, the Generation of Resolution Strategy Module automatically recommends the "Only execute R11" strategy to prevent the actual occurrence of the rule conflict. Additionally, the interface provides options for handling strategies, allowing users to select the conflict resolution strategy that best fits their preferences.
 
-%为了测试Rule Conflict Detection Module根据规则模型生成的规则冲突描述对用户的友好性，本论文使用AI测试其对规则冲突的处理策略选择。仍旧以Fig.\ref{example_resolution}为例，使用的模型为gpt-4o-2024-11-20，调用方式为OPENAI API，其它参数默认不做修改，系统提示词将会展示在 Appendix.\ref{apdx:system_prompt}。对于上述示例我们得到的回复如下：\texttt{\{
+%为了测试Rule Conflict Detection Module根据规则模型生成的规则冲突描述对用户的友好性，本论文使用AI测试其对规则冲突的处理策略选择。仍旧以Figure~\ref{example_resolution}为例，使用的模型为gpt-4o-2024-11-20，调用方式为OPENAI API，其它参数默认不做修改，系统提示词将会展示在 Appendix.\ref{apdx:system_prompt}。对于上述示例我们得到的回复如下：\texttt{\{
 %		"policy": "2", // Only execute R11
 %		"reason": "In this case of Indirect Rule Action Conflict, the sprinkler system activated by R11 is crucial for safety during a fire, and its priority should supersede the water cutoff triggered by R10 to ensure effective fire suppression. Therefore, only R11 should execute."
 %	\}}
-To test the user-friendliness of the rule conflict description generated according to the rule model by the Rule Conflict Detection Module, we uses AI to test its strategy selection for conflict resolution. Still taking Fig.\ref{example_resolution} as an example, the model used is \texttt{gpt-4o-2024-11-20}, called via the OPENAI API, with other parameters remaining unchanged by default, and the system prompt will be shown in Appendix.\ref{apdx:system_prompt}. For the above example, we obtained the following response: 
-\texttt{\{\\
-	"policy": "2", // Only execute R11 \\
-	"reason": "In this case of Indirect Rule Action Conflict, the sprinkler system activated by R11 is crucial for safety during a fire, and its priority should supersede the water cutoff triggered by R10 to ensure effective fire suppression. Therefore, only R11 should execute."\\
-	\}}\\
+
+% 为了评估我们规则建模模块生成的冲突描述的表现力，并探索AI辅助决策的潜力，我们使用大型语言模型（LLM）进行了实验。仍以 Figure 8 为例，我们通过 OpenAI API 调用了 gpt-4o-2024-11-20 模型。针对上述示例，我们得到的回复如下:
+To assess the expressiveness of the rule conflict descriptions generated by our Rule Modeling module and to explore the potential for AI-assisted decision-making, we conducted an experiment using a Large Language Model (LLM). Still taking Figure~\ref{example_resolution} as an example, we utilized the \texttt{gpt-4o-2024-11-20} model via the OpenAI API with default parameters. The system prompt is presented in Appendix \ref{apdx:system_prompt}. The response obtained for the aforementioned example is as follows:
+
+\begin{tcolorbox}[colback=gray!5,colframe=black!50,boxrule=0.5pt,sharp corners]
+	\small
+	\texttt{\{
+		"policy": "2", // Only execute R11
+		"reason": "In this case of Indirect Rule Action Conflict, the sprinkler system activated by R11 is crucial for safety during a fire, and its priority should supersede the water cutoff triggered by R10 to ensure effective fire suppression. Therefore, only R11 should execute."
+		\}}
+\end{tcolorbox}
+
+% LLM的推荐与我们系统确定性计算结果的一致性验证了我们框架的两个关键方面：
+% 1. 信息完备性：我们翻译模板生成的自然语言描述成功捕捉了冲突解决所需的逻辑和物理上下文。LLM 仅根据我们生成的文本就能推导出正确的策略，证明了我们的模型保留了关键的依赖信息。
+% 2. 可解释性：LLM 提供的理由（如 reason 字段所示）为普通用户提供了极好的解释。通过弥合复杂的规则逻辑与用户理解之间的差距，这种方法表明我们的框架可以有效地充当智能家居管理的透明“Coplit”，而不是黑盒控制器。
+The alignment between the LLM's recommendation and our system's deterministic calculation validates two key aspects of our framework:
+\begin{itemize}
+	\item \textbf{Information Completeness:} The natural language descriptions generated by our translation templates successfully capture the logical and physical context required for conflict resolution. The LLM was able to deduce the correct strategy solely from the text we generated, proving that our model preserves critical dependency information.
+	\item \textbf{Explainability:} The rationale provided by the LLM (as shown in the \texttt{reason} field) serves as an excellent explanation for ordinary users. By bridging the gap between complex rule logic and user understanding, this approach demonstrates that our framework can effectively function as a transparent ``Copilot'' for smart home management, rather than a black-box controller.
+\end{itemize}
 
 %通过AI对规则冲突描述的理解对规则冲突处理策略的推荐结果与预期相契合，一定程度上标明当前的提取的规则冲突信息能够很好地被用户理解，并作出正确有效的选择，也为用户提供了使用智能工具进行规则冲突处理策略推荐的选择。
 Through AI's understanding of rule conflict descriptions, the recommended results for rule conflict resolution strategies align with expectations, which to some extent indicates that the currently extracted rule conflict information can be well understood by users, enabling them to make correct and effective choices, and providing them with the option to use intelligent tools for recommending rule conflict resolution strategies.
 
 \subsection{Performance} 
-%为了测试系统性能，本论文根据系统架构将测试分为静态分析的性能评估与动态检测与冲突处理的性能评估。
-In order to test the system performance, we divides the testing into performance evaluation of static analysis and performance evaluation of dynamic detection and conflict based on the system architecture.
 
-%其中静态检测的性能评估中,静态检测会遍历所有的自动化规则（包含Formal Analysis Module和Rule Conflict Detection Module），并对每两种规则进行比较，还将进行自比较，因此对于n条规则来说，静态检测的时间复杂度为$O\left(n^2\right)$。对于测试使用AI生成的100条规则集（100条）与1000条规则集（1000条）作为输入评估多次检测耗时，单位为秒，为便于展示选择其中三次检测结果并记录平均值，Table.\ref{performance_static_analysis}展示了测试的结果。可以观察到即使存在1000条规则，静态检测也只需要约$12s$，不同数据量的静态检测耗时符合预期的复杂度。
-In the performance evaluation of static detection, static detection traverses all automation rules (including the Formal Analysis Module and Rule Conflict Detection Module) and compares every two rules, as well as performing self-comparison. Therefore, for n rules, the time complexity of static detection is $O\left(n^2\right)$. For testing, an AI-generated set of 100 rules (100 rules) and a set of 1000 rules (1000 rules) were used as inputs to evaluate the detection time multiple times, in seconds. To facilitate the display, three detection results were selected and the average value was recorded. Table.\ref{performance_static_analysis} shows the test results. It can be observed that even with 1000 rules, static detection only takes about $12s$, and the static detection time for different data volumes meets the expected complexity.
+% 自动化规则冲突的检测与处理中，检测与处理的性能也起着至关重要的作用，如果性能低下（如资源占用较多将不方便用户部署、执行过程缓慢将无法有效运行在实时系统上甚至会阻塞系统的正常执行），为了测试系统性能，本论文根据系统架构将测试分为静态分析的性能评估与动态监测与冲突处理的性能评估。
+Performance plays a crucial role in the detection and handling of automation rule conflicts. Poor performance (e.g., high resource consumption hindering deployment, or slow execution preventing effective real-time operation or blocking normal system functions) renders a system impractical. To test system performance, we divided the evaluation into static analysis performance and dynamic monitoring and conflict handling performance, based on the system architecture.
+
+%其中静态检测的性能评估中,静态检测会遍历所有的自动化规则进行建模，并对每条规则进行两两交互分析与自交互分析（判断两条规则是否符合某一种规则交互模式的特征），并结合相关配置生成规则交互以来图与潜在规则交互以来图，因此对于n条规则来说，静态检测的时间复杂度为$O\left(n^2\right)$。对于测试使用AI生成的100条规则集（100条）与1000条规则集（1000条）作为输入评估多次静态检测耗时，单位为秒，为便于展示选择其中三次检测结果并记录平均值，Table~\ref{performance_static_analysis}展示了测试的结果。可以观察到即使存在1000条规则，静态检测也只需要约$12s$，不同数据量的静态检测耗时符合预期的复杂度。值得一提的是通常的智能家居环境中自动化规则的数量远远小于100条，即对于普通用户来说静态检测将不会有任何延迟感。对于少数情况，假设智能家居环境中的规则数量超过500条，虽然会在静态检测过程中会有秒级的耗时，但是因为静态检测是离线模式，只需要在更新规则完成之后运行一次即可，不会阻塞智能家居系统的动态运行。
+In the static detection performance evaluation, the process iterates through all automation rules for modeling and performs pairwise and self-interaction analyses for each rule (determining whether two rules fit a specific rule interaction pattern). Combined with relevant configurations, it generates the Rule Interaction Dependency Graph and the Rule Conflict Dependency Graph. Consequently, for $n$ rules, the time complexity of static detection is $O(n^2)$. We used AI-generated sets of 100 and 1000 rules as input to evaluate the static detection time in seconds. For clarity, we recorded the average of three detection runs. Figure~\ref{performance_static_analysis} displays the results. It can be observed that even with 1000 rules, static detection requires only about 12 seconds. The processing latency scales with data volume consistent with the expected complexity. It is worth noting that the number of automation rules in a typical smart home is far fewer than 100; thus, ordinary users will perceive no delay. In rare cases where the rule count exceeds 500, although static detection may take several seconds, it operates in an offline mode. It only needs to run once after rule updates and does not block the dynamic operation of the smart home system.
 
 \begin{figure}[htbp]
 	\caption{Performance of Static Analysis}
@@ -193,12 +224,6 @@ In the performance evaluation of static detection, static detection traverses al
 	
 \end{figure}
 
-%在规则冲突动态检测(Assertion Verification Module)与规则冲突处理指令生成（Command Generation Module）两个模块中，其本身计算量不高，时间消耗主要体现在通信过程，因此接下来着重进行代码插桩装通信性能评估，测试包括随机触发规则冲突，对所有通信函数（包括系统发送消息，Home Assistant平台处理完毕返回消息，系统接收到消息三个阶段）的性能测评，通信函数的介绍与性能测评结果如Table.\ref{performance_communication_function}所示。
-In the two modules—the Assertion Detection Module for detecting rule conflicts dynamically and the Command Generation Module for handling rule conflict processing—the computational load is not high, and the time consumption mainly lies in the communication process. Therefore, the focus will next be on code instrumentation for communication performance evaluation, testing which includes randomly triggering rule conflicts and assessing the performance of all communication functions (covering the three stages of system sending messages, Home Assistant platform processing and returning messages, and system receiving messages). The introduction and performance evaluation results of the communication functions are shown in Table.\ref{performance_communication_function}.
-
-%可以观察到在实验环境中的通信函数平均与最长耗时仅有毫秒级别，且在断言验证与规则冲突处理方案指令生成两个步骤中只会调用有限次数的通信函数，且耗时均也只有毫秒级别。
-It can be observed that the average and maximum time consumption of the communication functions in the experimental environment are only at the millisecond level, and that only a limited number of calls are made to the communication functions during the two steps of assertion verification and rule conflict handling directive generation, with each call also taking only a few milliseconds.
-
 \begin{table*}[htpb]
 	\caption{Performance of Communication Functions}
 	\label{performance_communication_function}
@@ -206,7 +231,7 @@ It can be observed that the average and maximum time consumption of the communic
 	\begin{adjustbox}{width=0.95\textwidth}
 		\begin{tabular}{c|c|c|c}
 			\hline
-			\textbf{Function Name} & \textbf{Description} & \textbf{Average Time Consumption} & \textbf{Maximum Time Consumption}\\
+			\textbf{Function Name} & \textbf{Description} & \textbf{Avg. Latency} & \textbf{Max. Latency}\\
 			\hline
 			get\_entity\_state & Get entity state & $1.193 \times 10^{-3}$s & $1.953 \times 10^{-3}$s \\
 			\hline
@@ -214,9 +239,13 @@ It can be observed that the average and maximum time consumption of the communic
 			\hline
 			command\_send & Send conflict handling command & $9.643 \times 10^{-4}$s & $9.787 \times 10^{-4}$s \\
 			\hline
-			communicate\_finish & End communication phase & $9.778 \times 10^{-4}$s & $9.832 \times 10^{-4}$s \\
-			\hline
 			\multicolumn{4}{l}{Note: Each function is tested 10 times.} \\
 		\end{tabular}
 	\end{adjustbox}
 \end{table*}
+
+% 动态监测与规则冲突环节两部分操作息息相关，如果有延迟会使得方案几乎不可应用与实际，因此我们将这两部分一同测试。在规则冲突动态监测与执行冲突处理策略两步，其本身计算量不高，时间延迟主要体现在通信函数与执行函数的运行耗时，因此测试着重进行运行时控制器的关键函数性能评估，相关函数的介绍与性能测评结果如Table~\ref{performance_communication_function}所示。\texttt{get_entity_state}功能是获取实体状态，\texttt{time_now}的功能是获取系统时间，这两条函数用于辅助进行断言验证，\texttt{command_send}这条函数用于获取并执行冲突处理策略中的具体命令。
+The dynamic monitoring and rule conflict handling operations are closely intertwined; significant latency would render the solution impractical. Therefore, we evaluated these two parts together. The computational load for rule conflict dynamic monitoring and executing conflict handling strategies is low; latency is primarily attributed to communication and execution functions. Consequently, our testing focused on evaluating the performance of key functions in the runtime controller. The descriptions and performance results of these functions are presented in Table~\ref{performance_communication_function}. The \texttt{get\_entity\_state} function retrieves entity states, and \texttt{time\_now} retrieves the system time; both assist in assertion verification. The \texttt{command\_send} function is used to retrieve and execute specific commands within the conflict handling strategies.
+
+% 可以观察到在实验环境中的函数平均与最长耗时仅有毫秒级别，且在断言验证与规则冲突处理方案指令生成两个步骤中只会调用有限次数的通信函数，且耗时均也只有毫秒级别。
+The average and maximum execution latencies of functions in the experimental environment are at the millisecond level. Furthermore, the assertion verification and rule conflict handling command generation steps involve only a limited number of communication function calls, keeping the total time consumption at the millisecond level.

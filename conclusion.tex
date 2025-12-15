@@ -1,13 +1,13 @@
 \section{Conclusion}
 
-% 本文针对智能家居自动化规则冲突带来的安全与可用性问题，提出了一种结合静态分析与动态检测及预防的综合性解决方案。
-This paper addresses the safety and usability challenges posed by automation rule conflicts in smart homes by proposing a comprehensive solution that integrates static analysis with **dynamic detection and prevention**.
+% 本文针对智能家居自动化规则冲突带来的安全与可用性问题，提出了一种结合静态分析与动态监测及缓解的综合性解决方案。
+Addressing the safety and usability issues caused by automation rule conflicts in smart homes, this paper proposes a comprehensive solution combining static analysis with dynamic monitoring and mitigation.
 
-% 我们引入了TCAE规则模型以捕捉环境侧信道影响，并利用形式化分析全面识别了六种类型的规则交互。通过结合用户定义的实体安全配置，我们的方法能够有效区分有害的规则冲突与良性的规则交互，显著提高了冲突检测的准确性并减少了误报。
-We introduced the TCAE rule model to capture environmental side-channel effects and utilized formal analysis to comprehensively identify six types of rule interactions. By incorporating user-defined entity safety configurations, our approach effectively distinguishes harmful rule conflicts from benign interactions, significantly enhancing conflict detection accuracy and reducing false positives.
+% 我们通过翻译模板将复杂难懂的规则信息、交互信息与冲突信息翻译为简单易懂的自然语言，在实现与用户的简单交互中采集用户偏好与关键配置信息。引入了TCAE规则模型以捕捉物理信道的特征，并利用形式化验证全面识别了六种类型的规则交互并生成规则交互依赖图，并在图中准确定位潜在规则冲突关系，有效减小了动态监测过程中资源消耗，显著提高了冲突检测的准确性并减少了误报。
+We utilize translation templates to convert complex rule, interaction, and conflict information into easy-to-understand natural language, thereby collecting user preferences and key configuration information during simple interactions with users. We introduce the TCAE rule model to capture the characteristics of physical channels and leverage formal verification to comprehensively identify six types of rule interactions, generating a Rule Interaction Dependency Graph. Within this graph, we accurately locate candidate rule conflict relationships, effectively reducing resource consumption during dynamic monitoring, and significantly improving conflict detection accuracy while reducing false positives.
 
-% 此外，系统能基于安全优先级自动生成定制化的冲突处理策略，并通过动态断言验证触发实时的冲突拦截与预定义策略的强制执行，从而在冲突实际发生前进行有效干预。
-Furthermore, the system automatically generates customized conflict resolution strategies based on safety priorities and employs dynamic assertion verification **to trigger real-time interception and enforcement of these pre-defined strategies**, effectively intervening before conflicts actually occur.
+% 此外，系统能基于安全优先级自动生成定制化的冲突处理策略，并通过动态断言验证触发实时的冲突拦截与定制化冲突处理策略的强制执行，从而在冲突实际发生前进行有效缓解。
+Furthermore, the system can automatically generate customized handling strategies based on safety priorities. Through dynamic assertion verification, it triggers real-time conflict interception and the enforcement of customized handling strategies, thereby effectively mitigating conflicts before they actually occur.
 
-% 评估结果表明，本方案在检测复杂冲突（包括侧信道冲突）方面具有优越性，其自动化、个性化的冲突处理策略切实可行且易于理解，同时系统性能开销在可接受范围内，证明了该方法在提升智能家居系统安全性和可靠性方面的实用价值。
-Evaluation results demonstrate the superiority of our approach in detecting complex conflicts (including those involving side channels), the viability and user-friendliness of its automated and personalized resolution strategies, and the acceptable performance overhead. This confirms the practical value of our method in enhancing the safety and reliability of smart home systems.
+% 评估结果表明，本方案在检测复杂冲突（包括物理通道）方面具有优越性，其自动化、定制化的冲突处理策略切实可行且易于理解，同时系统性能开销在可接受范围内，证明了该方法在提升智能家居系统安全性和可靠性方面的实用价值。
+Evaluation results demonstrate the superiority of our approach in detecting complex conflicts (including those involving physical channels). The automated and customized conflict handling strategies are feasible and easy to understand. Meanwhile, the system performance overhead remains within an acceptable range, proving the practical value of this method in enhancing the safety and reliability of smart home systems.
