@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex paper"] 1773003981.21896 "paper.aux" "paper.bbl" "paper" 1773003986.5593 0
+["bibtex paper"] 1773003981.21896 "paper.aux" "paper.bbl" "paper" 1773019589.65883 0
   "./paper.bib" 1745211941 9741 8f1742e09e0cb1a150f70898e202f7df ""
   "./splncs04.bst" 1698944183 32146 aadf770ded437d161532035219ea6f45 ""
-  "paper.aux" 1773003985 4943 55a5d6158e2a63d94a2119ad834cbc65 "pdflatex"
+  "paper.aux" 1773019588 4943 55a5d6158e2a63d94a2119ad834cbc65 "pdflatex"
   (generated)
   "paper.bbl"
   "paper.blg"
   (rewritten before read)
-["pdflatex"] 1773003981.74404 "e:/School/CST/3-论文/Rule Conflict Detection in Smart Homes through Hybrid Detection/wasa_init/paper.tex" "paper.pdf" "paper" 1773003986.56008 0
-  "abstract.tex" 1773000882 1216 baf3fa8d38b0d83b759c5382aa14c962 ""
+["pdflatex"] 1773019584.54896 "e:/School/CST/3-论文/GitHub/Rule Conflict Prevention in Smart Homes through Hybrid Detection/paper.tex" "paper.pdf" "paper" 1773019589.65962 0
+  "abstract.tex" 1773019587 1216 baf3fa8d38b0d83b759c5382aa14c962 ""
   "conclusion.tex" 1773001245 1160 3a305df97c8ae62f2176adf73afb4666 ""
   "design.tex" 1773002078 11172 bc509d8cc878f503f734a274e7165e50 ""
   "e:/Program/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1730723181 2971 def0b6c1f0b107b3b936def894055589 ""
@@ -187,7 +187,7 @@
   "e:/Program/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1730724615 5421107 9f743d4bb4a094e0b2f2c3b3bd6836a3 ""
   "e:/Program/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt" 1730724751 6862388 c113621c83d6a432f47239d8f0430563 ""
   "e:/Program/texlive/2024/texmf.cnf" 1730724598 713 e69b156964470283e0530f5060668171 ""
-  "e:/School/CST/3-论文/Rule Conflict Detection in Smart Homes through Hybrid Detection/wasa_init/paper.tex" 1773003220 1160 df15190e9f58f85e1a03dd34b257229c ""
+  "e:/School/CST/3-论文/GitHub/Rule Conflict Prevention in Smart Homes through Hybrid Detection/paper.tex" 1773003220 1160 df15190e9f58f85e1a03dd34b257229c ""
   "evaluation.tex" 1773001747 12611 32506cd298acb1452b9b038b3b436986 ""
   "figure/motivated_example.png" 1772998461 1567945 9d91fb1f7659c404e38886b25b554e2d ""
   "figure/overall_design.png" 1772995093 158097 d5aa841d3e86f43517053c14c844ddab ""
@@ -195,7 +195,7 @@
   "introduction.tex" 1773003973 5347 0303c52504785ea395df0133740dc3a4 ""
   "llncs.cls" 1706524643 43402 5fb5a2dc40571aa40f3d199c00cbb986 ""
   "motivated_example.tex" 1773003405 2361 afe9dc9d5ecb01e84bf20f1cd70f347f ""
-  "paper.aux" 1773003985 4943 55a5d6158e2a63d94a2119ad834cbc65 "pdflatex"
+  "paper.aux" 1773019588 4943 55a5d6158e2a63d94a2119ad834cbc65 "pdflatex"
   "paper.bbl" 1773003981 5174 b5d8809c2e3782b7ef0aba7204bb8f1e "bibtex paper"
   "paper.tex" 1773003220 1160 df15190e9f58f85e1a03dd34b257229c ""
   "relatedwork.tex" 1773003114 3955 d31491d568a1c0880fcb07e1c0328b9b ""
