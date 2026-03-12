@@ -3,3 +3,13 @@
 *.py
 *.txt
 *md
+
+*.bst
+*.gz
+*.log
+*.fls
+*.fdb_latexmk
+*.blg
+*.bbl
+*.ayx
+*.pdf
