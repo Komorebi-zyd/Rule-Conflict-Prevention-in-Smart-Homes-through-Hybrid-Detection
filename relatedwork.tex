@@ -1,43 +1,9 @@
 \section{Related Work}
 
-\begin{table*}[htbp]
-	\centering
-	\caption{Comparison of IoT Rule Conflict Detection Approaches}
-	\label{Relate_Work}
-	\begin{adjustbox}{width=0.98\textwidth}
-		\begin{tabular}{|l|c|c|c|l|c|c|c|l|}
-			\hline
-			\textbf{Name} & \textbf{DIC} & \textbf{Physical Channel} & \textbf{Zone Awareness} & \textbf{Detection Method} & \textbf{Runtime Verification} & \textbf{User Preference} & \textbf{User Effort} & \textbf{Generalization} \\
-			\hline
-			\textbf{Soteria\cite{celik2018soteria}} & T & F & F & Static & F & F & High & Low \\
-			\hline
-			\textbf{IoTGuard\cite{celik2019iotguard}} & T & F & F & Dynamic & F & F & Med & Low \\
-			\hline
-			\textbf{SafeChain\cite{hsu2019safechain}} & T & F & F & Static & F & F & Med & Med \\
-			\hline
-			\textbf{iRuler\cite{wang2019charting}} & T & T* & T* & Static & F & F & Low & Low \\
-			\hline
-			\textbf{IoTIE\cite{chen2019multi}} & T & T & T* & Static & F & F & Low & Med \\
-			\hline
-			\textbf{IoTSafe\cite{ding2021iotsafe}} & T & T & T & Hybrid & F & F & Very High & High \\
-			\hline
-			\textbf{IoTCom\cite{alhanahnah2022iotcom}} & F & T & F & Static & F & F & High & Med \\
-			\hline
-			\textbf{IoTMediator\cite{chi2023detecting}} & F & F & F & Hybrid & F & T & High & High \\
-			\hline
-			\textbf{Ours} & \textbf{T} & \textbf{T} & \textbf{T} & \textbf{Hybrid} & \textbf{T} & \textbf{T} & \textbf{Low} & \textbf{High} \\
-			\hline
-		\end{tabular}
-	\end{adjustbox}
-	\par\vspace{4pt}
-	\footnotesize
-	\noindent\textbf{Note:} "DIC" means distinguishing rule interaction from candidate rule conflicts. "Runtime Verification" means checking whether a candidate conflict edge is activated when a rule is triggered. "T*" indicates partial support or support that depends on deployment-specific input.
-\end{table*}
+Prior work on rule conflict detection for smart home systems spans security-policy checking, formal verification, interaction-pattern analysis, and hybrid detection. Huang et al.~\cite{huang2023survey} note that the problem definition, detection target, and conflict taxonomy of smart home rule conflict detection are still not fully unified.
 
-Prior work on rule conflict detection for smart home systems spans security-policy checking, formal verification, interaction-pattern analysis, and hybrid detection. Huang et al.~\cite{huang2023survey} note that the problem definition, detection target, and conflict taxonomy of smart-home rule conflict detection are still not fully unified. Table~\ref{Relate_Work} compares representative approaches.
+\textbf{Policy/property checking.} Soteria~\cite{celik2018soteria} extracts an intermediate representation and uses model checking to detect property violations in individual apps and app interactions, but it does not model physical-channel effects. IoTGuard~\cite{celik2019iotguard} enforces predefined safety/security policies at runtime by blocking unsafe actions before execution; however, its protection is mainly expressed at the action layer and cannot capture conflicts that arise via physical-channel propagation (e.g., an action changes an environmental variable that later triggers another rule). SafeChain~\cite{hsu2019safechain} models trigger--action programs as state machines to detect attack chains and reports repair suggestions, but its “dynamic” part primarily reacts to rule updates rather than confirming whether a candidate rule conflict is activated when rules are triggered.
 
-Security-policy-based and formal-verification approaches detect conflicts by checking predefined policies, attributes, or formal safety properties. Soteria~\cite{celik2018soteria}, IoTGuard~\cite{celik2019iotguard}, SafeChain~\cite{hsu2019safechain}, IoTSan~\cite{nguyen2018iotsan}, and IoTSafe~\cite{ding2021iotsafe} rely on predefined policies, templates, or formal properties to identify unsafe behaviors. Formal-verification approaches, such as those of Sun et al.~\cite{sun2014conflict}, Ibrhim et al.~\cite{ibrhim2020formal}, and TapInspector~\cite{yu2022tapinspector}, verify rule consistency and safety properties over formal rule models. These approaches are effective for known policies or properties, but their coverage depends on the availability of suitable rules.
+\textbf{Physical-channel-aware analysis.} iRuler~\cite{wang2019charting} and IoTIE~\cite{chen2019multi} analyze interactions through physical channels by mapping rules/actions to environmental variables, which helps expose hidden interactions beyond shared devices. However, their zone awareness depends on deployment-specific input (or is limited), which may lead to false positives when physical-channel propagation across zones is over-approximated. IoTSafe~\cite{ding2021iotsafe} further combines static analysis with dynamic monitoring to validate real physical interactions and builds physical models for prediction, but it introduces substantial deployment/testing effort and can be sensitive to environmental disturbances. IoTCom~\cite{alhanahnah2022iotcom} identifies interaction threats across cyber and physical channels via static analysis and bounded model checking, yet it lacks explicit zone-aware propagation modeling and thus may over-report cross-zone interactions.
 
-Interaction-pattern-based approaches identify suspicious relations among automation rules rather than directly checking policy violations. IoTCom~\cite{alhanahnah2022iotcom} detects potential interactions, including physical-channel-related ones, through static analysis. HomeGuard~\cite{trimananda2020understanding} and IoTMediator~\cite{chi2023detecting} enumerate representative interaction threats from empirical observations. While these methods can reveal many logical associations, they do not always distinguish benign interaction from candidate rule conflicts, especially when the interaction is part of an intended feedback loop.
-
-Compared with these approaches, our framework combines physical-channel-aware rule modeling, zone-aware analysis, user-defined Entity Safety Configuration, and runtime assertion verification. It distinguishes general rule interaction from candidate rule conflicts and checks whether the corresponding candidate conflict edge is activated at runtime.
+\textbf{Hybrid monitoring and handling.} IoTMediator~\cite{chi2023detecting} combines static pre-screening with dynamic monitoring and supports customized handling of detected threats, but it does not explicitly model physical-channel effects or zone-dependent propagation. In contrast, our framework models zone-aware physical-channel propagation, uses a user-defined Entity Safety Configuration to filter general interactions into candidate rule conflicts, and applies runtime assertion verification to confirm whether a candidate rule conflict edge is activated under the current system state. This design reduces false positives while keeping the runtime overhead at the millisecond level.

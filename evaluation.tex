@@ -2,11 +2,11 @@
 
 We evaluate the framework on a Home Assistant prototype. The evaluation focuses on detection effectiveness and the execution time of the static and runtime components.
 
-\subsection{Smart Home Testbeds}
+\subsection{Experiment Setup}
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=0.8\textwidth]{figure/smarthome.png}
+	\includegraphics[width=0.9\textwidth]{figure/smarthome.png}
 	\caption{Smart Home Floor Plan used for Evaluation}
 	\label{smarthome_floorplan}
 \end{figure}
@@ -43,47 +43,47 @@ Spatial connectivity determines whether environmental effects can propagate acro
 Table~\ref{Testbeds} summarizes the 17 automation rules deployed in the testbed. For the Entity Safety Configuration, we define preferred safe states for four safety-sensitive entities: the Water Valve \circled{18} is preferred to remain "open" to preserve fire supply, the Sprinkler \circled{20} is preferred to remain "enabled", the Bedroom Window \circled{26} is preferred to remain "closed", and the Smart Door Lock \circled{3} is preferred to remain "locked".
 
 \begin{table*}[htbp]
-	\caption{Experimental Smart Home Rules (R1--R17)}
+	\caption{Experimental Smart Home Rules (R1--R17).}
 	\label{Testbeds}
 	\centering
 	\begin{adjustbox}{width=\textwidth}
 	\begin{tabular}{c|l|c|l}
 		\hline
-		\textbf{Rule ID} & \textbf{Content} & \textbf{Zone} & \textbf{Devices} \\
+		\textbf{Rule ID} & \textbf{Trigger; Condition; Action} & \textbf{Zone} & \textbf{Devices} \\
 		\hline
-		R1 & When the door lock is opened, if the brightness is below 50lux, turn on the outdoor and porch lights. & Outdoor & \circled{1} \circled{2} \circled{3} \circled{4} \\
+		R1  & Door lock is opened; Brightness $<50$\,lux; Turn on the outdoor light and porch light. & Outdoor & \circled{1} \circled{2} \circled{3} \circled{4} \\
 		\hline
-		R2 & When the greenhouse light is turned off, unlock the door. & Porch & \circled{3} \\
+		R2  & Greenhouse light is turned off; --; Unlock the door lock. & Porch & \circled{3} \\
 		\hline
-		R3 & When motion is detected in the porch, if the brightness is below 50lux, turn on the porch light. & Porch & \circled{4} \circled{5} \circled{6} \\
+		R3  & Motion is detected in the porch; Brightness $<50$\,lux; Turn on the porch light. & Porch & \circled{4} \circled{5} \circled{6} \\
 		\hline
-		R4 & When motion is detected in the living room, if the brightness is below 50lux, turn on the living room light. & Living Room & \circled{7} \circled{8} \circled{10}\\
+		R4  & Motion is detected in the living room; Brightness $<50$\,lux; Turn on the living room light. & Living Room & \circled{7} \circled{8} \circled{10}\\
 		\hline
-		R5 & When the living room humidity is below 40\%, and the humidifier is off, turn on the humidifier. & Living Room & \circled{9} \circled{11} \\
+		R5  & Living room humidity $<40\%$; Humidifier is off; Turn on the humidifier. & Living Room & \circled{9} \circled{11} \\
 		\hline
-		R6 & When the living room humidity is above 60\%, turn off the humidifier. & Living Room & \circled{9} \circled{11} \\
+		R6  & Living room humidity $>60\%$; --; Turn off the humidifier. & Living Room & \circled{9} \circled{11} \\
 		\hline
-		R7 & When the living room temperature is below 24\celsius, turn on the underfloor heating. & Living Room & \circled{9} \circled{12}\\
+		R7  & Living room temperature $<24$\celsius; --; Turn on the underfloor heating. & Living Room & \circled{9} \circled{12}\\
 		\hline
-		R8 & When the living room temperature is above 30\celsius, turn on the air conditioner and set it to 27\celsius. & Living Room & \circled{9} \circled{13} \\
+		R8  & Living room temperature $>30$\celsius; --; Turn on the air conditioner and set it to $27$\celsius. & Living Room & \circled{9} \circled{13} \\
 		\hline
-		R9 & When motion is detected in the kitchen, if the brightness is below 50lux, turn on the kitchen light. & Kitchen & \circled{14} \circled{15} \circled{17} \\
+		R9  & Motion is detected in the kitchen; Brightness $<50$\,lux; Turn on the kitchen light. & Kitchen & \circled{14} \circled{15} \circled{17} \\
 		\hline
-		R10 & When a water leak is detected, close the main water valve. & Kitchen & \circled{16} \circled{18} \\
+		R10 & Water leak is detected; --; Close the main water valve. & Kitchen & \circled{16} \circled{18} \\
 		\hline
-		R11 & When the smoke detector is triggered, enable the sprinkler. & Kitchen & \circled{19} \circled{20} \\
+		R11 & Smoke detector is triggered; --; Enable the sprinkler. & Kitchen & \circled{19} \circled{20} \\
 		\hline
-		R12 & When motion is detected in the bedroom, if the brightness is below 50lux, turn on the bedroom light. & Bedroom & \circled{21} \circled{22} \circled{24} \\
+		R12 & Motion is detected in the bedroom; Brightness $<50$\,lux; Turn on the bedroom light. & Bedroom & \circled{21} \circled{22} \circled{24} \\
 		\hline
-		R13 & At 7 PM, turn on the bedroom heater. & Bedroom & \circled{25} \\
+		R13 & At 7 PM; --; Turn on the bedroom heater. & Bedroom & \circled{25} \\
 		\hline
-		R14 & When the bedroom temperature reaches 30\celsius, open the bedroom window and turn off the heater. & Bedroom & \circled{23} \circled{25} \circled{26} \\
+		R14 & Bedroom temperature reaches $30$\celsius; --; Open the bedroom window and turn off the heater. & Bedroom & \circled{23} \circled{25} \circled{26} \\
 		\hline
-		R15 & When the door lock is locked, turn off the porch light and greenhouse light. & Outdoor & \circled{3} \circled{4} \circled{32} \\
+		R15 & Door lock is locked; --; Turn off the porch light and greenhouse light. & Outdoor & \circled{3} \circled{4} \circled{32} \\
 		\hline
-		R16 & At 7 PM, turn on the greenhouse heater. & Greenhouse & \circled{31} \\
+		R16 & At 7 PM; --; Turn on the greenhouse heater. & Greenhouse & \circled{31} \\
 		\hline
-		R17 & When the greenhouse temperature reaches 32\celsius, open the skylight and turn off the heater. & Greenhouse & \circled{29} \circled{31} \circled{32} \\
+		R17 & Greenhouse temperature reaches $32$\celsius; --; Open the skylight and turn off the heater. & Greenhouse & \circled{29} \circled{31} \circled{32} \\
 		\hline
 	\end{tabular}
 	\end{adjustbox}
@@ -99,7 +99,7 @@ Table~\ref{conflict_detection_result} reports selected conflict-related rule pai
 
 \begin{table*}[htbp]
 	\centering
-	\caption{Selected Conflict-Related Rule Pairs and Detection Results}
+	\caption{Selected conflict-related rule pairs and detection results. Columns include all manually confirmed conflict cases under the configured Entity Safety Configuration and representative non-conflict pairs flagged by at least one system. $\checkmark$ = true positive (reported and confirmed), $\times$ = false positive (misreport), -- = not reported}
 	\label{conflict_detection_result}
 	\resizebox{\textwidth}{!}{
 		\begin{tabular}{|c|l|c|c|c|c|c|c|c|c|c|c|c|c|}
@@ -107,32 +107,38 @@ Table~\ref{conflict_detection_result} reports selected conflict-related rule pai
 			& \multicolumn{1}{c|}{\textbf{Classification}} & \textbf{R2-R1} & \textbf{R3-R15} & \textbf{R5-R6} & \textbf{R6-R5} & \textbf{R10-R11} & \textbf{R11-R10} & \textbf{R13-R14} & \textbf{R14-R13} & \textbf{R15-R2} & \textbf{R15-R3} & \textbf{R16-R17} & \textbf{R17-R16} \\ \hline
 
 			\multirow{6}{*}{\textbf{Ours}}
-			& Trigger Conflict             &          &          &          &          &          &          &          &          &$\checkmark$&          &          &          \\ \cline{2-14}
-			& Condition Conflict           &          &          &          &          &          &          &          &          &              &          &          &          \\ \cline{2-14}
-			& Action Conflict              &          &          &          &          &          &          &$\checkmark$&$\checkmark$&              &          &          &          \\ \cline{2-14}
-			& Indirect Trigger Conflict    &          &          &          &          &          &$\checkmark$&$\checkmark$&          &              &          &          &          \\ \cline{2-14}
-			& Indirect Condition Conflict  &          &          &          &          &          &          &          &          &              &          &          &          \\ \cline{2-14}
-			& Indirect Action Conflict     &          &          &          &          &$\checkmark$&$\checkmark$&$\checkmark$&$\checkmark$&              &          &          &          \\ \hline
+			& Trigger Conflict             & -- & -- & -- & -- & -- & -- & -- & -- & $\checkmark$ & -- & -- & -- \\ \cline{2-14}
+			& Condition Conflict           & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- \\ \cline{2-14}
+			& Action Conflict              & -- & -- & -- & -- & -- & -- & $\checkmark$ & $\checkmark$ & -- & -- & -- & -- \\ \cline{2-14}
+			& Indirect Trigger Conflict    & -- & -- & -- & -- & -- & $\checkmark$ & $\checkmark$ & -- & -- & -- & -- & -- \\ \cline{2-14}
+			& Indirect Condition Conflict  & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- \\ \cline{2-14}
+			& Indirect Action Conflict     & -- & -- & -- & -- & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & -- & -- & -- & -- \\ \hline
 
 			\multirow{7}{*}{\textbf{IoTMediator}}
-			& Condition Enabling/Disabling      &          &          & $\times$ & $\times$ &          &          &          &          &              &          &          &          \\ \cline{2-14}
-			& Race Condition                    &          &          &          &          &          &          &          &          &              &          &          &          \\ \cline{2-14}
-			& Potential Race Condition          &          & $\times$ & $\times$ & $\times$ &          &          &$\checkmark$&$\checkmark$&          & $\times$ & $\times$ & $\times$ \\ \cline{2-14}
-			& Chained Execution                 & $\times$ &          &          &          &          &          &          &          & $\checkmark$ &          &          &          \\ \cline{2-14}
-			& Action Revert                     &          &          &          &          &          &          &          &          &              &          &          &          \\ \cline{2-14}
-			& Infinite Loop                     &          &          &          &          &          &          &          &          &              &          &          &          \\ \cline{2-14}
-			& Condition Bypass                  &          &          &          &          &          &          &          &          &              &          &          &          \\ \hline
+			& Condition Enabling/Disabling & -- & -- & $\times$ & $\times$ & -- & -- & -- & -- & -- & -- & -- & -- \\ \cline{2-14}
+			& Race Condition               & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- \\ \cline{2-14}
+			& Potential Race Condition     & -- & $\times$ & $\times$ & $\times$ & -- & -- & $\checkmark$ & $\checkmark$ & -- & $\times$ & $\times$ & $\times$ \\ \cline{2-14}
+			& Chained Execution            & $\times$ & -- & -- & -- & -- & -- & -- & -- & $\checkmark$ & -- & -- & -- \\ \cline{2-14}
+			& Action Revert                & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- \\ \cline{2-14}
+			& Infinite Loop                & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- \\ \cline{2-14}
+			& Condition Bypass             & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- \\ \hline
 		\end{tabular}
 	}
 	\par\vspace{2pt}
 	\footnotesize
-	\noindent\textbf{Note:} The table reports selected conflict-related rule pairs, including all manually confirmed conflict cases under the configured Entity Safety Configuration and representative non-conflict pairs flagged by at least one system. One rule pair may satisfy multiple conflict categories..
 \end{table*}
 
 \subsection{Performance}
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{figure/performance.png}
+  \caption{Static analysis execution time under different rule-set sizes.}
+  \label{performance_static_analysis}
+\end{figure}
+
 We evaluate the execution time of the static and runtime components of the framework.
 
-In the static phase, the system constructs TCAE models, builds the RIDG, and extracts the RCDG. Since the analysis checks pairwise interaction among automation rules, its time complexity is $O(n^2)$ for $n$ rules. We measured static analysis on synthetically generated rule sets up to 1000 rules, and static analysis completes in about 12 seconds for 1000 rules. Because this phase runs offline after rule updates, its execution time does not affect normal runtime operation.
+\textbf{Static analysis.} The static phase constructs TCAE models, builds the RIDG, and extracts the RCDG. Since the analysis checks pairwise interactions among automation rules, the time complexity is $O(n^2)$ for $n$ rules. Figure~\ref{performance_static_analysis} reports the average execution time on synthetically generated rule sets. The static analysis completes in 0.0013\,s, 0.0291\,s, 0.118\,s, 2.99\,s, and 11.95\,s for 10, 50, 100, 500, and 1000 rules, respectively. Because this phase runs offline after rule updates, it does not affect normal runtime operation.
 
-In the runtime phase, the main overhead comes from state retrieval and timestamp acquisition used by assertion verification. In our prototype, \texttt{get\_entity\_state} retrieves the current device state with an average latency of $1.193 \times 10^{-3}$\,s and a maximum latency of $1.953 \times 10^{-3}$\,s, while \texttt{time\_now} obtains the current platform time with an average latency of $9.765 \times 10^{-4}$\,s and a maximum latency of $9.825 \times 10^{-4}$\,s; each function was measured 10 times. One assertion verification requires only a small number of such calls, so the resulting runtime overhead remains limited.
+\textbf{Runtime verification.} In the runtime phase, the main overhead comes from state retrieval and timestamp acquisition used by assertion verification. In our prototype, \texttt{get\_entity\_state} retrieves the current device state with an average latency of $1.193 \times 10^{-3}$\,s and a maximum latency of $1.953 \times 10^{-3}$\,s, while \texttt{time\_now} obtains the current platform time with an average latency of $9.765 \times 10^{-4}$\,s and a maximum latency of $9.825 \times 10^{-4}$\,s; each function was measured 10 times. Each assertion verification requires only a small number of such calls, so the resulting runtime overhead remains at the millisecond level.
