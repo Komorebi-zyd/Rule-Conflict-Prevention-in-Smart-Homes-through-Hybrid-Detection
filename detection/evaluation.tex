@@ -130,15 +130,37 @@ Table~\ref{conflict_detection_result} reports selected conflict-related rule pai
 
 \subsection{Performance}
 
-\begin{figure}[htbp]
+% \begin{figure}[htbp]
+%   \centering
+%   \includegraphics[width=0.8\textwidth]{figure/performance.png}
+%   \caption{Static analysis execution time under different rule-set sizes.}
+%   \label{performance_static_analysis}
+% \end{figure}
+
+\begin{figure*}[t]
   \centering
-  \includegraphics[width=0.8\textwidth]{figure/performance.png}
-  \caption{Static analysis execution time under different rule-set sizes.}
-  \label{performance_static_analysis}
-\end{figure}
+  \begin{minipage}[t]{0.48\linewidth}
+        \begin{subfigure}{\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{figure/static.pdf}
+            \caption{Static analysis execution time under different rule-set sizes.}            
+            \label{subfig:static}
+        \end{subfigure}
+  \end{minipage}
+    \begin{minipage}[t]{0.48\linewidth}
+        \begin{subfigure}{\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{figure/runtime.pdf}
+            \caption{Runtime verification execution time of different functions.}            
+            \label{subfig:runtime}
+        \end{subfigure}
+  \end{minipage}
+  \caption{The execution time of different components.}
+  \label{fig:performance}
+\end{figure*}
 
 We evaluate the execution time of the static and runtime components of the framework.
 
-\textbf{Static analysis.} The static phase constructs TCAE models, builds the RIDG, and extracts the RCDG. Since the analysis checks pairwise interactions among automation rules, the time complexity is $O(n^2)$ for $n$ rules. Figure~\ref{performance_static_analysis} reports the average execution time on synthetically generated rule sets. The static analysis completes in 0.0013\,s, 0.0291\,s, 0.118\,s, 2.99\,s, and 11.95\,s for 10, 50, 100, 500, and 1000 rules, respectively. Because this phase runs offline after rule updates, it does not affect normal runtime operation.
+\textbf{Static analysis.} The static phase constructs TCAE models, builds the RIDG, and extracts the RCDG. Since the analysis checks pairwise interactions among automation rules, the time complexity is $O(n^2)$ for $n$ rules. Figure~\ref{subfig:static} reports the average execution time on synthetically generated rule sets. The static analysis completes in 0.0013\,s, 0.0291\,s, 0.118\,s, 2.99\,s, and 11.95\,s for 10, 50, 100, 500, and 1000 rules, respectively. Because this phase runs offline after rule updates, it does not affect normal runtime operation.
 
 \textbf{Runtime verification.} In the runtime phase, the main overhead comes from state retrieval and timestamp acquisition used by assertion verification. In our prototype, \texttt{get\_entity\_state} retrieves the current device state with an average latency of $1.193 \times 10^{-3}$\,s and a maximum latency of $1.953 \times 10^{-3}$\,s, while \texttt{time\_now} obtains the current platform time with an average latency of $9.765 \times 10^{-4}$\,s and a maximum latency of $9.825 \times 10^{-4}$\,s; each function was measured 10 times. Each assertion verification requires only a small number of such calls, so the resulting runtime overhead remains at the millisecond level.
