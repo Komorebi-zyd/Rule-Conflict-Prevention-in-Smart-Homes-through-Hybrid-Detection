@@ -28,7 +28,7 @@ Table~\ref{Formal_Analysis_Expression} summarizes the formal verification rules.
 	\begin{adjustbox}{width=0.95\textwidth}
 		\begin{tabular}{c|c}
 			\hline
-			\textbf{Classification} & \textbf{Expression}\\
+			\textbf{Category} & \textbf{Expression}\\
 			\hline
 			\text{Trigger Interaction} & $(\exists a_{1}\in A_{1})\wedge(a_{1}\rightarrow T_{2})$ \\
 			\hline
@@ -59,60 +59,53 @@ Even when an edge $R_i \rightarrow R_j$ exists in the RCDG, the corresponding ca
 \begin{table}[t]
 	\centering
 	\small
-	\caption{Runtime Assertion Verification Rules and Their Meanings}
+	\caption{Runtime Assertion Verification Rules}
 	\label{Assertion_Verification}
+	\renewcommand{\arraystretch}{1.1}
 	\begin{adjustbox}{width=\textwidth}
-		\begin{tabular}{>{\centering\arraybackslash}m{4.2cm}|>{\centering\arraybackslash}m{5.0cm}|>{\centering\arraybackslash}m{5.0cm}}
+		\begin{tabular}{>{\centering\arraybackslash}m{4.2cm}|>{\raggedright\arraybackslash}p{9.2cm}}
 			\hline
-			\textbf{Classification} & \textbf{Expression} & \textbf{Interpretation}\\
+			\textbf{Category} & \textbf{Expression}\\
 			\hline
-			\makecell[c]{
-				Trigger-Based Conflict
-			}
+			\makecell[c]{Trigger-Based Conflict}
 			&
-			\makecell[c]{
-				$obs(T_1), obs(C_1), obs(A_1)$ \\
-				$obs(T_2), obs(C_2)$, $intime(A_1, T_2, \delta)$
-			}
-			&
-			$R_1$ executes successfully. Within $\delta$, $R_2$ is triggered and its condition is satisfied, indicating that $R_1$ activates the execution path of $R_2$.\\
+			\makecell[l]{
+				$obs(T_1), obs(C_1), obs(A_1)$ \rcmtinline{$R_1$ is executed} \\
+				$obs(T_2), obs(C_2), intime(A_1, T_2, \delta)$ \\
+				\rcmtbelow{within $\delta$, $R_2$ is triggered and its condition is satisfied}
+			}\\
 			\hline
 			\makecell[c]{
 				Condition-Based Conflict \\
 				(Make Conditions Forbidden)
 			}
 			&
-			\makecell[c]{
-				$obs(C_2)$ \\
-				$obs(T_1), obs(C_1), obs(A_1)$ \\
-				$obs(\neg C_2)$, $intime(A_1, \neg C_2, \delta)$
-			}
-			&
-			Condition $C_2$ is initially satisfied, but becomes unsatisfied within $\delta$ after $R_1$ executes.\\
+			\makecell[l]{
+				$obs(C_2)$ \rcmtinline{$C_2$ is initially satisfied} \\
+				$obs(T_1), obs(C_1), obs(A_1)$ \rcmtinline{$R_1$ is executed} \\
+				$obs(\neg C_2), intime(A_1, \neg C_2, \delta)$ \\
+				\rcmtbelow{within $\delta$, $C_2$ becomes unsatisfied}
+			}\\
 			\hline
 			\makecell[c]{
 				Condition-Based Conflict \\
 				(Make Conditions Satisfied)
 			}
 			&
-			\makecell[c]{
-				$obs(\neg C_2)$ \\
-				$obs(T_1), obs(C_1), obs(A_1)$ \\
-				$obs(C_2)$, $intime(A_1, C_2, \delta)$
-			}
-			&
-			Condition $C_2$ is initially unsatisfied, but becomes satisfied within $\delta$ after $R_1$ executes.\\
+			\makecell[l]{
+				$obs(\neg C_2)$ \rcmtinline{$C_2$ is initially unsatisfied} \\
+				$obs(T_1), obs(C_1), obs(A_1)$ \rcmtinline{$R_1$ is executed} \\
+				$obs(C_2), intime(A_1, C_2, \delta)$ \\
+				\rcmtbelow{within $\delta$, $C_2$ becomes satisfied}
+			}\\
 			\hline
-			\makecell[c]{
-				Action-Based Conflict
-			}
+			\makecell[c]{Action-Based Conflict}
 			&
-			\makecell[c]{
-				$obs(T_1), obs(C_1), obs(A_1)$ \\
-				$obs(T_2), obs(C_2)$
-			}
-			&
-			$R_1$ has executed, and $R_2$ has reached the action-ready state, indicating that both rules may take effect in the current runtime context.\\
+			\makecell[l]{
+				$obs(T_1), obs(C_1), obs(A_1)$ \rcmtinline{$R_1$ is executed} \\
+				$obs(T_2), obs(C_2)$ \\
+				\rcmtbelow{$R_2$ reaches the action-ready state}
+			}\\
 			\hline
 		\end{tabular}
 	\end{adjustbox}

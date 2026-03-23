@@ -100,12 +100,12 @@ Table~\ref{conflict_detection_result} reports selected conflict-related rule pai
 
 \begin{table*}[t]
 	\centering
-	\caption{Selected conflict-related rule pairs and detection results. Columns include all manually confirmed conflict cases under the configured Entity Safety Configuration and representative non-conflict rule pairs flagged by at least one system. Each cell indicates whether the corresponding system reports that rule pair under a specific conflict category. Here, $\checkmark$ denotes that the reported pair/category matches a manually confirmed conflict case; $\times$ denotes that the system reports a pair/category that is not a conflict case under the configured deployment and Entity Safety Configuration; and -- denotes that the pair is not reported under that specific category.}
+	\caption{Selected conflict-related rule pairs and detection results. $\checkmark$ denotes that the reported pair/category matches a manually confirmed conflict case; $\times$ denotes that the system reports a pair/category that is not a conflict case under the configured deployment and Entity Safety Configuration; and -- denotes that the pair is not reported under that specific category.}
 	\label{conflict_detection_result}
 	\resizebox{\textwidth}{!}{
 		\begin{tabular}{|c|l|c|c|c|c|c|c|c|c|c|c|c|c|}
 			\hline
-			& \multicolumn{1}{c|}{\textbf{Classification}} & \textbf{R2-R1} & \textbf{R3-R15} & \textbf{R5-R6} & \textbf{R6-R5} & \textbf{R10-R11} & \textbf{R11-R10} & \textbf{R13-R14} & \textbf{R14-R13} & \textbf{R15-R2} & \textbf{R15-R3} & \textbf{R16-R17} & \textbf{R17-R16} \\ \hline
+			& \multicolumn{1}{c|}{\textbf{Conflict Ca}} & \textbf{R2-R1} & \textbf{R3-R15} & \textbf{R5-R6} & \textbf{R6-R5} & \textbf{R10-R11} & \textbf{R11-R10} & \textbf{R13-R14} & \textbf{R14-R13} & \textbf{R15-R2} & \textbf{R15-R3} & \textbf{R16-R17} & \textbf{R17-R16} \\ \hline
 
 			\multirow{6}{*}{\textbf{Ours}}
 			& Trigger Conflict             & -- & -- & -- & -- & -- & -- & -- & -- & $\checkmark$ & -- & -- & -- \\ \cline{2-14}
