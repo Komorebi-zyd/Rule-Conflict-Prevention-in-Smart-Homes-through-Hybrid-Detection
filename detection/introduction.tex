@@ -21,9 +21,9 @@ In this paper, we propose a hybrid detection framework that integrates static en
 In summary, our main contributions are as follows:
 
 \begin{itemize}
-	\item We propose the TCAE model to characterize implicit rule interactions through zone-dependent physical channel propagation. This modeling approach enables the system to accurately identify potential conflicts that are often incorrectly flagged by methods lacking environmental awareness.
+	\item We propose the TCAE model to characterize implicit rule interactions through zone-dependent physical channel propagation. It enables the system to accurately identify potential conflicts that are often missed by methods lacking environmental awareness.
 	
-	\item We design a hybrid detection framework is developed to integrate static graph analysis with runtime assertion verification. The framework leverages an entity safety configuration to prune benign interactions based on user-defined security boundaries, ensuring high precision while maintaining detection coverage.
+	\item We design a hybrid detection framework to integrate static graph analysis with runtime assertion verification. The framework leverages an entity safety configuration to prune benign interactions based on user-defined security boundaries, ensuring high precision while maintaining detection coverage.
 	
 	\item We implement the system on the Home Assistant platform and evaluate it in a multi-zone testbed. The results demonstrate that our approach effectively eliminates nine false positives reported by the state-of-the-art tool IoTMediator and maintains millisecond-level computational overhead.
 
