@@ -37,12 +37,12 @@
 	\medskip
 	\textbf{D. Handling Strategies (Action Conflicts):} \\
 	\footnotesize (Applies to Action \& Indirect Action Conflicts)
-	{\ttfamily\footnotesize \{'Default Action': 0, 'Only execute \{R1\}': 1, 'Only execute \{R2\}': 2, 'Both executed, end with \{R1\}': 3, 'Both executed, end with \{R2\}': 4, 'Neither is executed': 5\}\par}
+	{\ttfamily\footnotesize \{`Default Action': 0, `Only execute \{R1\}': 1, `Only execute \{R2\}': 2, `Both executed, end with \{R1\}`': 3, `Both executed, end with \{R2\}': 4, `Neither is executed': 5\}\par}
 	
 	\medskip
 	\textbf{E. Handling Strategies (Trigger/Condition):} \\
 	\footnotesize (Applies to Trigger/Condition \& Indirect types)
-	{\ttfamily\footnotesize \{'Default Action': 0, 'Only execute \{R2\}': 1, 'Default execution \{R2\}': 2, 'Cancel execution of \{R2\}': 3\}\par}
+	{\ttfamily\footnotesize \{`Default Action': 0, `Only execute \{R2\}': 1, `Default execution \{R2\}': 2, `Cancel execution of \{R2\}': 3\}\par}
 	
 	\medskip
 	\textbf{F. Required Input Data Format:} \\
@@ -62,8 +62,8 @@
 	\textbf{H. Required Output JSON Structure:} \\
 	The response must be in the following JSON structure, without markdown or extra explanations.\\
 	{\ttfamily\footnotesize
-		\{'policy': "index of policy", \\
-		\hspace*{1em}'reason': "reason why you choose this policy"\}
+		\{`policy': "index of policy", \\
+		\hspace*{1em}`reason': "reason why you choose this policy"\}
 		\par}
 	
 \end{systempromptbox}
