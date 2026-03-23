@@ -1,9 +1,9 @@
 \section{Design}
 
 \subsection{Overview}
-\begin{figure*}[htbp]
+\begin{figure*}[t]
 	\centering
-	\includegraphics[width=0.9\textwidth]{figure/overall_design.png}
+	\includegraphics[width=0.7\textwidth]{figure/overall_design.png}
 	\caption{Overall Architecture of Our Approach}
 	\label{overall_design}
 \end{figure*}
@@ -20,7 +20,7 @@ After modeling automation rules with TCAE, we use formal verification to identif
 
 Table~\ref{Formal_Analysis_Expression} summarizes the formal verification rules. Assume $R_1$ and $R_2$ are configured in the same system. The symbol $\rightarrow$ denotes that an action or environmental effect facilitates a trigger or condition, whereas $\nrightarrow$ denotes that it prevents a condition from being satisfied. For physical-channel attributes, $\bot$ denotes that two attributes have the same $zone$ and $channel$ but opposite $trend$, or that two actions conflict with each other. The symbol $=$ denotes attribute equivalence. Here, $E_{A_1}$ denotes the set of environmental effects induced by the actions in $A_1$, $E_a$ denotes the set of environmental effects induced by a specific action $a$, and $D_a$ denotes the target device of action $a$. When a relation is written over a set of actions or environmental effects, it is interpreted existentially. For example, $A_1 \rightarrow C_2$ means that there exists $a_1 \in A_1$ such that $a_1 \rightarrow C_2$, and $E_{A_1} \perp E_{C_2}$ means that there exist $e_1 \in E_{A_1}$ and $e_2 \in E_{C_2}$ such that $e_1 \perp e_2$.
 
-\begin{table*}[htbp]
+\begin{table*}[t]
 	\centering
 	\small
 	\caption{Formal Verification Rules for Rule Interaction}
@@ -54,45 +54,65 @@ To construct the RCDG, we assign a safety score ($sf$) to each interaction edge 
 
 Runtime dynamic monitoring focuses on rule events and their corresponding nodes in the RCDG. When an automation rule $R_i$ is triggered, the system first checks whether $R_i$ has a corresponding node in the RCDG. If not, the current event does not require further conflict checking. If such a node exists, the system further checks whether it participates in any outgoing candidate conflict edges. If no such edge exists, no additional runtime verification is required. Otherwise, the system selects the corresponding candidate conflict edges for subsequent assertion verification. The runtime context is updated when the affected device state is later changed by user intervention or by another automation rule, so that expired rule effects are removed from subsequent checking.
 
-Even when an edge $R_i \rightarrow R_j$ exists in the RCDG, the corresponding candidate conflict edge is not necessarily activated at runtime. Assertion verification therefore checks whether the candidate conflict edge indicated by static analysis is supported by runtime evidence. We use $obs(X)$ to denote that event $X$ is observed, including trigger events $obs(T)$, successful condition checks $obs(C)$, failed condition checks $obs(\neg C)$, and action execution $obs(A)$. We use $intime(X,Y,\delta)$ to denote that the time interval between $X$ and $Y$ is smaller than $\delta$, where the default threshold is $\delta = 0.01\,\mathrm{s}$. Because direct and indirect candidate rule conflicts share the same runtime evidence pattern, we use three assertion templates, summarized in Table~\ref{Assertion_Verification}. For Action-Based Conflict, the framework reports an impending conflict before the second action is executed: observing $T_2$ and $C_2$ means that the second rule has entered the action-ready state, and no additional $intime(\cdot)$ constraint is required because the conflict may arise even when the two actions are separated in time, as long as the first rule's effect remains valid in the current runtime context.
+Even when an edge $R_i \rightarrow R_j$ exists in the RCDG, the corresponding candidate conflict edge is not necessarily activated at runtime. Assertion verification therefore checks whether the candidate conflict edge indicated by static analysis is supported by runtime evidence. We use $obs(X)$ to denote that event $X$ is observed, including trigger events $obs(T)$, successful condition checks $obs(C)$, failed condition checks $obs(\neg C)$, and action execution $obs(A)$. We use $intime(X,Y,\delta)$ to denote that the time interval between $X$ and $Y$ is smaller than $\delta$, where the default threshold is $\delta = 0.01\,\mathrm{s}$. Because direct and indirect candidate rule conflicts share the same runtime evidence pattern, we use four assertion templates, summarized in Table~\ref{Assertion_Verification}. For Action-Based Conflict, the framework reports an impending conflict before the second action is executed: observing $T_2$ and $C_2$ means that the second rule has entered the action-ready state, and no additional $intime(\cdot)$ constraint is required because the conflict may arise even when the two actions are separated in time, as long as the first rule's effect remains valid in the current runtime context.
 
-\begin{table}[htbp]
+\begin{table}[t]
 	\centering
 	\small
-	\caption{Runtime Assertion Verification Rules}
+	\caption{Runtime Assertion Verification Rules and Their Meanings}
 	\label{Assertion_Verification}
-	\begin{adjustbox}{width=0.8\textwidth}
-		\begin{tabular}{c|c}
+	\begin{adjustbox}{width=\textwidth}
+		\begin{tabular}{>{\centering\arraybackslash}m{4.2cm}|>{\centering\arraybackslash}m{5.0cm}|>{\centering\arraybackslash}m{5.0cm}}
 			\hline
-			\textbf{Classification} & \textbf{Expression}\\
+			\textbf{Classification} & \textbf{Expression} & \textbf{Interpretation}\\
 			\hline
-			Trigger-Based Conflict &
-			\makecell{
+			\makecell[c]{
+				Trigger-Based Conflict
+			}
+			&
+			\makecell[c]{
 				$obs(T_1), obs(C_1), obs(A_1)$ \\
-				$obs(T_2), obs(C_2)$, $intime(A_1, T_2, \delta)$}\\
+				$obs(T_2), obs(C_2)$, $intime(A_1, T_2, \delta)$
+			}
+			&
+			$R_1$ executes successfully. Within $\delta$, $R_2$ is triggered and its condition is satisfied, indicating that $R_1$ activates the execution path of $R_2$.\\
 			\hline
-			\makecell{
+			\makecell[c]{
 				Condition-Based Conflict \\
 				(Make Conditions Forbidden)
-			} &
-			\makecell{
+			}
+			&
+			\makecell[c]{
 				$obs(C_2)$ \\
 				$obs(T_1), obs(C_1), obs(A_1)$ \\
-				$obs(\neg C_2)$, $intime(A_1, \neg C_2, \delta)$}\\
+				$obs(\neg C_2)$, $intime(A_1, \neg C_2, \delta)$
+			}
+			&
+			Condition $C_2$ is initially satisfied, but becomes unsatisfied within $\delta$ after $R_1$ executes.\\
 			\hline
-			\makecell{
+			\makecell[c]{
 				Condition-Based Conflict \\
 				(Make Conditions Satisfied)
-			} &
-			\makecell{
+			}
+			&
+			\makecell[c]{
 				$obs(\neg C_2)$ \\
 				$obs(T_1), obs(C_1), obs(A_1)$ \\
-				$obs(C_2)$, $intime(A_1, C_2, \delta)$}\\
+				$obs(C_2)$, $intime(A_1, C_2, \delta)$
+			}
+			&
+			Condition $C_2$ is initially unsatisfied, but becomes satisfied within $\delta$ after $R_1$ executes.\\
 			\hline
-			Action-Based Conflict &
-			\makecell{
+			\makecell[c]{
+				Action-Based Conflict
+			}
+			&
+			\makecell[c]{
 				$obs(T_1), obs(C_1), obs(A_1)$ \\
-				$obs(T_2), obs(C_2)$}\\
+				$obs(T_2), obs(C_2)$
+			}
+			&
+			$R_1$ has executed, and $R_2$ has reached the action-ready state, indicating that both rules may take effect in the current runtime context.\\
 			\hline
 		\end{tabular}
 	\end{adjustbox}

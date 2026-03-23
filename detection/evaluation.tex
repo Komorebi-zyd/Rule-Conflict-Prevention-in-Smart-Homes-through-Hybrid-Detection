@@ -4,9 +4,9 @@ We evaluate the framework on a Home Assistant prototype. The evaluation focuses 
 
 \subsection{Experiment Setup}
 
-\begin{figure}[htbp]
+\begin{figure}[t]
 	\centering
-	\includegraphics[width=0.9\textwidth]{figure/smarthome.png}
+	\includegraphics[width=0.7\textwidth]{figure/smarthome.png}
 	\caption{Smart Home Floor Plan used for Evaluation}
 	\label{smarthome_floorplan}
 \end{figure}
@@ -15,7 +15,7 @@ The testbed is implemented in Home Assistant, which stores automation rules in Y
 
 Spatial connectivity determines whether environmental effects can propagate across zones. For example, the Porch and the Living Room are connected, whereas the Bedroom is physically isolated from them.
 
-% \begin{table}[htbp]
+% \begin{table}[t]
 % 	\caption{Physical Channel Configuration Used in Evaluation}
 % 	\label{physical_channel}
 % 	\centering
@@ -42,13 +42,13 @@ Spatial connectivity determines whether environmental effects can propagate acro
 
 Table~\ref{Testbeds} summarizes the 17 automation rules deployed in the testbed. For the Entity Safety Configuration, we define preferred safe states for four safety-sensitive entities: the Water Valve \circled{18} is preferred to remain ``open'' to preserve fire supply, the Sprinkler \circled{20} is preferred to remain ``enabled'', the Bedroom Window \circled{26} is preferred to remain ``closed'', and the Smart Door Lock \circled{3} is preferred to remain ``locked''.
 
-\begin{table*}[htbp]
+\begin{table*}[t]
 	\caption{Experimental Smart Home Automation Rules (R1--R17) in compact TCA form.}
 	\label{Testbeds}
 	\centering
 	\small
 	\begin{adjustbox}{width=\textwidth}
-	\begin{tabular}{c|p{3.2cm}|p{1.8cm}|p{4.0cm}|c|l}
+	\begin{tabular}{c|p{3.8cm}|p{1.8cm}|p{3.5cm}|c|l}
 		\hline
 		\textbf{Rule ID} & \textbf{Trigger} & \textbf{Condition} & \textbf{Action} & \textbf{Zone} & \textbf{Devices} \\
 		\hline
@@ -98,9 +98,9 @@ Representative cases illustrate the effect of this filtering. For R5-R6, the cor
 
 Table~\ref{conflict_detection_result} reports selected conflict-related rule pairs, including all manually confirmed conflict cases under the configured Entity Safety Configuration and representative non-conflict pairs flagged by at least one system. One rule pair may satisfy multiple static conflict categories, so multiple categories may be reported for the same pair. For our framework, the table reports the six static conflict categories used during RIDG/RCDG construction. Compared with IoTMediator, our framework detected all manually confirmed conflict cases in this testbed. IoTMediator missed the interaction between R10 and R11 because it does not model the indirect physical effect between the valve and the sprinkler, and it incorrectly flagged the greenhouse pair R16-R17 because it lacks zone awareness. It also reported non-risky cases such as R3-R15. These results indicate that considering both physical relevance and application-scenario-specific safety boundaries helps reduce false positives while preserving the conflict cases confirmed in this testbed. As a qualitative highlight, an external audit with DeepSeek-R1 also suggested that the generated reports preserve sufficient causal and safety information for inspection.
 
-\begin{table*}[htbp]
+\begin{table*}[t]
 	\centering
-	\caption{Selected conflict-related rule pairs and detection results. Columns include all manually confirmed conflict cases under the configured Entity Safety Configuration and representative non-conflict pairs flagged by at least one system. Here, $\checkmark$, $\times$, and -- denote true positives, false positives, and unreported pairs, respectively.}
+	\caption{Selected conflict-related rule pairs and detection results. Columns include all manually confirmed conflict cases under the configured Entity Safety Configuration and representative non-conflict rule pairs flagged by at least one system. Each cell indicates whether the corresponding system reports that rule pair under a specific conflict category. Here, $\checkmark$ denotes that the reported pair/category matches a manually confirmed conflict case; $\times$ denotes that the system reports a pair/category that is not a conflict case under the configured deployment and Entity Safety Configuration; and -- denotes that the pair is not reported under that specific category.}
 	\label{conflict_detection_result}
 	\resizebox{\textwidth}{!}{
 		\begin{tabular}{|c|l|c|c|c|c|c|c|c|c|c|c|c|c|}
@@ -131,7 +131,7 @@ Table~\ref{conflict_detection_result} reports selected conflict-related rule pai
 
 \subsection{Performance}
 
-% \begin{figure}[htbp]
+% \begin{figure}[t]
 %   \centering
 %   \includegraphics[width=0.8\textwidth]{figure/performance.png}
 %   \caption{Static analysis execution time under different rule-set sizes.}
@@ -140,7 +140,7 @@ Table~\ref{conflict_detection_result} reports selected conflict-related rule pai
 
 \begin{figure*}[t]
   \centering
-  \begin{minipage}[t]{0.48\linewidth}
+  \begin{minipage}[t]{0.45\linewidth}
         \begin{subfigure}{\linewidth}
             \centering
             \includegraphics[width=\linewidth]{figure/static.pdf}
@@ -148,7 +148,7 @@ Table~\ref{conflict_detection_result} reports selected conflict-related rule pai
             \label{subfig:static}
         \end{subfigure}
   \end{minipage}
-    \begin{minipage}[t]{0.48\linewidth}
+    \begin{minipage}[t]{0.45\linewidth}
         \begin{subfigure}{\linewidth}
             \centering
             \includegraphics[width=\linewidth]{figure/runtime.pdf}
