@@ -8,7 +8,7 @@
 	\label{overall_design}
 \end{figure*}
 
-We present a hybrid framework that combines offline static analysis with runtime dynamic monitoring for rule conflict detection in the smart home. As shown in Figure~\ref{overall_design}, the framework consists of two phases. In the static phase, the system parses automation configurations together with the Physical Channel Configuration to build enhanced rule models, applies formal verification to construct the RIDG, and then uses the Entity Safety Configuration to prune the RIDG and extract the RCDG, which retains the interaction edges corresponding to candidate rule conflicts. In the runtime phase, the system monitors rule events, checks whether triggered rules correspond to nodes in the RCDG, and uses assertion verification with the current system state to determine whether a candidate conflict edge is activated. If so, the candidate rule conflict associated with that edge is reported as an impending rule conflict. In essence, the static phase first determines whether a rule interaction is physically relevant in the current deployment and then checks whether it violates the safety boundary of the target application scenario; the runtime phase confirms whether such a candidate conflict is actually activated.
+We propose a hybrid framework that combines offline static analysis with runtime dynamic monitoring for rule conflict detection in the smart home. As shown in Figure~\ref{overall_design}, the framework consists of two phases. In the static phase, the system parses automation configurations together with the Physical Channel Configuration to build enhanced rule models, applies formal verification to construct the RIDG, and then uses the Entity Safety Configuration to prune the RIDG and extract the RCDG, which retains the interaction edges corresponding to candidate rule conflicts. In the runtime phase, the system monitors rule events, checks whether triggered rules correspond to nodes in the RCDG, and uses assertion verification with the current system state to determine whether a candidate conflict edge is activated. If so, the candidate rule conflict associated with that edge is reported as an impending rule conflict. In essence, the static phase first determines whether a rule interaction is physically relevant in the current deployment and then checks whether it violates the safety boundary of the target application scenario; the runtime phase confirms whether such a candidate conflict is actually activated.
 
 \subsection{Static Analysis}
 
@@ -83,8 +83,8 @@ Even when an edge $R_i \rightarrow R_j$ exists in the RCDG, the corresponding ca
 			\makecell[l]{
 				$obs(C_2)$ \rcmtinline{$C_2$ is initially satisfied} \\
 				$obs(T_1), obs(C_1), obs(A_1)$ \rcmtinline{$R_1$ is executed} \\
-				$obs(\neg C_2), intime(A_1, \neg C_2, \delta)$ \\
-				\rcmtbelow{within $\delta$, $C_2$ becomes unsatisfied}
+				$obs(\neg C_2), intime(A_1, \neg C_2, \delta)$ 
+				\rcmtinline{within $\delta$, $C_2$ is unsatisfied}
 			}\\
 			\hline
 			\makecell[c]{
@@ -95,16 +95,16 @@ Even when an edge $R_i \rightarrow R_j$ exists in the RCDG, the corresponding ca
 			\makecell[l]{
 				$obs(\neg C_2)$ \rcmtinline{$C_2$ is initially unsatisfied} \\
 				$obs(T_1), obs(C_1), obs(A_1)$ \rcmtinline{$R_1$ is executed} \\
-				$obs(C_2), intime(A_1, C_2, \delta)$ \\
-				\rcmtbelow{within $\delta$, $C_2$ becomes satisfied}
+				$obs(C_2), intime(A_1, C_2, \delta)$
+				\rcmtinline{within $\delta$, $C_2$ is satisfied}
 			}\\
 			\hline
 			\makecell[c]{Action-Based Conflict}
 			&
 			\makecell[l]{
 				$obs(T_1), obs(C_1), obs(A_1)$ \rcmtinline{$R_1$ is executed} \\
-				$obs(T_2), obs(C_2)$ \\
-				\rcmtbelow{$R_2$ reaches the action-ready state}
+				$obs(T_2), obs(C_2)$ 
+				\rcmtinline{$R_2$ reaches the action-ready state}
 			}\\
 			\hline
 		\end{tabular}
